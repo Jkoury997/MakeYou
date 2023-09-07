@@ -1,0 +1,90 @@
+/* Estilos previos */
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+header{
+    background-color: red;
+    display: flex;
+    justify-content: space-between; /* Espacio entre el logo y el nav */
+    align-items: center; /* Alinea verticalmente los ítems al centro */
+}
+
+header section{
+    width: 100%;
+    display: flex; /* Asegura que el logo se alinee a la izquierda */
+    align-items: center; /* Alinea verticalmente el logo al centro */
+    justify-content: space-between;
+}
+.logo{
+    width: 15%;
+}
+
+header section img{
+    width: 100%;
+    padding: 5px;
+}
+
+header nav{
+    display: flex;
+    width: 35%;
+}
+
+header nav ul{
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+header nav ul li{
+    padding: 5px;
+}
+
+
+/* SEARCH*/
+.search-container{
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.search-form{
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.search-input{
+    width: 70%;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px; /* Redondeado en el lado izquierdo */
+    outline: none;
+}
+.search-btn{
+    width: 30%;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: none;
+    background-color: #df7eb2; /* Un color de fondo azul */
+    color: white;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+}
+.search-btn:hover {
+    background-color: #ce72a3; /* Un color de fondo azul */
+}
+
+
