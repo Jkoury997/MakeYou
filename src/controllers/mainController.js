@@ -5,5 +5,8 @@ module.exports = {
     search: (req, res) => {
         
     },
+    login: (req, res) => {
+        res.render("login")
+    },
   };
   

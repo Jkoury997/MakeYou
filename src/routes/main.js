@@ -6,4 +6,5 @@ const mainController = require("../controllers/mainController");
 
 //Routeo
 router.get("/", mainController.index);
+router.get("/login",mainController.login);
 module.exports = router;

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include("partials/head") %>
+<title>Ingresar</title>
+
+</head>
+<body>
+    <header> 
+        <%- include("partials/header") %>
+    </header>
+    <main>
+        <section class="login-section">
+            <form action="/login" method="POST" class="login-form">
+                <div class="input-container">
+                    <input type="email" name="email" id="email" placeholder="Email" required class="login-input">
+                </div>
+                <div class="input-container">
+                    <input type="password" name="password" id="password" placeholder="Contraseña" required class="login-input">
+                    <button type="button" class="password-toggle-btn" id="showPasswordBtn"><span class="material-symbols-outlined" id="showPassword">visibility</span></button>
+                    <button type="button" class="password-toggle-btn hidden" id="hidePasswordBtn"><span class="material-symbols-outlined" id="hidePassword">visibility_off</span></button>
+                </div>
+                <button type="submit" class="login-btn">Ingresar</button>
+                <a href="/forgot-password" class="forgot-password-link">Me olvidé la contraseña</a>
+            </form>
+        </section>
+    </main>
+    <%- include("partials/navBar") %>
+    <footer> 
+        <%- include("partials/footers") %>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const showPasswordBtn = document.getElementById('showPasswordBtn');
+            const hidePasswordBtn = document.getElementById('hidePasswordBtn');
+
+            showPasswordBtn.addEventListener('click', function() {
+                passwordInput.type = 'text';
+                showPasswordBtn.classList.add('hidden');
+                hidePasswordBtn.classList.remove('hidden');
+            });
+
+            hidePasswordBtn.addEventListener('click', function() {
+                passwordInput.type = 'password';
+                hidePasswordBtn.classList.add('hidden');
+                showPasswordBtn.classList.remove('hidden');
+            });
+        });
+
+
+    </script>
+</body>
+</html>
