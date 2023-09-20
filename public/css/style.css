@@ -189,14 +189,25 @@ main {
 
 /* Cards  */
 
-.category-section{
 
+
+.category-section{
     display: flex;
-    
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.category-section h2{
+    align-self: flex-start;
+    padding: 10px;
+    font-size: 18px;
+    color: #a1a1a1;
 }
 
 .card-container{
-    width: 100%;
+    display: flex;
 
 }
 

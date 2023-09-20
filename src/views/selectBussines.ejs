@@ -11,23 +11,12 @@
     </header>
     <main>
         <section class="login-section">
-            <form action="/auth/login" method="POST" class="login-form">
-                <div class="input-container">
-                    <input type="email" name="email" id="email" placeholder="Email" required class="login-input">
-                </div>
-                <div class="input-container">
-                    <input type="password" name="password" id="password" placeholder="Contraseña" required class="login-input">
-                    <button type="button" class="password-toggle-btn" id="showPasswordBtn"><span class="material-symbols-outlined" id="showPassword">visibility</span></button>
-                    <button type="button" class="password-toggle-btn hidden" id="hidePasswordBtn"><span class="material-symbols-outlined" id="hidePassword">visibility_off</span></button>
-                </div>
-                <button type="submit" class="login-btn">Ingresar</button>
-                <a href="/forgot-password" class="forgot-password-link">Me olvidé la contraseña</a>
+            <form action="/auth/selectBusiness" method="POST" class="login-form">
+                <h3>Hola <%= user %></h3>
+                <% business.forEach((busines) => { %>
+                    <button type="submit" class="login-btn" name="<%= busines.Codigo %>"><%= busines.Nombre %></button>
+                <%}); %>
             </form>
-            <div>
-                <% if(message) { %>
-                    <div class="alert"><%= message %></div>
-                <% } %>
-            </div>
         </section>
         
     </main>
