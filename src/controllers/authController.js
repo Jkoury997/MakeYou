@@ -11,7 +11,7 @@ module.exports = {
             if (!response.Estado) {
                 return res.render("login", { message: "Login incorrecto." });
             }
-
+            req.session.userData = response.AccessKey
             res.render("selectBussines", { 
                 message: "Ingreso correcto.",
                 user : response.Nombre, 
@@ -20,6 +20,23 @@ module.exports = {
             res.render("login", { message: "Error durante la autenticación." });
         }
     },
+    authBusiness:  async (req, res) => {
+        try {
+            let response = await authServices.bussines(Number(req.body.id), req.session.userData);
 
+            if (!response.Estado) {
+                return res.send("Incorrecto")
+            }
+
+            req.session.userData = {
+                Token: response.Token,
+                Nombre: response.Nombre
+             }
+            res.redirect("/admin/dashboard")
+            
+        } catch (error) {
+            res.render("login", { message: "Error durante la autenticación." });
+        }
+    },
     
 }

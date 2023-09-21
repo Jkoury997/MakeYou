@@ -3,9 +3,10 @@ const router = express.Router();
 
 // resppuestas
 const mainController = require("../controllers/mainController");
-const routesController = require("./authRoutes");
-
+const authRoutes = require("./authRoutes");
+const adminRoutes = require("./adminRoutes");
 //Routeo
 router.get("/", mainController.index);
-router.use("/auth",routesController);
+router.use("/auth",authRoutes);
+router.use("/admin",adminRoutes);
 module.exports = router;

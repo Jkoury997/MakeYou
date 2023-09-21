@@ -11,10 +11,10 @@
     </header>
     <main>
         <section class="login-section">
-            <form action="/auth/selectBusiness" method="POST" class="login-form">
+            <form action="/auth/selectBussines" method="POST" class="login-form">
                 <h3>Hola <%= user %></h3>
                 <% business.forEach((busines) => { %>
-                    <button type="submit" class="login-btn" name="<%= busines.Codigo %>"><%= busines.Nombre %></button>
+                    <button type="submit" class="login-btn" name="id" value="<%= busines.Codigo %>"><%= busines.Nombre %></button>
                 <%}); %>
             </form>
         </section>
@@ -25,26 +25,5 @@
         <%- include("partials/footers") %>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('password');
-            const showPasswordBtn = document.getElementById('showPasswordBtn');
-            const hidePasswordBtn = document.getElementById('hidePasswordBtn');
-
-            showPasswordBtn.addEventListener('click', function() {
-                passwordInput.type = 'text';
-                showPasswordBtn.classList.add('hidden');
-                hidePasswordBtn.classList.remove('hidden');
-            });
-
-            hidePasswordBtn.addEventListener('click', function() {
-                passwordInput.type = 'password';
-                hidePasswordBtn.classList.add('hidden');
-                showPasswordBtn.classList.remove('hidden');
-            });
-        });
-
-
-    </script>
 </body>
 </html>

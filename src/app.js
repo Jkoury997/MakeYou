@@ -2,12 +2,19 @@
 const express = require("express");
 const path = require("path");
 const methodOverride = require("method-override");
+const session = require("express-session")
 
 // Express()
 const app = express();
 
+
 app.use(express.json())
 app.use(express.urlencoded({extended : false}))
+app.use(session({
+  secret:"MakeYou",
+  resave: false,
+  saveUninitialized: false
+})) 
 
 //middleweares
 app.use(express.static(path.join(__dirname, "../public")));
