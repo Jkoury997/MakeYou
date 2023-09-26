@@ -1,11 +1,10 @@
 module.exports = (req, res, next) => {
-    // Verificar si userdata y token existen en la sesión
-    if (!req.session.userData.Token) {
-        // Si el token no existe, redireccionar al login
+    // Verificar si userData y Token existen en la sesión y que Token no sea undefined
+    if (!req.session.userData || !req.session.userData.Token || req.session.userData.Token === undefined) {
+        // Si el token no existe o es undefined, redireccionar al login
         return res.redirect('/auth/login');
     } else {
-        // Si el token existe, permitir que la solicitud continúe
+        // Si el token existe y no es undefined, permitir que la solicitud continúe
         return next();
     }
 }
-

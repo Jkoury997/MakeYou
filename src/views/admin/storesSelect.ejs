@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include("./partials/head") %>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
-    <div class="container">
-        <main class="content">
-            <!-- Aquí irá el contenido principal de tu dashboard -->
-            <h1>Tiendas</h1>
+    <%- include("./partials/sidebar") %>
+    
+    <main class="container-fluid" style="padding-left: 25%; ">
+        <div id="mainContent">
+            <p>Selecciona una tienda para poder empezar a preparar.</p>
                 <form action="/admin/stores/pickList" method="post">
-                    <% stores.forEach((store) => { %>
-                        <button class="login-btn" type="submit" name="id" value="<%= store.Codigo %>"> <%= store.Descripcion %> </button>
-                    <% }); %>
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <% stores.forEach((store) => { %>
+                            <button class="btn btn-primary" type="submit" name="id" value="<%= store.Codigo %>"><%= store.Descripcion %></button>
+                        <% }); %>
+                    </div>
                 </form>
-        </main>
-        <%- include("partials/sidebar") %>
-    </div>
+        </div>
+    </main>
 </body>
 </html>

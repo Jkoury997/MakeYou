@@ -1,25 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include("./partials/head") %>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
-    <div class="container">
-        <main class="content">
-            <!-- Aquí irá el contenido principal de tu dashboard -->
-            <h1>Tienda: <%= store %></h1>
-                <form action="/" method="post">
-                    <ul>
-                    <% products.forEach((product) => { %>
-                        <li><%= product.Cabecera %></li>
-                    <% }); %>
-                    </ul>
-                </form>
-        </main>
-        <%- include("partials/sidebar") %>
-    </div>
+    <%- include("./partials/sidebar") %>
+    <main class="container-fluid">
+        
+        <section class=" container-fluid mt-2">
+            <h3>Tienda: <%= store %></h3>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <label class="btn btn-outline-primary"><i class="bi bi-funnel-fill"></i></label>
+                <% rubros.forEach((rubroUnico) => { %>
+                <input type="radio" class="btn-check" name="rubro" id="<%= rubroUnico %>" autocomplete="off">
+                <label class="btn btn-outline-primary" for="<%= rubroUnico %>"><%= rubroUnico %></label>
+                <% }); %>
+            </div>
+            <div class="input-group mt-3 mb-3">
+                <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                <div class="form-floating is-invalid">
+                    <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Codigo de barras">
+                    <label for="floatingInputGroup2">Codigo de barras</label>
+                </div>
+            </div>
+        </section>
+    
+        
+        <section class="container-fluid mt-3">
+                <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Artículo</th>
+                            <th scope="col">Talle</th>
+                            <th scope="col">Color</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Preparar</th>
+                            <th scope="col">Scan</th>
+                            <th scope="col">Confirmación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach((product) => { %>
+                            <tr>
+                                <td><%= product.Cabecera %></td>
+                                <td><%= product.Medida %></td>
+                                <td><%= product.Detalle %></td>
+                                <td><%= product.Stock %></td>
+                                <td><%= product.Saldo %></td>
+                                <td>0</td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input p-3" type="checkbox" value="<%= product.IdArticulo %>">
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+        </section>
+    </main>
 </body>
 </html>

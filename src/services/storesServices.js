@@ -33,4 +33,9 @@ module.exports = {
             throw error;
         }
     },
+    getRubros: function (products) {
+        let rubrosUnicos = [...new Set(products.map(product => product.Rubro))];
+        rubrosUnicos.unshift("Todos")
+        return rubrosUnicos;
+    }
 }

@@ -1,11 +1,29 @@
-<aside class="sidebar">
-    <ul class="menu">
-        <li><a href="/admin/dashboard">Inicio</a></li>
-        <li>
-            <form action="/admin/stores" method="GET">
-                <button type="submit">Preparacion de pedidos</button>
-            </form>
-        </li>
-        <li><a href="/logout">Cerrar sesión</a></li>
-    </ul>
-</aside>
+<header>
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="/images/logo-Marcela-Koury.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        MakeYou
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">usuario
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <%- include("./sidebarLink") %>
+          </ul>
+          <form class="d-flex mt-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
