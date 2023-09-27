@@ -37,18 +37,18 @@
                             <th scope="col">Stock</th>
                             <th scope="col">Preparar</th>
                             <th scope="col">Scan</th>
-                            <th scope="col">Confirmación</th>
+                            <th scope="col">Ok</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% products.forEach((product) => { %>
-                            <tr>
-                                <td><%= product.Cabecera %></td>
-                                <td><%= product.Medida %></td>
-                                <td><%= product.Detalle %></td>
-                                <td><%= product.Stock %></td>
-                                <td><%= product.Saldo %></td>
-                                <td>0</td>
+                            <tr data-rubro="<%= product.Rubro %>">
+                                <td class="align-middle"><%= product.Cabecera %></td>
+                                <td class="align-middle"><%= product.Medida %></td>
+                                <td class="align-middle"><%= product.Detalle %></td>
+                                <td class="align-middle"><%= product.Stock %></td>
+                                <td class="align-middle"><%= product.Saldo %></td>
+                                <td class="align-middle">0</td>
                                 <td>
                                     <div class="form-check">
                                         <input class="form-check-input p-3" type="checkbox" value="<%= product.IdArticulo %>">
@@ -60,5 +60,30 @@
                 </table>
         </section>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rubroInputs = document.querySelectorAll('input[name="rubro"]');
+            const productRows = document.querySelectorAll('tbody tr');
+
+            rubroInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const selectedRubro = this.id;
+
+                    productRows.forEach(row => {
+                        // Si el rubro seleccionado es "Todos", mostramos todas las filas.
+                        // De lo contrario, mostramos solo las filas que coinciden con el rubro seleccionado.
+                        if (selectedRubro === 'Todos' || row.getAttribute('data-rubro') === selectedRubro) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+
+        </script>
+        
 </body>
 </html>

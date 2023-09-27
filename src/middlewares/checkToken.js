@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
         return res.redirect('/auth/login');
     } else {
         // Si el token existe y no es undefined, permitir que la solicitud continúe
+        console.log(req.session.userData.Token)
         return next();
     }
 }

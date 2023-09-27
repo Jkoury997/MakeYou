@@ -10,89 +10,35 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-            <img src="../public/images/logo-Marcela-Koury.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-            MakeYou
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">usuario
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <%- include("./sidebarLink") %>
-              </ul>
-              <form class="d-flex mt-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-              </form>
-            </div>
-          </div>
-        </div>
-        </nav>
-    </header>
-    <main class="container-fluid">
-        <h1>Tienda: <%= store %></h1>
-        <section class=" container-fluid mt-2">
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <label class="btn btn-outline-primary"><i class="bi bi-funnel-fill"></i></label>
-                
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio1">Ropa Interior</label>
-              
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">Bombachas</label>
-              
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio3">Medias</label>
-              </div>
-              <div class="input-group mt-3 mb-3">
-                <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-                <div class="form-floating is-invalid">
-                  <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Codigo de barras">
-                  <label for="floatingInputGroup2">Codigo de barras</label>
+  <header>
+
+  </header>
+  <main>
+    <section class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                      <div class="text-center mt-3 mb-3">
+                        <!-- Aquí insertamos el logo -->
+                        <img src="../public/images/logo-Marcela-Koury.svg" alt="Logo" class="rounded-circle" style="width: 100px; height: 100px;"> 
+                      </div>
+                        <div class="card-body">
+                            <form action="/auth/login" method="POST">
+                              <div class="d-grid gap-2">
+                                <button class="btn btn-primary mt-2 p-2" type="submit">Iniciar sesión</button>
+                              </div>
+                              <div class="d-grid gap-2">
+                                <button class="btn btn-primary mt-2 p-2" type="submit">Iniciar sesión</button>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-              </div>
-        </section>
-        <section class="container-fluid mt-3">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Artículo</th>
-                            <th scope="col">Talle</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Preparar</th>
-                            <th scope="col">Confirmación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% products.forEach((product) => { %>
-                            <tr>
-                                <td><%= product.Cabecera %></td>
-                                <td><%= product.Medida %></td>
-                                <td><%= product.Detalle %></td>
-                                <td><%= product.Stock %></td>
-                                <td><%= product.Saldo %></td>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input  p-3" type="checkbox" value="">
-                                    </div>
-                                </td>
-                            </tr>
-                        <% }); %>
-                        <!-- Agrega más productos como el anterior para llenar la tabla -->
-                    </tbody>
-                </table>
-        </section>
-    </main>
+            </div>
+        </div>
+    </section>
+  </main>
+
 </body>
 </html>

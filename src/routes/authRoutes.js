@@ -7,7 +7,7 @@ router.get("/login",authController.login);
 
 router.post("/login",authController.authLogin);
 
-router.post("/selectBussines",authController.authBusiness);
+router.post("/businessSelect",authController.authBusiness);
 
 
 module.exports = router
