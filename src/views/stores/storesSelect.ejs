@@ -7,16 +7,36 @@
 <body>
     <%- include("../partials/sidebar") %>
     
-    <main class="container-fluid" style="padding-left: 25%; ">
+    <main class="container-fluid">
         <div id="mainContent">
             <p>Selecciona una tienda para poder empezar a preparar.</p>
-                <form action="/admin/stores/pickList" method="post">
-                    <div class="d-grid gap-2 col-6 mx-auto">
-                        <% stores.forEach((store) => { %>
-                            <button class="btn btn-primary" type="submit" name="id" value="<%= store.Codigo %>"><%= store.Descripcion %></button>
-                        <% }); %>
+            <form action="/admin/stores/pickList" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-2"> <!-- Primera columna -->
+                        <div class="d-grid gap-2">
+                            <% 
+                            let halfLength = Math.ceil(stores.length / 2); 
+                            stores.slice(0, halfLength).forEach((store) => { 
+                            %>
+                                <button class="btn btn-primary btn-pink" type="submit" name="id" value="<%= store.Codigo %>"><%= store.Descripcion %></button>
+                            <% 
+                            }); 
+                            %>
+                        </div>
                     </div>
-                </form>
+                    <div class="col-md-6 mb-2"> 
+                        <div class="d-grid gap-2">
+                            <% 
+                            stores.slice(halfLength).forEach((store) => { 
+                            %>
+                                <button class="btn btn-primary btn-pink" type="submit" name="id" value="<%= store.Codigo %>"><%= store.Descripcion %></button>
+                            <% 
+                            }); 
+                            %>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </main>
     <script>
