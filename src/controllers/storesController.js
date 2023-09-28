@@ -44,4 +44,29 @@ module.exports = {
             res.status(500).send('Error interno del servidor');
         }
     },
+    showSaleStores: function (req,res) {
+        res.render("./analytics/saleStores", {
+            userName: req.session.userData,
+            stores: [],
+            dateFrom: req.body.dateFrom ? req.body.dateFrom : null,
+            dateTo: req.body.dateTo ? req.body.dateTo : null,
+
+        })
+    },
+    salesStores: async function (req,res) {
+        try {
+            let data = req.session.userData;
+            const salesResponse = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
+            console.log(salesResponse.Tienda)
+            res.render("./analytics/saleStores", {
+                userName: req.session.userData,
+                stores: salesResponse.Variables,
+                dateFrom: req.body.dateFrom,
+                dateTo: req.body.dateTo,
+            })
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).send('Error interno del servidor');
+        }
+    },
 }
