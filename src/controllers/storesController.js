@@ -9,7 +9,10 @@ module.exports = {
             const storesResponse = await storesServices.getStores(data.Token);
     
             if (storesResponse && storesResponse.Lista) {
-                res.render("admin/storesSelect", { stores: storesResponse.Lista});
+                res.render("./stores/storesSelect", {
+                    stores: storesResponse.Lista,
+                    userName: req.session.userData
+                });
             } else {
                 // Maneja el caso cuando 'storesResponse' o 'storesResponse.Lista' es undefined.
                 res.status(500).send("Error: No se pudieron obtener las tiendas");
@@ -26,10 +29,11 @@ module.exports = {
             const rubrosUnicos = storesServices.getRubros(productsResponse.Articulos);// extrae los rubros y saca los repetidos
             productsResponse.Articulos = productsResponse.Articulos.filter(product => product.Stock > 0); //Solo usa los que tiene stock
             if (productsResponse && productsResponse.Articulos) {
-                res.render("admin/productsToPick", { 
+                res.render("./stores/productsToPick", { 
                     products: productsResponse.Articulos,
                     store: productsResponse.Tienda,
-                    rubros: rubrosUnicos
+                    rubros: rubrosUnicos,
+                    userName: req.session.userData,
                     });
             } else {
                 // Maneja el caso cuando 'storesResponse' o 'storesResponse.Lista' es undefined.
