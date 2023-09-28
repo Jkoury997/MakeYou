@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <%- include("./partials/head") %>
+    <%- include("../partials/head") %>
     <title>Dashboard</title>
 </head>
 <body>
-    <%- include("./partials/sidebar") %>
+    <%- include("../partials/sidebar") %>
     <main class="container-fluid">
         
         <section class=" container-fluid mt-2">
@@ -37,24 +37,24 @@
                             <th scope="col">Stock</th>
                             <th scope="col">Preparar</th>
                             <th scope="col">Scan</th>
-                            <th scope="col">Ok</th>
+                            <th scope="col"><i class="bi bi-list-check"></i></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% products.forEach((product) => { %>
-                            <tr data-rubro="<%= product.Rubro %>">
-                                <td class="align-middle"><%= product.Cabecera %></td>
-                                <td class="align-middle"><%= product.Medida %></td>
-                                <td class="align-middle"><%= product.Detalle %></td>
-                                <td class="align-middle"><%= product.Stock %></td>
-                                <td class="align-middle"><%= product.Saldo %></td>
-                                <td class="align-middle">0</td>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input p-3" type="checkbox" value="<%= product.IdArticulo %>">
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr data-rubro="<%= product.Rubro %>">
+                                    <td class="align-middle"><%= product.Cabecera %></td>
+                                    <td class="align-middle"><%= product.Medida %></td>
+                                    <td class="align-middle"><%= product.Detalle %></td>
+                                    <td class="align-middle"><%= product.Stock %></td>
+                                    <td class="align-middle"><%= product.Saldo %></td>
+                                    <td class="align-middle">0</td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input p-3" type="checkbox" value="<%= product.IdArticulo %>">
+                                        </div>
+                                    </td>
+                                </tr>
                         <% }); %>
                     </tbody>
                 </table>
@@ -82,6 +82,19 @@
             });
         });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.form-check-input');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const row = this.closest('tr');
+                    if (this.checked) {
+                row.classList.add('table-success'); // Agregamos clases para pintar de verde
+            } else {
+                row.classList.remove('table-success'); // Removemos las clases
+            }
+                });
+            });
+    });
 
         </script>
         
