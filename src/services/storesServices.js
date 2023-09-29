@@ -92,5 +92,50 @@ module.exports = {
             default:
                 return null;
         }
-    }
+    },
+    calculateDiferent: function(salesResponse,prevSalesResponse){
+        function addPercent(salesResponse, prevSalesResponse) {
+            const calculateDifference = (current, previous) => {
+                // Verificar si el valor previo es 0 para evitar división por cero
+                if (previous === 0) return 0;
+                return parseFloat((current / previous)).toFixed(2) - 1;
+            };
+        
+            salesResponse.forEach((sale, index) => {
+                // Lista de propiedades para las que calcular la diferencia
+                const properties = ['Bruto', 'Neto', 'Tickets', 'Unidades', 'CAT', 'PP', 'TP', 'CMV'];
+                
+                properties.forEach(prop => {
+                    // Usar prop como clave para obtener el valor actual y previo
+                    const currentVal = sale[prop];
+                    const prevVal = prevSalesResponse[index][prop];
+                    
+                    // Calcular la diferencia y almacenarla
+                    prevSalesResponse[index][`diferentPercent${prop}`] = calculateDifference(currentVal, prevVal);
+                });
+            });
+            console.log(prevSalesResponse)
+            return prevSalesResponse;
+        }
+        
+
+
+
+        if (prevSalesResponse.prevMonth && !prevSalesResponse.prevYear) {
+            return {
+                prevMonth: addPercent(salesResponse, prevSalesResponse.prevMonth)
+            };
+        } else if (!prevSalesResponse.prevMonth && prevSalesResponse.prevYear) {
+            return {
+                prevYear: addPercent(salesResponse, prevSalesResponse.prevYear)
+            };
+        } else if (prevSalesResponse.prevMonth && prevSalesResponse.prevYear) {
+            return {
+                prevMonth: addPercent(salesResponse, prevSalesResponse.prevMonth),
+                prevYear: addPercent(salesResponse, prevSalesResponse.prevYear)
+            };
+        } else {
+            return null;
+        }
+    },
 }

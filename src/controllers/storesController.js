@@ -64,8 +64,8 @@ module.exports = {
             let data = req.session.userData;
 
             const salesResponse = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
-            const prevSalesResponse = await storesServices.comparative(req.body.dateFrom,req.body.dateTo,req.body.comparative,data.Token)
-            console.log(prevSalesResponse)
+            let prevSalesResponse = await storesServices.comparative(req.body.dateFrom,req.body.dateTo,req.body.comparative,data.Token)
+            prevSalesResponse = prevSalesResponse != null ? storesServices.calculateDiferent(salesResponse.Variables,prevSalesResponse) : null
             
             res.render("./analytics/saleStores", {
                 userName: req.session.userData,

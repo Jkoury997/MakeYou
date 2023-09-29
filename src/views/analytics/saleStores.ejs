@@ -24,12 +24,12 @@
                             <!-- Segunda columna -->
                             <div class="col-md-6 mb-3">
                                 <div class="input-group">
-                                    <label class="input-group-text" for="inputGroupSelect">Comparar</label>
+                                    <label class="input-group-text" for="inputGroupSelect">Comparacion</label>
                                     <select class="form-select" id="inputGroupSelect" name="comparative">
-                                    <option selected>No</option>
-                                    <option value="month">Mensual</option>
-                                    <option value="year">Anual</option>
-                                    <option value="all">Todos</option>
+                                    <option selected>Sin - Celular</option>
+                                    <option value="month">Mensual - Tablet</option>
+                                    <option value="year">Anual - Tablet</option>
+                                    <option value="all">Ambos - Laptop</option>
                                     </select>
                                     <button class="btn btn-outline-secondary btn-pink" type="submit">Buscar</button> <!-- Cambié el id para que sea único -->
                                 </div>
@@ -67,99 +67,105 @@
                                     <th scope="row">Bruto</th>
                                     <td><%= store.Bruto.toFixed(2) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td>sin dato</td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
+                                        <td><%= prevStores.prevMonth[index].diferentPercentBruto.toFixed(2) %></td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
                                         <td><%= prevStores.prevMonth[index].Bruto.toFixed(2) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
+                                        <td><%= prevStores.prevYear[index].diferentPercentBruto.toFixed(2) %></td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
                                         <td><%= prevStores.prevYear[index].Bruto.toFixed(2) %></td>
                                         
                                     <% } %>
                                 </tr>
                                 <tr>
-                                  <th scope="row">Neto</th>
-                                  <td><%= store.Neto.toFixed(2) %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].Neto.toFixed(2) %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].Neto.toFixed(2) %></td>
-                                  <% } %>
-                              </tr>
-                              <tr>
-                                  <th scope="row">Tickets</th>
-                                  <td><%= store.Tickets %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].Tickets %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].Tickets %></td>
-                                  <% } %>
-                              </tr>
-                              <tr>
-                                  <th scope="row">Unidades</th>
-                                  <td><%= store.Unidades %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].Unidades %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].Unidades %></td>
-                                  <% } %>
-                              </tr>
-                              <tr>
-                                  <th scope="row">CAT</th>
-                                  <td><%= store.CAT.toFixed(2) %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].CAT.toFixed(2) %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].CAT.toFixed(2) %></td>
-                                  <% } %>
-                              </tr>
-                              <tr>
-                                  <th scope="row">PP</th>
-                                  <td><%= store.PP.toFixed(2) %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].PP.toFixed(2) %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].PP.toFixed(2) %></td>
-                                  <% } %>
-                              </tr>
-                              <tr>
-                                  <th scope="row">TP</th>
-                                  <td><%= store.TP.toFixed(2) %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].TP.toFixed(2) %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].TP.toFixed(2) %></td>
-                                  <% } %>
-                              </tr>
-                              <tr>
-                                  <th scope="row">CMV</th>
-                                  <td><%= store.CMV.toFixed(2) %></td>
-                                  <% if (prevStores && prevStores.prevMonth) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevMonth[index].CMV.toFixed(2) %></td>
-                                  <% } %>
-                                  <% if (prevStores && prevStores.prevYear) { %>
-                                      <td>sin dato</td>
-                                      <td><%= prevStores.prevYear[index].CMV.toFixed(2) %></td>
-                                  <% } %>
-                              </tr>
+                                    <th scope="row">Neto</th>
+                                    <td><%= store.Neto.toFixed(2) %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentNeto.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].Neto.toFixed(2) %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentNeto.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].Neto.toFixed(2) %></td>
+                                    <% } %>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">Tickets</th>
+                                    <td><%= store.Tickets %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentTickets.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].Tickets %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentTickets.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].Tickets %></td>
+                                    <% } %>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">Unidades</th>
+                                    <td><%= store.Unidades %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentUnidades.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].Unidades %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentUnidades.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].Unidades %></td>
+                                    <% } %>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">CAT</th>
+                                    <td><%= store.CAT.toFixed(2) %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentCAT.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].CAT.toFixed(2) %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentCAT.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].CAT.toFixed(2) %></td>
+                                    <% } %>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">PP</th>
+                                    <td><%= store.PP.toFixed(2) %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentPP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].PP.toFixed(2) %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentPP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].PP.toFixed(2) %></td>
+                                    <% } %>
+                                </tr>
+                                <tr>
+                                    <th scope="row">TP</th>
+                                    <td><%= store.TP.toFixed(2) %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentTP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].TP.toFixed(2) %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentTP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].TP.toFixed(2) %></td>
+                                    <% } %>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">CMV</th>
+                                    <td><%= store.CMV.toFixed(2) %></td>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td><%= prevStores.prevMonth[index].diferentPercentCMV.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].CMV.toFixed(2) %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                        <td><%= prevStores.prevYear[index].diferentPercentCMV.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].CMV.toFixed(2) %></td>
+                                    <% } %>
+                                </tr>
+                                
                                 </tbody>
                               </table>
                             </div>
