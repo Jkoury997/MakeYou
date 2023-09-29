@@ -16,8 +16,9 @@
                             <div class="col-md-6">
                                 <div class="input-group mb-3"> <!-- Añadí 'mb-3' para dar un margen entre los grupos de entrada -->
                                     <span class="input-group-text">Fecha</span>
-                                    <input type="date" aria-label="Desde" class="form-control" placeholder="Desde" name="dateFrom" value="<% dateFrom ? dateFrom : "" %>">
-                                    <input type="date" aria-label="Hasta" class="form-control" placeholder="Hasta" name="dateTo">
+                                    <input type="date" aria-label="Desde" class="form-control" placeholder="Desde" name="dateFrom" value="<%= dateFrom ? dateFrom : '' %>">
+                                    <input type="date" aria-label="Hasta" class="form-control" placeholder="Hasta" name="dateTo" value="<%= dateTo ? dateTo : '' %>">
+
                                 </div>
                             </div>
                             <!-- Segunda columna -->
@@ -25,9 +26,10 @@
                                 <div class="input-group">
                                     <label class="input-group-text" for="inputGroupSelect">Comparar</label>
                                     <select class="form-select" id="inputGroupSelect" name="comparative">
-                                    <option selected value="no">No</option>
+                                    <option selected>No</option>
                                     <option value="month">Mensual</option>
                                     <option value="year">Anual</option>
+                                    <option value="all">Todos</option>
                                     </select>
                                     <button class="btn btn-outline-secondary btn-pink" type="submit">Buscar</button> <!-- Cambié el id para que sea único -->
                                 </div>
@@ -39,7 +41,7 @@
               <section>  <!-- Cards -->
                   <section>
                     <div class="row row-cols-1 row-cols-md-2 g-4">
-                      <% stores.forEach(store => { %>
+                      <% stores.forEach((store, index) => { %>
                       <div class="col">
                         <div class="card">
                           <div class="card-body">
@@ -50,45 +52,114 @@
                                   <tr>
                                     <th scope="col">Modo</th>
                                     <th scope="col">Actual</th>
-                                    <th scope="col">%</th>
-                                    <th scope="col">Mensual</th>
-                                    <th scope="col">%</th>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                      <th scope="col">%</th>
+                                      <th scope="col">Mensual</th>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                    <th scope="col">%</th>  
                                     <th scope="col">Anual</th>
+                                  <% } %>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
                                     <th scope="row">Bruto</th>
                                     <td><%= store.Bruto.toFixed(2) %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">Neto</th>
-                                    <td><%= store.Neto.toFixed(2) %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">Tickets</th>
-                                    <td><%= store.Tickets %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">Unidades</th>
-                                    <td><%= store.Unidades %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">CAT</th>
-                                    <td><%= store.CAT.toFixed(2) %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">PP</th>
-                                    <td><%= store.PP.toFixed(2) %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">TP</th>
-                                    <td><%= store.TP.toFixed(2) %></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">CMV</th>
-                                    <td><%= store.CMV.toFixed(2) %></td>
-                                  </tr>
+                                    <% if (prevStores && prevStores.prevMonth) { %>
+                                        <td>sin dato</td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
+                                        <td><%= prevStores.prevMonth[index].Bruto.toFixed(2) %></td>
+                                    <% } %>
+                                    <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
+                                        <td><%= prevStores.prevYear[index].Bruto.toFixed(2) %></td>
+                                        
+                                    <% } %>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Neto</th>
+                                  <td><%= store.Neto.toFixed(2) %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].Neto.toFixed(2) %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].Neto.toFixed(2) %></td>
+                                  <% } %>
+                              </tr>
+                              <tr>
+                                  <th scope="row">Tickets</th>
+                                  <td><%= store.Tickets %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].Tickets %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].Tickets %></td>
+                                  <% } %>
+                              </tr>
+                              <tr>
+                                  <th scope="row">Unidades</th>
+                                  <td><%= store.Unidades %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].Unidades %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].Unidades %></td>
+                                  <% } %>
+                              </tr>
+                              <tr>
+                                  <th scope="row">CAT</th>
+                                  <td><%= store.CAT.toFixed(2) %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].CAT.toFixed(2) %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].CAT.toFixed(2) %></td>
+                                  <% } %>
+                              </tr>
+                              <tr>
+                                  <th scope="row">PP</th>
+                                  <td><%= store.PP.toFixed(2) %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].PP.toFixed(2) %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].PP.toFixed(2) %></td>
+                                  <% } %>
+                              </tr>
+                              <tr>
+                                  <th scope="row">TP</th>
+                                  <td><%= store.TP.toFixed(2) %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].TP.toFixed(2) %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].TP.toFixed(2) %></td>
+                                  <% } %>
+                              </tr>
+                              <tr>
+                                  <th scope="row">CMV</th>
+                                  <td><%= store.CMV.toFixed(2) %></td>
+                                  <% if (prevStores && prevStores.prevMonth) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevMonth[index].CMV.toFixed(2) %></td>
+                                  <% } %>
+                                  <% if (prevStores && prevStores.prevYear) { %>
+                                      <td>sin dato</td>
+                                      <td><%= prevStores.prevYear[index].CMV.toFixed(2) %></td>
+                                  <% } %>
+                              </tr>
                                 </tbody>
                               </table>
                             </div>

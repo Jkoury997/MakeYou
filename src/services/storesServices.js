@@ -57,4 +57,40 @@ module.exports = {
             throw error;
         }
     },
+    comparative: async function (dateFrom, dateTo, typeComparative,token) {
+        const dateFromString = new Date(dateFrom);
+        const dateToString = new Date(dateTo);
+    
+        let prevMonthDateFrom, prevMonthDateTo, prevYearDateFrom, prevYearDateTo;
+    
+        // Restar 1 mes
+        dateFromString.setMonth(dateFromString.getMonth() - 1);
+        dateToString.setMonth(dateToString.getMonth() - 1);
+        prevMonthDateFrom = dateFromString.toISOString().split('T')[0];
+        prevMonthDateTo = dateToString.toISOString().split('T')[0];
+    
+        // Reset y restar 1 año
+        dateFromString.setFullYear(new Date(dateFrom).getFullYear() - 1);
+        dateToString.setFullYear(new Date(dateTo).getFullYear() - 1);
+        prevYearDateFrom = dateFromString.toISOString().split('T')[0];
+        prevYearDateTo = dateToString.toISOString().split('T')[0];
+        let salesResponseMonth,salesResponseYear
+        switch (typeComparative) {
+            case "month":
+                salesResponseMonth = await this.sales(token,prevMonthDateFrom,prevMonthDateTo);
+                return {prevMonth: salesResponseMonth.Variables};
+            case "year":
+                salesResponseYear = await this.sales(token,prevYearDateFrom,prevYearDateTo);
+                return {prevYear: salesResponseYear.Variables};
+            case "all":
+                salesResponseMonth = await this.sales(token,prevMonthDateFrom,prevMonthDateTo);
+                salesResponseYear = await this.sales(token,prevYearDateFrom,prevYearDateTo);
+                return { 
+                    prevMonth: salesResponseMonth.Variables,
+                    prevYear: salesResponseYear.Variables 
+                };
+            default:
+                return null;
+        }
+    }
 }

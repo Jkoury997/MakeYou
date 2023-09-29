@@ -48,21 +48,31 @@ module.exports = {
         res.render("./analytics/saleStores", {
             userName: req.session.userData,
             stores: [],
-            dateFrom: req.body.dateFrom ? req.body.dateFrom : null,
-            dateTo: req.body.dateTo ? req.body.dateTo : null,
+            prevStores:[],
+            dateFrom: req.session.userData.dateFrom ? req.session.userData.dateFrom : null,
+            dateTo: req.session.userData.dateTo ? req.session.userData.dateTo : null,
 
         })
     },
     salesStores: async function (req,res) {
         try {
+            req.session.userData= {
+                ...req.session.userData,
+                dateFrom : req.body.dateFrom,
+                dateTo : req.body.dateTo,
+            }
             let data = req.session.userData;
+
             const salesResponse = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
-            console.log(salesResponse.Tienda)
+            const prevSalesResponse = await storesServices.comparative(req.body.dateFrom,req.body.dateTo,req.body.comparative,data.Token)
+            console.log(prevSalesResponse)
+            
             res.render("./analytics/saleStores", {
                 userName: req.session.userData,
                 stores: salesResponse.Variables,
-                dateFrom: req.body.dateFrom,
-                dateTo: req.body.dateTo,
+                prevStores: prevSalesResponse ? prevSalesResponse : null, // Agregado para ventas previas
+                dateFrom: req.session.userData.dateFrom,
+                dateTo: req.session.userData.dateTo,
             })
         } catch (error) {
             console.error('Error:', error);
