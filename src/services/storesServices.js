@@ -98,7 +98,7 @@ module.exports = {
             const calculateDifference = (current, previous) => {
                 // Verificar si el valor previo es 0 para evitar división por cero
                 if (previous === 0) return 0;
-                return parseFloat((current / previous)).toFixed(2) - 1;
+                return (parseFloat((current / previous)).toFixed(2) - 1) *100;
             };
         
             salesResponse.forEach((sale, index) => {
@@ -118,9 +118,6 @@ module.exports = {
             return prevSalesResponse;
         }
         
-
-
-
         if (prevSalesResponse.prevMonth && !prevSalesResponse.prevYear) {
             return {
                 prevMonth: addPercent(salesResponse, prevSalesResponse.prevMonth)

@@ -45,34 +45,38 @@ module.exports = {
         }
     },
     showSaleStores: function (req,res) {
+        let oldData = req.session.oldData
+        
         res.render("./analytics/saleStores", {
             userName: req.session.userData,
             stores: [],
             prevStores:[],
-            dateFrom: req.session.userData.dateFrom ? req.session.userData.dateFrom : null,
-            dateTo: req.session.userData.dateTo ? req.session.userData.dateTo : null,
+            oldData: oldData ? oldData : null,
 
         })
     },
     salesStores: async function (req,res) {
         try {
-            req.session.userData= {
-                ...req.session.userData,
-                dateFrom : req.body.dateFrom,
-                dateTo : req.body.dateTo,
+
+            let oldData = req.session.oldData
+            oldData = {
+                dateFrom: req.body.dateFrom ? req.body.dateFrom : null,
+                dateTo: req.body.dateTo ? req.body.dateTo : null,
+                comparative: req.body.comparative ? req.body.comparative : null
             }
+
             let data = req.session.userData;
 
             const salesResponse = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
             let prevSalesResponse = await storesServices.comparative(req.body.dateFrom,req.body.dateTo,req.body.comparative,data.Token)
             prevSalesResponse = prevSalesResponse != null ? storesServices.calculateDiferent(salesResponse.Variables,prevSalesResponse) : null
             
+
             res.render("./analytics/saleStores", {
                 userName: req.session.userData,
                 stores: salesResponse.Variables,
                 prevStores: prevSalesResponse ? prevSalesResponse : null, // Agregado para ventas previas
-                dateFrom: req.session.userData.dateFrom,
-                dateTo: req.session.userData.dateTo,
+                oldData: oldData ? oldData : null,
             })
         } catch (error) {
             console.error('Error:', error);

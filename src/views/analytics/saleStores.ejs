@@ -16,8 +16,8 @@
                             <div class="col-md-6">
                                 <div class="input-group mb-3"> <!-- Añadí 'mb-3' para dar un margen entre los grupos de entrada -->
                                     <span class="input-group-text">Fecha</span>
-                                    <input type="date" aria-label="Desde" class="form-control" placeholder="Desde" name="dateFrom" value="<%= dateFrom ? dateFrom : '' %>">
-                                    <input type="date" aria-label="Hasta" class="form-control" placeholder="Hasta" name="dateTo" value="<%= dateTo ? dateTo : '' %>">
+                                    <input type="date" aria-label="Desde" class="form-control" placeholder="Desde" name="dateFrom" value="<%= oldData ? oldData.dateFrom : '' %>">
+                                    <input type="date" aria-label="Hasta" class="form-control" placeholder="Hasta" name="dateTo" value="<%= oldData ? oldData.dateTo : '' %>">
 
                                 </div>
                             </div>
@@ -26,10 +26,10 @@
                                 <div class="input-group">
                                     <label class="input-group-text" for="inputGroupSelect">Comparacion</label>
                                     <select class="form-select" id="inputGroupSelect" name="comparative">
-                                    <option selected>Sin - Celular</option>
-                                    <option value="month">Mensual - Tablet</option>
-                                    <option value="year">Anual - Tablet</option>
-                                    <option value="all">Ambos - Laptop</option>
+                                    <option selected <%= oldData && oldData.comparative === null  ? "selected" : ""  %>>Sin - Celular</option>
+                                    <option value="month" <%= oldData && oldData.comparative === 'month' ? "selected" : "" %>>Mensual - Tablet</option>
+                                    <option value="year" <%= oldData && oldData.comparative === 'year' ? "selected" : "" %>>Anual - Tablet</option>
+                                    <option value="all" <%= oldData && oldData.comparative === 'all' ? "selected" : "" %>>Ambos - Laptop</option>
                                     </select>
                                     <button class="btn btn-outline-secondary btn-pink" type="submit">Buscar</button> <!-- Cambié el id para que sea único -->
                                 </div>
@@ -63,29 +63,32 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                    <% function getClassByValue(value) { 
+                                        return value < 0 ? 'table-danger' : 'table-success'; 
+                                    } %>
                                   <tr>
                                     <th scope="row">Bruto</th>
-                                    <td><%= store.Bruto.toFixed(2) %></td>
+                                    <td><%= store.Bruto.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentBruto.toFixed(2) %></td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
-                                        <td><%= prevStores.prevMonth[index].Bruto.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentBruto) %>"><%= prevStores.prevMonth[index].diferentPercentBruto.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].Bruto.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentBruto.toFixed(2) %></td> <!-- Aquí puedes calcular el porcentaje si es necesario -->
-                                        <td><%= prevStores.prevYear[index].Bruto.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentBruto) %>"><%= prevStores.prevYear[index].diferentPercentBruto.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].Bruto.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                         
                                     <% } %>
                                 </tr>
                                 <tr>
                                     <th scope="row">Neto</th>
-                                    <td><%= store.Neto.toFixed(2) %></td>
+                                    <td><%= store.Neto.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentNeto.toFixed(2) %></td>
-                                        <td><%= prevStores.prevMonth[index].Neto.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentNeto) %>"><%= prevStores.prevMonth[index].diferentPercentNeto.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].Neto.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentNeto.toFixed(2) %></td>
-                                        <td><%= prevStores.prevYear[index].Neto.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentNeto) %>"><%= prevStores.prevYear[index].diferentPercentNeto.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].Neto.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                 </tr>
                                 
@@ -93,11 +96,11 @@
                                     <th scope="row">Tickets</th>
                                     <td><%= store.Tickets %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentTickets.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentTickets) %>"><%= prevStores.prevMonth[index].diferentPercentTickets.toFixed(2) %></td>
                                         <td><%= prevStores.prevMonth[index].Tickets %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentTickets.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentTickets) %>"><%= prevStores.prevYear[index].diferentPercentTickets.toFixed(2) %></td>
                                         <td><%= prevStores.prevYear[index].Tickets %></td>
                                     <% } %>
                                 </tr>
@@ -106,11 +109,11 @@
                                     <th scope="row">Unidades</th>
                                     <td><%= store.Unidades %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentUnidades.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentUnidades) %>"><%= prevStores.prevMonth[index].diferentPercentUnidades.toFixed(2) %></td>
                                         <td><%= prevStores.prevMonth[index].Unidades %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentUnidades.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentUnidades) %>"><%= prevStores.prevYear[index].diferentPercentUnidades.toFixed(2) %></td>
                                         <td><%= prevStores.prevYear[index].Unidades %></td>
                                     <% } %>
                                 </tr>
@@ -119,58 +122,62 @@
                                     <th scope="row">CAT</th>
                                     <td><%= store.CAT.toFixed(2) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentCAT.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentCAT) %>"><%= prevStores.prevMonth[index].diferentPercentCAT.toFixed(2) %></td>
                                         <td><%= prevStores.prevMonth[index].CAT.toFixed(2) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentCAT.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentCAT) %>"><%= prevStores.prevYear[index].diferentPercentCAT.toFixed(2) %></td>
                                         <td><%= prevStores.prevYear[index].CAT.toFixed(2) %></td>
                                     <% } %>
                                 </tr>
                                 
                                 <tr>
                                     <th scope="row">PP</th>
-                                    <td><%= store.PP.toFixed(2) %></td>
+                                    <td><%= store.PP.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentPP.toFixed(2) %></td>
-                                        <td><%= prevStores.prevMonth[index].PP.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentPP) %>"><%= prevStores.prevMonth[index].diferentPercentPP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].PP.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentPP.toFixed(2) %></td>
-                                        <td><%= prevStores.prevYear[index].PP.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentPP) %>"><%= prevStores.prevYear[index].diferentPercentPP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].PP.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                 </tr>
+                                
                                 <tr>
                                     <th scope="row">TP</th>
-                                    <td><%= store.TP.toFixed(2) %></td>
+                                    <td><%= store.TP.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentTP.toFixed(2) %></td>
-                                        <td><%= prevStores.prevMonth[index].TP.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentTP) %>"><%= prevStores.prevMonth[index].diferentPercentTP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].TP.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentTP.toFixed(2) %></td>
-                                        <td><%= prevStores.prevYear[index].TP.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentTP) %>"><%= prevStores.prevYear[index].diferentPercentTP.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].TP.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                 </tr>
                                 
                                 <tr>
                                     <th scope="row">CMV</th>
-                                    <td><%= store.CMV.toFixed(2) %></td>
+                                    <td><%= store.CMV.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% if (prevStores && prevStores.prevMonth) { %>
-                                        <td><%= prevStores.prevMonth[index].diferentPercentCMV.toFixed(2) %></td>
-                                        <td><%= prevStores.prevMonth[index].CMV.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevMonth[index].diferentPercentCMV) %>"><%= prevStores.prevMonth[index].diferentPercentCMV.toFixed(2) %></td>
+                                        <td><%= prevStores.prevMonth[index].CMV.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                     <% if (prevStores && prevStores.prevYear) { %>
-                                        <td><%= prevStores.prevYear[index].diferentPercentCMV.toFixed(2) %></td>
-                                        <td><%= prevStores.prevYear[index].CMV.toFixed(2) %></td>
+                                        <td class="<%= getClassByValue(prevStores.prevYear[index].diferentPercentCMV) %>"><%= prevStores.prevYear[index].diferentPercentCMV.toFixed(2) %></td>
+                                        <td><%= prevStores.prevYear[index].CMV.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'}) %></td>
                                     <% } %>
                                 </tr>
+                                
                                 
                                 </tbody>
                               </table>
                             </div>
                           </div>
-                          <img src="" class="card-img-top" alt="Esperando Grafico">
+                          <canvas id="myChart" width="400" height="200">
+                            Hola
+                          </canvas>
                         </div>
                       </div>
                       <% }); %>
@@ -181,6 +188,7 @@
             </div>
         </main>
     
-
+    <script> 
+    </script>
     </body>
 </html>
