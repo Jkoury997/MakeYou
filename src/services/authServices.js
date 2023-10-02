@@ -33,6 +33,43 @@ module.exports = {
         } catch (error) {
             throw new Error(error.response ? error.response.data : error.message);
         }
+    },
+    forgotPassword : async function (email) {
+        try {
+            const response = await axios.get('http://190.216.66.210:10287/api/SolicitaRecuperoClave', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                params: {
+                    'Email': email
+                }
+            });
+    
+            return response.data;
+        } catch (error) {
+            console.error('Error al hacer la solicitud:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
+    recoveryPassword: async function (email,password,code){
+            try {
+                const response = await axios.post('http://190.216.66.210:10287/api/CambiarClave', {
+                    Email: email,
+                    NuevaClave: password,
+                    Codigo: code
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+    
+                return response.data;
+            } catch (error) {
+                throw new Error(error.response ? error.response.data : error.message);
+            }
+
     }
     
 }

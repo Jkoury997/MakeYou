@@ -9,5 +9,10 @@ router.post("/login",authController.authLogin);
 
 router.post("/businessSelect",authController.authBusiness);
 
+router.get("/forgotPassword",authController.showForgotPassword)
+router.post("/forgotPassword",authController.forgotPassword)
+
+router.post("/recoveryPassword",authController.recoveryPassword)
+
 
 module.exports = router

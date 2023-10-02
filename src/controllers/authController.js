@@ -38,5 +38,40 @@ module.exports = {
             res.render("login", { message: "Error durante la autenticación." });
         }
     },
+    showForgotPassword : (req, res) => {
+        res.render("./admin/auth/forgotPassword", { message: null })
+    },
+    forgotPassword : async (req, res) =>{
+        try {
+            let response = await authServices.forgotPassword(req.body.email)
+            if (!response.Estado) {
+                return res.send("Hubo un Error")
+            }
+            res.render('./admin/auth/recoveryPassword', {
+                message: response.Mensaje,
+                messageGood: true,
+                email: req.body.email
+            })
+        }  catch (error) {
+            res.render("./admin/auth/forgotPassword", { message: "Error durante la autenticación." });
+        }
+
+    },
+    recoveryPassword : async (req,res) => {
+        try {
+            let response = await authServices.recoveryPassword(req.body.email,req.body.password,req.body.code)
+            if (!response.Estado) {
+                return res.send("Hubo un Error")
+            }
+            
+            res.render('./admin/auth/login', {
+                message: response.Mensaje,
+            })
+        }  catch (error) {
+            res.render("./admin/auth/forgotPassword", { message: "Error durante la autenticación." });
+        }
+    }
+
+
     
 }

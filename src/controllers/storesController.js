@@ -26,6 +26,7 @@ module.exports = {
         try {
             let data = req.session.userData;
             const productsResponse = await storesServices.products(data.Token,req.body.id); //Hace la consulta al servicio de la api
+
             const rubrosUnicos = storesServices.getRubros(productsResponse.Articulos);// extrae los rubros y saca los repetidos
             productsResponse.Articulos = productsResponse.Articulos.filter(product => product.Stock > 0); //Solo usa los que tiene stock
             if (productsResponse && productsResponse.Articulos) {
@@ -60,6 +61,7 @@ module.exports = {
 
             let oldData = req.session.oldData
             oldData = {
+                ...oldData,
                 dateFrom: req.body.dateFrom ? req.body.dateFrom : null,
                 dateTo: req.body.dateTo ? req.body.dateTo : null,
                 comparative: req.body.comparative ? req.body.comparative : null
@@ -67,7 +69,11 @@ module.exports = {
 
             let data = req.session.userData;
 
-            const salesResponse = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
+            let sales = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
+            let salesResponse = {
+                Variables: sales.Variables.filter(sales => sales.Bruto > 0)
+            }
+            
             let prevSalesResponse = await storesServices.comparative(req.body.dateFrom,req.body.dateTo,req.body.comparative,data.Token)
             prevSalesResponse = prevSalesResponse != null ? storesServices.calculateDiferent(salesResponse.Variables,prevSalesResponse) : null
             
