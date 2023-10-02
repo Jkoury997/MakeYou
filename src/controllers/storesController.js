@@ -69,10 +69,8 @@ module.exports = {
 
             let data = req.session.userData;
 
-            let sales = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
-            let salesResponse = {
-                Variables: sales.Variables.filter(sales => sales.Bruto > 0)
-            }
+            let salesResponse  = await storesServices.sales(data.Token,req.body.dateFrom,req.body.dateTo);
+            
             
             let prevSalesResponse = await storesServices.comparative(req.body.dateFrom,req.body.dateTo,req.body.comparative,data.Token)
             prevSalesResponse = prevSalesResponse != null ? storesServices.calculateDiferent(salesResponse.Variables,prevSalesResponse) : null
