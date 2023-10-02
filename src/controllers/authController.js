@@ -35,7 +35,7 @@ module.exports = {
             res.redirect("/admin/dashboard")
             
         } catch (error) {
-            res.render("login", { message: "Error durante la autenticación." });
+            res.render("./admin/auth/login", { message: "Error durante la autenticación." });
         }
     },
     showForgotPassword : (req, res) => {
