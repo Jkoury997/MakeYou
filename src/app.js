@@ -33,15 +33,3 @@ const PORT = 3003;
 app.listen(PORT, () => {
   console.log(`listening port ${PORT}`);
 });
-
-
-// prueba servido 
-app.get('/ruta_para_obtener_datos_del_grafico', async (req, res) => {
-  try {
-      const data = await obtenerDatosDelGrafico();
-      res.json(data);
-  } catch (error) {
-      console.error('Error al obtener datos del gráfico:', error);
-      res.status(500).send('Hubo un error al obtener los datos');
-  }
-});
