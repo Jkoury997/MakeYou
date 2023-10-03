@@ -50,10 +50,8 @@ module.exports = {
                     'Hasta': dateTo
                 }
             });
-            // Filtrar tiendas donde Bruto sea mayor a 0
-        const filteredVariables = response.data.Variables.filter(store => store.Bruto > 0);
         
-        return { ...response.data, Variables: filteredVariables };
+        return response.data
         } catch (error) {
             console.error('Error al hacer la solicitud:', error.response ? error.response.data : error.message);
             throw error;
