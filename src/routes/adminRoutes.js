@@ -5,6 +5,7 @@ const adminController = require("../controllers/adminController");
 
 const storesRoutes = require("./storesRoutes");
 const analyticsRoutes = require("./analyticsRoutes");
+const qrRoutes = require("./qrRoutes");
 
 
 
@@ -14,5 +15,6 @@ router.use(checkToken)
 router.get("/dashboard",adminController.home);
 router.use("/stores",storesRoutes);
 router.use("/analytics",analyticsRoutes)
+router.use("/qr",qrRoutes)
 
 module.exports = router

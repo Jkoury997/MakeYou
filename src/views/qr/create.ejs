@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("../partials/head") %>
+        <title>Dashboard</title>
+    </head>
+
+    <body>
+        <%- include("../partials/sidebar") %>
+      <main class="container-fluid">
+        <div id="mainContent">
+            <h1>Generador de Código QR vCard</h1>
+
+            <form action="/admin/qr/create" method="post" class="mt-4">
+                <div class="shadow-none p-3 mb-2 bg-body-tertiary rounded">
+                    <label for="nameQr" class="form-label">Nombre del QR</label>
+                    <input type="text" class="form-control" name="nameQr" required>
+                </div>
+                <div class="shadow-none p-3 mb-5 bg-body-tertiary rounded mb-1">
+                    <h4>Datos</h4>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col mb-3">
+                            <label for="lastname" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" name="lastname" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input type="number" class="form-control" name="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="business" class="form-label">Empresa</label>
+                            <input type="text" class="form-control" name="business">
+                        </div>
+                        <div class=" col mb-3">
+                            <label for="puesto" class="form-label">Puesto</label>
+                            <input type="text" class="form-control" name="puesto">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="whatsapp" class="form-label">Whatsapp</label>
+                        <input type="number" class="form-control" name="whatsapp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="website" class="form-label">Pagina Web</label>
+                        <input type="url" class="form-control" name="website">
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-primary btn-pink btn-lg">Crear nuevo</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>
