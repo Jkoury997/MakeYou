@@ -10,9 +10,27 @@
     background-color: #915073;
     border:#915073;
 }
+.bg-pink{
+    background-color: #915073;
+}
 
 .green-highlight {
     background-color: green !important; /* Esto garantizará que el color verde tenga prioridad */
     color: white !important; /* Cambia el color del texto a blanco si es necesario */
     border: none !important; /* Elimina cualquier borde */
+}
+
+.bg-pink{
+    color: white;
+    background-color: #df7eb2;
+}
+.c-pink{
+   color:  #df7eb2;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+.w-100 {
+    width: 100% !important;
 }
