@@ -75,24 +75,25 @@
         </section>
 
         <div class="fixed-bottom">
-            <a href="javascript:void(0);" onclick="downloadContact()" class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink">
-                <i class="bi bi-plus-lg me-1"></i><p>Abrir en Contactos</p>
+            <a href="javascript:void(0);" onclick="openVCard('<%= qrCode.uuid %>')" class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink">
+                <i class="bi bi-plus-lg me-1"></i>Abrir en Contactos
             </a>
         </div>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
-       function downloadContact() {
-        fetch('/downloadContact/<%= qrCode.uuid %>')
-            .then(response => response.blob())
-            .then(blob => {
-                saveAs(blob, 'contact.vcf');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-}
+       function openVCard() {
+            fetch('/downloadContact/'+uuid)
+                .then(response => response.json())
+                .then(data => {
+                    const vCardContent = data.vCard;
 
+                    const dataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
+                    window.location.href = dataUri;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
 
     </script>
     

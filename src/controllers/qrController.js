@@ -73,9 +73,9 @@ module.exports = {
     `;
 
     
-    res.setHeader('Content-Type', 'text/vcard');
-            
-    res.send(vCardData);
+    // Enviar como JSON (opción 1)
+    res.json({ vCard: vCardData });
+    
     },
     downloadQR: async function (req,res) {
         const uuid = req.params.uuid;
