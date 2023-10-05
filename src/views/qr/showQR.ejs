@@ -81,12 +81,18 @@
         </div>
     </main>
     <script>
-       function openVCard(uuid) {
+      function openVCard(uuid) {
             fetch('/downloadContact/'+uuid)
-                .then(response => response.json())
-                .then(data => {
-                    const vCardContent = data.vCard;
-                    window.location.href = vCardContent;
+                .then(response => response.text())
+                .then(vCardContent => {
+                    const dataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
+                    // Create a temporary anchor element and click it to initiate the download
+                    const anchor = document.createElement('a');
+                    anchor.href = dataUri;
+                    anchor.download = 'contact.vcf'; // specify the filename
+                    document.body.appendChild(anchor); // necessary for Firefox
+                    anchor.click();
+                    document.body.removeChild(anchor); // cleanup
                 })
                 .catch(error => {
                     console.error('Error:', error);

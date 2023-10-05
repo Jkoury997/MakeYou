@@ -78,7 +78,7 @@ module.exports = {
 
     //set content-type and disposition including desired filename
     res.set('Content-Type', `text/vcard; name="${filename}"`);
-    res.set('Content-Disposition', `inline; filename="${filename}"`);
+    res.set('Content-Disposition', `attachment; filename="${filename}"`);
   
     //send the response
     res.send(vCard.getFormattedString());
