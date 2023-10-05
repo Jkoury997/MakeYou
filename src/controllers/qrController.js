@@ -62,18 +62,20 @@ module.exports = {
     const vCardData = `
         BEGIN:VCARD
         VERSION:3.0
-        FN:${qrCode.name} ${qrCode.lastname}
-        ORG:${qrCode.business}
-        TEL:${qrCode.phone}
+        FN;CHARSET=UTF-8:${qrCode.name} ${qrCode.lastname}
+        N;CHARSET=UTF-8:${qrCode.name};${qrCode.lastname};;;
+        ORG;CHARSET=UTF-8:${qrCode.business}
+        TEL;TYPE=CELL:${qrCode.phone}
         EMAIL:${qrCode.email}
-        URL:${qrCode.website}
-        ADR:${qrCode.nameDireccion}
+        URL;CHARSET=UTF-8:${qrCode.website}
+        ADR;CHARSET=UTF-8;TYPE=WORK:;;${qrCode.nameDireccion}
         END:VCARD
             `;
 
     
     res.setHeader('Content-Disposition', 'attachment; filename=contact.vcf');
     res.setHeader('Content-Type', 'text/x-vcard');
+            
     res.send(vCardData);
     },
     downloadQR: async function (req,res) {

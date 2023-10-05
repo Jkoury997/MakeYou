@@ -75,7 +75,7 @@
         </section>
 
         <div class="fixed-bottom">
-            <a href="/downloadContact/<%= qrCode.uuid %>" class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink">
+            <a href="/downloadContact/<%= qrCode.uuid %>" onclick="window.open('/downloadContact/<%= qrCode.uuid %>','_blank')" class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink">
                 <i class="bi bi-plus-lg me-1"></i>Agregar a contactos
             </a>
         </div>
