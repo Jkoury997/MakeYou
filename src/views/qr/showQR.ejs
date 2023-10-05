@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <%- include("../partials/head") %>
+        <title>Qr</title>
+    </head>
+<body>
+    <% function formatPhoneNumber(phone) {
+        if (phone.length !== 10) {
+            return phone;
+        }
+        const part1 = phone.substring(0, 2);
+        const part2 = phone.substring(2, 6);
+        const part3 = phone.substring(6, 10);
+    
+        return `${part1} ${part2} ${part3}`;
+    } %>
+    <% function generateVCard(qrCode) {
+        return `
+    BEGIN:VCARD
+    VERSION:3.0
+    FN:${qrCode.name} ${qrCode.lastname}
+    ORG:${qrCode.business}
+    TEL:${formatPhoneNumber(qrCode.phone)}
+    EMAIL:${qrCode.email}
+    URL:${qrCode.website}
+    ADR:${qrCode.nameDireccion}
+    END:VCARD
+        `;
+    } %>
+    <main class="container-fluid p-0 d-flex flex-column" style="height: 100vh;">
+        <section class="bg-pink py-5 pb-3 pt-5">
+            <div class="container text-center">
+                <img class="rounded-4 bg-white mb-3" style="width: 100px;" src="/images/logo-Marcela-Koury.svg" alt="Logo" style="width: 25%;">
+                <h1 class="fs-3 mb-1 fw-bold"><%= qrCode.name + " " + qrCode.lastname %></h1>
+                <span class="fs-5"><%= qrCode.business%></span><br>
+                <span class="fs-6"><%= qrCode.puesto %></span><br>
+            </div>
+        </section>
+
+        <section class="container my-3" style="flex: 1;">
+            <div class="list-group list-group-flush">
+                <div class="list-group-item ">
+                    <label class="fw-bold mb-2 d-block link-secondary">Teléfono</label>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-phone fs-4 me-2"></i>
+                        <a class="text-decoration-none fs-4 link-dark" href="tel:+549<%= qrCode.phone %>">+54 9 <%= formatPhoneNumber(qrCode.phone) %></a>
+                    </div>
+                </div>
+
+                <div class="list-group-item ">
+                    <label class="fw-bold mb-2 d-block link-secondary">Email</label>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-envelope fs-4 me-2"></i>
+                        <a class="text-decoration-none fs-4 link-dark" href="mailto:<%= qrCode.email %>"><%= qrCode.email %></a>
+                    </div>
+                </div>
+
+                <div class="list-group-item ">
+                    <label class="fw-bold mb-2 d-block link-secondary">Página web</label>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-link-45deg fs-4 me-2"></i>
+                        <a class="text-decoration-none fs-4 link-dark" href="<%= qrCode.website %>"><%= qrCode.website %></a>
+                    </div>
+                </div>
+
+                <div class="list-group-item">
+                    <label class="fw-bold mb-2 d-block link-secondary">Dirección</label>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-geo-alt fs-4 me-2"></i>
+                        <a class="text-decoration-none fs-5 link-dark" href="<%= qrCode.urlDireccion %>"><%= qrCode.nameDireccion %></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="fixed-bottom">
+            <a class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink" href="data:text/x-vcard;charset=utf-8,<%= encodeURIComponent(generateVCard(qrCode)) %>" download="contact.vcf"><i class="bi bi-plus-lg me-1"></i>Agregar a contactos</a>
+        </div>
+    </main>
+    
+</body>
+</html>

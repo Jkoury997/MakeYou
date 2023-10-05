@@ -4,6 +4,7 @@ const path = require("path");
 const methodOverride = require("method-override");
 const session = require("express-session")
 
+
 // Express()
 const app = express();
 
@@ -33,3 +34,14 @@ const PORT = 3003;
 app.listen(PORT, () => {
   console.log(`listening port ${PORT}`);
 });
+
+// Sincornizar base de datos
+// Sincronizar modelos con base de datos
+const db = require('../models/index')
+db.sequelize.sync()
+  .then(() => {
+    console.log('Tablas creadas (si no existían previamente).');
+  })
+  .catch(error => {
+    console.log('Error al sincronizar la base de datos:', error);
+  });
