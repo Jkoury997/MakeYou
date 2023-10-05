@@ -75,11 +75,26 @@
         </section>
 
         <div class="fixed-bottom">
-            <a href="#" onclick="window.open('/downloadContact/<%= qrCode.uuid %>','_blank')" class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink">
+            <a href="javascript:void(0);" onclick="downloadContact()" class="btn btn-primary w-100 text-white rounded-0 border-0 py-3 btn-pink">
                 <i class="bi bi-plus-lg me-1"></i>Agregar a contactos
             </a>
         </div>
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+       function downloadContact() {
+        fetch('/downloadContact/<%= qrCode.uuid %>')
+            .then(response => response.blob())
+            .then(blob => {
+                saveAs(blob, 'contact.vcf');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+}
+
+
+    </script>
     
 </body>
 </html>
