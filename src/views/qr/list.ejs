@@ -53,10 +53,10 @@
                   <span><%= qrCode.name+" "+ qrCode.lastname%></span>
                 </div>
                 <div class="col">
-                  <a href="https://mkapp.com.ar/personalCard/<%= qrCode.uuid %>">Ver tarjeta de contacto</a>
+                  <a href="/showQR/<%= qrCode.uuid %>">Ver tarjeta de contacto</a>
                 </div>
                 <div class="col">
-                  Qr Preparando
+                  <a href="/downloadQR/<%= qrCode.uuid %>">Ver tarjeta de contacto</a>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end col">
                     <button class="btn btn-danger" type="button">Eliminar</button>

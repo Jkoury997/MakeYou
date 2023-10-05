@@ -1,5 +1,5 @@
 const { QRCode } = require('../../models');
-
+const makerQR = require('qrcode');
 
 module.exports = {
     save: async function(data){
@@ -29,6 +29,16 @@ module.exports = {
             console.error('Error al recuperar el QR Code:', error.response ? error.response.data : error.message);
             throw error;
         }
-    }
+    },
+    generateQRFromURL: async function(url) {
+            try {
+                // Genera una promesa que resuelve en un Buffer
+                const qrBuffer = await makerQR.toBuffer(url);
+                return qrBuffer;
+            } catch (error) {
+                console.error('Error generando el código QR:', error);
+                throw error;
+            }
+        }
     
 }

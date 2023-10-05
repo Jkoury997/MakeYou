@@ -10,5 +10,9 @@ const qrController = require("../controllers/qrController");
 router.get("/", mainController.index);
 router.use("/auth",authRoutes);
 router.use("/admin",adminRoutes);
+
+//Qr publico
 router.get('/showQR/:uuid', qrController.showByUuid);
+router.get('/downloadContact/:uuid', qrController.downloadContact);
+router.get('/downloadQR/:uuid', qrController.downloadQR);
 module.exports = router;
