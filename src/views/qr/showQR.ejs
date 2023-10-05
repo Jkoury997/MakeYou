@@ -81,7 +81,7 @@
         </div>
     </main>
     <script>
-       function openVCard() {
+       function openVCard(uuid) {
             fetch('/downloadContact/'+uuid)
                 .then(response => response.json())
                 .then(data => {
