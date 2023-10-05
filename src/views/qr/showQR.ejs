@@ -86,9 +86,11 @@
                 .then(response => response.json())
                 .then(data => {
                     const vCardContent = data.vCard;
+                    
 
                     const dataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
                     window.location.href = dataUri;
+                    console.log(dataUri)
                 })
                 .catch(error => {
                     console.error('Error:', error);

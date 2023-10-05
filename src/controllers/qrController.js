@@ -58,6 +58,7 @@ module.exports = {
         res.status(404).send('QR Code no encontrado');
         return;
     }
+    const currentDateTime = new Date().toISOString();
 
     const vCardData = `
     BEGIN:VCARD
@@ -69,13 +70,14 @@ module.exports = {
     EMAIL:${qrCode.email}
     URL:${qrCode.website}
     ADR;TYPE=WORK:;;${qrCode.nameDireccion};;;;
+    REV:${currentDateTime}
     END:VCARD
     `;
 
     
     // Enviar como JSON (opción 1)
     res.json({ vCard: vCardData });
-    
+
     },
     downloadQR: async function (req,res) {
         const uuid = req.params.uuid;
