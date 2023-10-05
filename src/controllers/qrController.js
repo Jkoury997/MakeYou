@@ -1,4 +1,5 @@
 const qrService = require("../services/qrService") 
+const vCardsJS = require('vcards-js');
 
 
 module.exports = {
@@ -58,25 +59,29 @@ module.exports = {
         res.status(404).send('QR Code no encontrado');
         return;
     }
-    const currentDateTime = new Date().toISOString();
 
-    const vCardData = `
-    BEGIN:VCARD
-    VERSION:3.0
-    FN:${qrCode.name} ${qrCode.lastname}
-    N:${qrCode.lastname};${qrCode.name};;;
-    ORG:${qrCode.business}
-    TEL;TYPE=CELL:${qrCode.phone}
-    EMAIL:${qrCode.email}
-    URL:${qrCode.website}
-    ADR;TYPE=WORK:;;${qrCode.nameDireccion};;;;
-    REV:${currentDateTime}
-    END:VCARD
-    `;
+    var vCard = vCardsJS();
+    //set properties
+    vCard.firstName = qrCode.name;
+    vCard.lastName = qrCode.lastname;
+    vCard.organization = qrCode.business;
+    vCard.workPhone = qrCode.phone;
+    vCard.title = qrCode.puesto;
+    vCard.url = qrCode.website;
+    vCard.email =qrCode.email;
+    vCard.workAddress = qrCode.nameDireccion;
 
-    
-    // Enviar como JSON (opción 1)
-    res.json({ vCard: vCardData });
+    console.log(vCard)
+    //save to file
+    const filename = `${qrCode.name}-${qrCode.lastname}.vcf`;
+    vCard.saveToFile(`./${filename}.vcf`);
+
+    //set content-type and disposition including desired filename
+    res.set('Content-Type', `text/vcard; name="${filename}"`);
+    res.set('Content-Disposition', `inline; filename="${filename}"`);
+  
+    //send the response
+    res.send(vCard.getFormattedString());
 
     },
     downloadQR: async function (req,res) {
