@@ -22,49 +22,50 @@
                         <div class="col mb-3">
                             <label for="typeQr" class="form-label">Tipo del QR</label>
                             <select name="typeQr" id="typeQr" class="form-control" required>
-                                <option value="Vcard">Tarjeta Personal</option>
+                                <option value="Vcard" selected>Tarjeta Personal</option>
+                                <option value="WiFi">WiFi</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="shadow-none p-3 mb-5 bg-body-tertiary rounded mb-1">
+                <div class="shadow-none p-3 mb-5 bg-body-tertiary rounded mb-1" id="vcardForm" >
                     <h4>Datos</h4>
                     <div class="row">
                         <div class="col mb-3">
                             <label for="name" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" name="name" placeholder="Pedro" required>
+                            <input type="text" class="form-control" name="name" placeholder="Pedro" >
                         </div>
                         <div class="col mb-3">
                             <label for="lastname" class="form-label">Apellido</label>
-                            <input type="text" class="form-control" name="lastname" placeholder="Martinez" required>
+                            <input type="text" class="form-control" name="lastname" placeholder="Martinez" >
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" name="phone" placeholder="1122223333" required>
+                        <input type="text" class="form-control" name="phone" placeholder="1122223333" >
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="ejemplo@dominio.com" required>
+                        <input type="email" class="form-control" name="email" placeholder="ejemplo@dominio.com" >
                     </div>
                     <div class="row">
                         <div class="col mb-3">
                             <label for="business" class="form-label">Empresa</label>
-                            <input type="text" class="form-control" name="business" placeholder="Marcela Koury" required>
+                            <input type="text" class="form-control" name="business" placeholder="Marcela Koury" >
                         </div>
                         <div class=" col mb-3">
                             <label for="puesto" class="form-label">Puesto</label>
-                            <input type="text" class="form-control" name="puesto" placeholder="C.E.O" required>
+                            <input type="text" class="form-control" name="puesto" placeholder="C.E.O" >
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nameDireccion" class="form-label">Direccion</label>
-                            <input type="text" class="form-control" name="nameDireccion" placeholder="Av. Juan Manuel de Rosas 1061" required>
+                            <input type="text" class="form-control" name="nameDireccion" placeholder="Av. Juan Manuel de Rosas 1061" >
                         </div>
                         <div class=" col mb-3">
                             <label for="urlDireccion" class="form-label">Url Google maps</label>
-                            <input type="url" class="form-control" name="urlDireccion" placeholder="Buscar en google maps y copia la Url" required>
+                            <input type="url" class="form-control" name="urlDireccion" placeholder="Buscar en google maps y copia la Url" >
                         </div>
                     </div>
                     <div class="mb-3">
@@ -73,7 +74,37 @@
                     </div>
                     <div class="mb-3">
                         <label for="website" class="form-label">Pagina Web</label>
-                        <input type="text" class="form-control" name="website" placeholder="www.marcelakoury.com" required>
+                        <input type="text" class="form-control" name="website" placeholder="www.marcelakoury.com" >
+                    </div>
+                </div>
+                <div class="shadow-none p-3 mb-5 bg-body-tertiary rounded mb-1 hidden" id="wifiForm">
+                    <h4>Datos del Wifi</h4>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="ssid" class="form-label">Nombre de la red (SSID)</label>
+                            <input type="text" class="form-control" id="ssid" name="ssid" placeholder="Nombre de la red" >
+                        </div>
+                        <div class="col mb-3">
+                            <label for="networkType" class="form-label">Tipo de red</label>
+                            <select name="networkType" id="networkType" class="form-control" >
+                                <option value="WPA">WPA/WPA2</option>
+                                <option value="WEP">WEP</option>
+                                <option value="None">Ninguno</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="text" class="form-control" name="password" placeholder="Contraseña de la red">
+                        </div>
+                        <div class="col mb-3">
+                            <label for="hiddenSSID" class="form-label">¿Red oculta?</label>
+                            <select name="hiddenSSID" id="hiddenSSID" class="form-control">
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -82,6 +113,17 @@
             </form>
         </div>
     </main>
-
+    <script>
+        document.getElementById('typeQr').addEventListener('change', function() {
+            const selectedType = this.value;
+            if (selectedType === 'WiFi') {
+                document.getElementById('vcardForm').classList.add('hidden');
+                document.getElementById('wifiForm').classList.remove('hidden');
+            } else {
+                document.getElementById('wifiForm').classList.add('hidden');
+                document.getElementById('vcardForm').classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

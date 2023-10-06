@@ -9,14 +9,8 @@ module.exports = {
     },
     create: async function (req,res) {
         try {
-            const whatsapp = `https://api.whatsapp.com/send?phone=54${req.body.urlWhatsapp}`
-            const data = {
-            ...req.body,
-            urlWhatsapp : whatsapp,
-            whatsapp : req.body.urlWhatsapp
-            }
-            const qrResponse = await qrService.save(data);
-            console.log(qrResponse)
+            const qrResponse = await qrService.typeQr(req.body.typeQr,req.body);
+            await qrService.save(qrResponse);
             res.redirect("/admin/qr/list")
             
         } catch (error) {
@@ -120,12 +114,21 @@ module.exports = {
     },
     downloadQR: async function (req,res) {
         const uuid = req.params.uuid;
-        const url = `https://mkapp.com.ar/showQR/${uuid}`;
-        const logoPath = path.join(__dirname, '../../public/images/logo-Marcela-Koury.png');
+        let type = await qrService.findByUuid(uuid)
 
-    
-        try {
-            const qrBuffer = await qrService.generateQRWithLogo(url,logoPath);
+        try { 
+            async function qrType (data,uuid,) {
+                if(data.typeQr === "Vcard"){
+                    const url = `https://mkapp.com.ar/showQR/${uuid}`;
+                    const logoMk = path.join(__dirname, '../../public/images/logo-Marcela-Koury.png');
+                    return await qrService.generateQRWithLogo(url,logoMk);
+                } else {
+                    const logoWifi = path.join(__dirname, '../../public/images/wifi.png');
+                    return await qrService.generateQRWithLogo(data,logoWifi);
+                }
+            }
+
+            const qrBuffer = await qrType(type,uuid)
     
             // Establece las cabeceras para informar al navegador que se trata de un archivo para descargar
             res.setHeader('Content-Disposition', `attachment; filename=qr-code.png`);

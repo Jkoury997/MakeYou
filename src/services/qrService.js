@@ -62,12 +62,23 @@ module.exports = {
     },
     generateQRWithLogo: async function (data, logoPath) {
         try {
-            // Generar el código QR como PNG
-            const qrBuffer = await makerQR.toBuffer(data, {
-                type: 'png',
-                width: 300, // Ajusta según tus necesidades
-                errorCorrectionLevel: 'H' // 'H' permite una mayor superposición sin perder la capacidad de escaneo
-            });
+            let qrBuffer = 0
+            if(data.typeQr === "WiFi"){
+                const  wifiString = `WIFI:T:${data.networkType};S:${data.ssid};P:${data.password};;`;
+                qrBuffer = await makerQR.toBuffer(wifiString,{
+                    type: 'png',
+                    width: 300, // Ajusta según tus necesidades
+                    errorCorrectionLevel: 'H' // 'H' permite una mayor superposición sin perder la capacidad de escaneo
+                })
+            }else{
+                // Generar el código QR como PNG
+                qrBuffer = await makerQR.toBuffer(data, {
+                    type: 'png',
+                    width: 300, // Ajusta según tus necesidades
+                    errorCorrectionLevel: 'H' // 'H' permite una mayor superposición sin perder la capacidad de escaneo
+                });
+
+            }
     
             // Redimensiona el logo a 100x100
             const resizedLogo = await sharp(logoPath).resize(80, 80).toBuffer();
@@ -106,6 +117,28 @@ module.exports = {
         .toBuffer();
 
         return combinedImageBuffer;
+    } catch (err) {
+        console.error("Error generando QR con logo:", err);
+        throw err;
+    }
+},
+typeQr: async function(type,data) {
+    try {
+
+    
+    if(type === "Vcard"){
+        const whatsapp = `https://api.whatsapp.com/send?phone=54${data.urlWhatsapp}`
+        const dataNew = {
+        ...req.body,
+        urlWhatsapp : whatsapp,
+        whatsapp : req.body.urlWhatsapp
+        }
+        return dataNew;
+    }else {
+        return data
+    }
+
+
     } catch (err) {
         console.error("Error generando QR con logo:", err);
         throw err;

@@ -21,6 +21,13 @@ module.exports = function (sequelize, DataTypes) {
       business: DataTypes.STRING,
       puesto: DataTypes.STRING,
 
+       // Campos para WiFi:
+       ssid: DataTypes.STRING,             // Nombre de la red WiFi
+       networkType: DataTypes.STRING,     // Tipo de red: WPA, WEP, Ninguno
+       password: DataTypes.STRING,        // Contraseña de la red
+       hiddenSSID: DataTypes.BOOLEAN      // Si la red es oculta o no
+      
+
     });
   
     return QRCode;
