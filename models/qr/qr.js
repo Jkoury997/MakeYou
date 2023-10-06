@@ -16,9 +16,11 @@ module.exports = function (sequelize, DataTypes) {
       website: DataTypes.STRING,
       nameDireccion: DataTypes.STRING,
       urlDireccion: DataTypes.STRING,
+      whatsapp: DataTypes.STRING,
       urlWhatsapp: DataTypes.STRING,
       business: DataTypes.STRING,
-      puesto: DataTypes.STRING
+      puesto: DataTypes.STRING,
+
     });
   
     return QRCode;

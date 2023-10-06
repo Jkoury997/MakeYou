@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("../partials/head") %>
+        <title>Dashboard</title>
+    </head>
+
+    <body>
+        <%- include("../partials/sidebar") %>
+      <main class="container-fluid">
+        <div id="mainContent">
+            <h1>Editar Qr</h1>
+
+            <form action="/admin/qr/edit/<%= qrCode.uuid %>" method="post" class="mt-4">
+                
+                <div class="shadow-none p-3 mb-2 bg-body-tertiary rounded">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameQr" class="form-label">Nombre del QR</label>
+                            <input type="text" class="form-control" name="nameQr" value="<%= qrCode.nameQr %>" disabled>
+                        </div>
+                        <div class="col mb-3">
+                            <label for="typeQr" class="form-label">Tipo del QR</label>
+                            <select name="typeQr" id="typeQr" class="form-control" disabled>
+                                <option value="Vcard"><%= qrCode.typeQr %></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="shadow-none p-3 mb-5 bg-body-tertiary rounded mb-1">
+                    <h4>Datos</h4>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="name" value="<%= qrCode.name %>" required>
+                        </div>
+                        <div class="col mb-3">
+                            <label for="lastname" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" name="lastname" value="<%= qrCode.lastname %>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" name="phone" value="<%= qrCode.phone %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" value="<%= qrCode.email %>" required>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="business" class="form-label">Empresa</label>
+                            <input type="text" class="form-control" name="business" value="<%= qrCode.business %>" required>
+                        </div>
+                        <div class=" col mb-3">
+                            <label for="puesto" class="form-label">Puesto</label>
+                            <input type="text" class="form-control" name="puesto" value="<%= qrCode.puesto %>" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameDireccion" class="form-label">Direccion</label>
+                            <input type="text" class="form-control" name="nameDireccion" value="<%= qrCode.nameDireccion %>" required>
+                        </div>
+                        <div class=" col mb-3">
+                            <label for="urlDireccion" class="form-label">Url Google maps</label>
+                            <input type="url" class="form-control" name="urlDireccion" value="<%= qrCode.urlDireccion %>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="whatsapp" class="form-label">Whatsapp (Sin el +54)</label>
+                        <input type="number" class="form-control" name="urlWhatsapp" value="<%= qrCode.whatsapp %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="website" class="form-label">Pagina Web</label>
+                        <input type="text" class="form-control" name="website" value="<%= qrCode.website %>" required>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-primary btn-lgv btn-pink">Editar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

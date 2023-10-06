@@ -1,5 +1,6 @@
 const qrService = require("../services/qrService") 
 const vCardsJS = require('vcards-js');
+const path = require("path")
 
 
 module.exports = {
@@ -11,7 +12,8 @@ module.exports = {
             const whatsapp = `https://api.whatsapp.com/send?phone=54${req.body.urlWhatsapp}`
             const data = {
             ...req.body,
-            urlWhatsapp : whatsapp
+            urlWhatsapp : whatsapp,
+            whatsapp : req.body.urlWhatsapp
             }
             const qrResponse = await qrService.save(data);
             console.log(qrResponse)
@@ -22,6 +24,38 @@ module.exports = {
             res.status(500).send('Error interno del servidor');
         }
         
+    },
+    showEdit: async function (req,res) {
+        console.log(req.params.id)
+        try {
+            const qrCode = await qrService.findByUuid(req.params.id);
+
+            res.render("./qr/edit", {
+                qrCode: qrCode ? qrCode : null,
+                userName: req.session.userData
+            }); 
+        }catch (error) {
+            console.error('Error:', error);
+            res.status(500).send('Error interno del servidor');
+        }
+        
+    },
+    edit: async function (req,res) {
+        try {
+            const whatsapp = `https://api.whatsapp.com/send?phone=54${req.body.urlWhatsapp}`
+            const data = {
+            ...req.body,
+            urlWhatsapp : whatsapp,
+            whatsapp : req.body.urlWhatsapp
+            }
+            const qrResponse = await qrService.update(req.params.id,data);
+            console.log(qrResponse)
+            res.redirect("/admin/qr/list")
+            
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).send('Error interno del servidor');
+        }
     },
     listAll: async function (req, res) {
         try {
@@ -68,8 +102,8 @@ module.exports = {
     vCard.workPhone = qrCode.phone;
     vCard.title = qrCode.puesto;
     vCard.url = qrCode.website;
-    vCard.email =qrCode.email;
-    vCard.workAddress = qrCode.nameDireccion;
+    vCard.workEmail =qrCode.email;
+    vCard.workAddress.street = qrCode.nameDireccion;
 
     console.log(vCard)
     //save to file
@@ -87,9 +121,11 @@ module.exports = {
     downloadQR: async function (req,res) {
         const uuid = req.params.uuid;
         const url = `https://mkapp.com.ar/showQR/${uuid}`;
+        const logoPath = path.join(__dirname, '../../public/images/logo-Marcela-Koury.png');
+
     
         try {
-            const qrBuffer = await qrService.generateQRFromURL(url);
+            const qrBuffer = await qrService.generateQRWithLogo(url,logoPath);
     
             // Establece las cabeceras para informar al navegador que se trata de un archivo para descargar
             res.setHeader('Content-Disposition', `attachment; filename=qr-code.png`);
