@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head") %>
+        <title>Dashboard</title>
+</head>
+
+<body>
+    <%- include("../partials/sidebar") %>
+        <main class="container-fluid">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <% reviews.forEach(review=> {%>
+                    <div class="col">
+                        <div class="card">
+                            <img src="data.photos" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">data.name</h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary">data.formatted_address</h6>
+                                <div>
+                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
+                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
+                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
+                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
+                                </div>
+                            </div>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                            aria-expanded="false" aria-controls="flush-collapseOne">
+                                            <h5>rating <span class="badge bg-secondary">data.rating</span></h5>
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">Placeholder content for this accordion, which is
+                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
+                                            first item's accordion body.</div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                            aria-expanded="false" aria-controls="flush-collapseOne">
+                                            Accordion Item #1
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">Placeholder content for this accordion, which is
+                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
+                                            first item's accordion body.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <a href="#" class="card-link">data.url</a>
+                                <a href="#" class="card-link">data.international_phone_number</a>
+                            </div>
+                        </div>
+                    </div>
+                <%   }); %>
+
+            </div>
+        </main>
+</body>
+
+</html>
