@@ -9,61 +9,179 @@
 <body>
     <%- include("../partials/sidebar") %>
         <main class="container-fluid">
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-2">
+                <button class="btn btn-primary btn-pink" type="button" data-bs-toggle="modal" data-bs-target="#addStoreReview">
+                    <i class="bi bi-plus-lg me-2"></i>Agregar
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addStoreReview" tabindex="-1" aria-labelledby="addStoreReviewLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form action="/admin/analytics/addPlaceID" method="post">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addStoreReviewLabel">Vincular reseñas</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" id="placeID" placeholder="Place ID">
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-pink">Agregar</button>
+                    </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-0">
                 <% reviews.forEach(review=> {%>
                     <div class="col">
-                        <div class="card">
-                            <img src="data.photos" class="card-img-top" alt="...">
+                        <div class="card shadow-sm p-3 mb-3">
+                            <img src=" <%= review.photos[0]%>" class="card-img-top" alt="photos" />
                             <div class="card-body">
-                                <h5 class="card-title">data.name</h5>
-                                <h6 class="card-subtitle mb-2 text-body-secondary">data.formatted_address</h6>
+                                <h5 class="card-title">
+                                    <%= review.name %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary">
+                                    <%= review.formatted_address %>
+                                </h6>
                                 <div>
-                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
-                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
-                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
-                                    <span class="badge rounded-pill text-bg-secondary">Secondary</span>
+                                    <% review.types.forEach(type=> { %>
+                                        <span class="badge rounded-pill text-bg-secondary">
+                                            <%= type %>
+                                        </span>
+                                        <% })%>
                                 </div>
                             </div>
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                            aria-expanded="false" aria-controls="flush-collapseOne">
-                                            <h5>rating <span class="badge bg-secondary">data.rating</span></h5>
-                                        </button>
-                                    </h2>
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                        data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.</div>
+                            <div>
+                                <div class="accordion accordion-flush" id="accordionFlush">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#<%= review.place_id %>"
+                                                aria-expanded="false" aria-controls="flush-collapseReview">
+                                                <h6>
+                                                    Valoracion
+                                                    <span class="badge bg-secondary">
+                                                        <%= review.rating %>
+                                                    </span>
+                                                </h6>
+                                            </button>
+                                        </h2>
+                                        <div id="<%= review.place_id %>" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionFlush">
+                                            <div class="accordion-body">
+                                                <% review.reviews.forEach(reviewUser=> { %>
+                                                    <div class="d-flex">
+                                                        <div
+                                                            class="me-3 d-flex align-items-center justify-content-center">
+                                                            <img src="<%=  reviewUser.profile_photo_url %>"
+                                                                class="rounded-circle" alt="..."
+                                                                style="width: 64px; height: 64px" />
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <div class="d-flex align-items-baseline mb-2">
+                                                                <p class="fs-6 mb-0 me-2">
+                                                                    <%= reviewUser.author_name %>
+                                                                </p>
+                                                                <div class="text-warning me-2">
+                                                                    <% for (let i=1; i <=reviewUser.rating; i++) { %>
+                                                                        <i class="bi bi-star-fill"></i>
+                                                                        <% } %>
+                                                                            <% if( reviewUser.rating % 1>= 0.5) { %>
+                                                                                <i class="bi bi-star-half"></i>
+                                                                                <% } %>
+                                                                </div>
+                                                            </div>
+                                                            <p class="mb-2">
+                                                                <%= reviewUser.text %>
+                                                            </p>
+                                                            <p class="text-muted text-end mb-1">
+                                                                <%= reviewUser.relative_time_description %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <% }) %>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                            aria-expanded="false" aria-controls="flush-collapseOne">
-                                            Accordion Item #1
-                                        </button>
-                                    </h2>
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                        data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.</div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#<%= review.place_id %>2"
+                                                aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                <h6>
+                                                    Horarios: <% if (review.opening_hours.open_now==true) { %>
+                                                        <span class="badge rounded-pill text-bg-success">Abierto</span>
+                                                        <% } else { %>
+                                                            <span
+                                                                class="badge rounded-pill text-bg-danger">Cerrado</span>
+                                                            <% } %>
+                                                </h6>
+                                            </button>
+                                        </h2>
+                                        <div id="<%= review.place_id %>2" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="container mt-3">
+                                                <ul class="list-group">
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Lunes
+                                                        <span class="badge bg-primary rounded-pill">9:00 AM – 8:00
+                                                            PM</span>
+                                                    </li>
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Martes
+                                                        <span class="badge bg-primary rounded-pill">9:00 AM – 8:00
+                                                            PM</span>
+                                                    </li>
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Miércoles
+                                                        <span class="badge bg-primary rounded-pill">9:00 AM – 8:00
+                                                            PM</span>
+                                                    </li>
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Jueves
+                                                        <span class="badge bg-primary rounded-pill">9:00 AM – 8:00
+                                                            PM</span>
+                                                    </li>
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Viernes
+                                                        <span class="badge bg-primary rounded-pill">9:00 AM – 8:00
+                                                            PM</span>
+                                                    </li>
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Sábado
+                                                        <span class="badge bg-primary rounded-pill">9:00 AM – 8:00
+                                                            PM</span>
+                                                    </li>
+                                                    <li
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Domingo
+                                                        <span class="badge bg-danger rounded-pill">Cerrado</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <a href="#" class="card-link">data.url</a>
-                                <a href="#" class="card-link">data.international_phone_number</a>
+                            <div class="card-body text-end">
+                                <a href="<%= review.url %>" class="card-link"><i class="bi bi-geo-alt red"></i></a>
+                                <a href="https://api.whatsapp.com/send?phone=<%= review.international_phone_number.replace(/[^0-9]/g, '') %>"
+                                    class="card-link"><i class="bi bi-whatsapp whatsapp-icon"></i></a>
                             </div>
                         </div>
                     </div>
-                <%   }); %>
-
+                    <% }); %>
             </div>
         </main>
 </body>

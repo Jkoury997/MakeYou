@@ -1,4 +1,5 @@
 const axios = require("axios")
+const PlaceID = require('../database/models/placeID'); 
 
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY
 
@@ -11,16 +12,30 @@ module.exports = {
             twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
         
             const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${GOOGLE_API_KEY}`);
-            const reviews = response.data.result.reviews || [];
         
-            const recentReviews = reviews.filter(review => new Date(review.time * 1000) > twoMonthsAgo);
-            const averageRating = recentReviews.reduce((acc, review) => acc + review.rating, 0) / recentReviews.length || 0;
-        
-            //return { placeId, averageRating, numberOfReviews: recentReviews.length };
             return response.data.result
           } catch (error) {
             console.error(`Error al obtener las reseñas para el lugar ${placeId}:`, error);
             return { placeId, error: 'No se pudieron obtener las reseñas' };
           }
+    },
+    save: async function (placeId) {
+      try {
+        const newPlaceID = new PlaceID(placeId);
+        await newPlaceID.save();
+        return newPlaceID;
+    } catch (error) {
+        console.error('Error al guardar el Place ID:', error.message || error);
+        throw error;
     }
+    
+    },
+    findAll: async function() {
+      try {
+          return await PlaceID.find();
+      } catch (error) {
+          console.error('Error al recuperar los Places ID:', error.message || error);
+          throw error;
+      }
+  }, 
 }
