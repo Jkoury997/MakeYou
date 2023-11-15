@@ -33,7 +33,7 @@ module.exports = {
     findAll: async function() {
       try {
           // Encuentra todos los documentos y selecciona solo el campo 'placeID'
-    const documents = await PlaceID.find().select('placeID -_id');
+    const documents = await PlaceID.find().select('placeID');
     // Mapea los resultados para obtener un arreglo solo con los placeIDs
     const placeIDs = documents.map(doc => doc.placeID);
     return placeIDs;
