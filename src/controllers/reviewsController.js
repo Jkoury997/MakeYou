@@ -5,6 +5,7 @@ module.exports = {
            const oldData = req.session.oldData
         try {
             const places = apiGoogle.findAll();
+            console.log(place)
             
             const reviewsData = await Promise.all(places.map(getReviewsData));
 
