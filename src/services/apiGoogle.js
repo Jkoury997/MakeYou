@@ -32,7 +32,11 @@ module.exports = {
     },
     findAll: async function() {
       try {
-          return await PlaceID.find().select("placeID");
+          // Encuentra todos los documentos y selecciona solo el campo 'placeID'
+    const documents = await PlaceID.find().select('placeID -_id');
+    // Mapea los resultados para obtener un arreglo solo con los placeIDs
+    const placeIDs = documents.map(doc => doc.placeID);
+    return placeIDs;
       } catch (error) {
           console.error('Error al recuperar los Places ID:', error.message || error);
           throw error;
