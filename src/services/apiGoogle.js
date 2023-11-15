@@ -32,10 +32,11 @@ module.exports = {
     },
     findAll: async function() {
       try {
-          return await PlaceID.find();
+          return await PlaceID.find().select("placeID");
       } catch (error) {
           console.error('Error al recuperar los Places ID:', error.message || error);
           throw error;
       }
-  }, 
-}
+    }
+
+  } 
