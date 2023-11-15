@@ -4,7 +4,7 @@ module.exports = {
     showReviews: async (req,res) => {
            const oldData = req.session.oldData
         try {
-            const places = apiGoogle.findAll();
+            const places = await apiGoogle.findAll();
             console.log(places)
             
             const reviewsData = await Promise.all(places.map(getReviewsData));
