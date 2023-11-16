@@ -13,6 +13,7 @@
             <section class=" container-fluid mt-2">
                 <h3>Tienda: <%= store %>
                 </h3>
+                <div id="interactive" class="viewport"></div>
                 <div class="btn-group flex-wrap" role="group" aria-label="Basic radio toggle button group">
                     <label class="btn btn-outline-primary"><i class="bi bi-funnel-fill"></i></label>
                     <% rubros.forEach((rubroUnico)=> { %>
@@ -76,6 +77,7 @@
                 </table>
             </section>
         </main>
+        <script src="quagga.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const rubroInputs = document.querySelectorAll('input[name="rubro"]');
@@ -131,6 +133,30 @@
                     });
                 });
             });
+            Quagga.init({
+      inputStream: {
+        type: "LiveStream",
+        constraints: {
+          width: { min: 640 },
+          height: { min: 480 },
+          facingMode: "environment" // o "user" para la cámara frontal
+        },
+        target: document.querySelector('#interactive') // Dónde se mostrará el vídeo de la cámara
+      },
+      decoder: {
+        readers: ["code_128_reader"] // Aquí puedes agregar más lectores de códigos
+      },
+    }, function(err) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      Quagga.start();
+    });
+
+    Quagga.onDetected(function(data) {
+      console.log(data.codeResult.code); // Acción a realizar cuando se detecte un código
+    });
         </script>
 
 </body>
