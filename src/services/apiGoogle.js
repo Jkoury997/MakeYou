@@ -21,13 +21,15 @@ module.exports = {
     },
     save: async function (placeId) {
       try {
-        const newPlaceID = new PlaceID(placeId);
-        await newPlaceID.save();
-        return newPlaceID;
-    } catch (error) {
-        console.error('Error al guardar el Place ID:', error.message || error);
-        throw error;
-    }
+          // Crear un objeto con la propiedad placeID
+          const placeIdObject = { placeID: placeId };
+          const newPlaceID = new PlaceID(placeIdObject);
+          await newPlaceID.save();
+          return newPlaceID;
+      } catch (error) {
+          console.error('Error al guardar el Place ID:', error.message || error);
+          throw error;
+      }
     
     },
     findAll: async function() {
