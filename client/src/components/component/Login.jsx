@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { CardContent, Card } from "@/components/ui/card"
 import { useState } from "react"
+import logo from "../../../public/vercel.svg"
 import Image from "next/image"
 
 export function Login({ onFormSubmit }) {
@@ -37,7 +38,7 @@ export function Login({ onFormSubmit }) {
               alt="Logo"
               className="h-20 w-20 rounded-full"
               height="100"
-              src="/placeholder.svg"
+              src={logo}
               style={{
                 aspectRatio: "100/100",
                 objectFit: "cover",

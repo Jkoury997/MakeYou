@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 // Configura una instancia base de Axios
 const apiClient = axios.create({
@@ -16,6 +17,14 @@ const authApi = {
             Usuario: usuario,
             Password: password
             });
+
+            Cookies.set('AccessKey', response.data.AccessKey, { expires: 7, path: '' });
+            Cookies.set('Nombre', response.data.Nombre, { expires: 7, path: '' });
+            const empresasString = JSON.stringify(response.data.Empresas);
+            Cookies.set('Empresas', empresasString, { expires: 7 });
+
+
+
             return response.data;
         } catch (error) {
             // Maneja los errores aquí
