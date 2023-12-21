@@ -88,7 +88,7 @@
       </section>
       <!-- Modal -->
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1><i class="bi bi-exclamation-circle ms-2 "></i>
@@ -98,7 +98,7 @@
               <p id="textModal"></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary btn-pink">Entendido</button>
+              <button type="button" class="btn btn-secondary btn-pink" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -158,17 +158,15 @@
                 let descripMedida = row.cells[1].textContent; // Descripción de la medida
                 let descripDetalle = row.cells[2].textContent; // Descripción del detalle
                 iconElement.className = "bi bi-x-circle"; // Icono de en proceso
-                row.classList.add("table-danger"); // Pinta la fila de rojo
-                row.classList.remove("table-success");
                 // Mostrar el modal si scanValue es mayor que prepareValue
                 const staticBackdropLabel = document.getElementById("staticBackdropLabel")
                 const textModal = document.getElementById("textModal")
                 staticBackdropLabel.textContent = "Advertencia"
                 textModal.textContent = "Escaneaste un " + cabecera +" "+ descripMedida +" "+ descripDetalle + " de mas"
-               
                 scanValue = scanValue - 1
                 scanCell.textContent = scanValue;
                 myModal.show();
+
               } else if (scanValue > 0) {
                 console.log("Producto en proceso: " + productBarcode);
                 iconElement.className = "bi bi-arrow-repeat"; // Icono de en proceso
