@@ -1,9 +1,9 @@
 
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { Label } from "@/components/LoginComponent/ui/label"
+import { Input } from "@/components/LoginComponent/ui/input"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { CardContent, Card } from "@/components/ui/card"
+import { Button } from "@/components/LoginComponent/ui/button"
+import { CardContent, Card } from "@/components/LoginComponent/ui/card"
 import { useState } from "react"
 import logo from "../../../public/vercel.svg"
 import Image from "next/image"

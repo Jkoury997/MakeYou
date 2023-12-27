@@ -1,11 +1,10 @@
-import { CardContent, Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { CardContent, Card } from "@/components/SelectCompanyComponent/ui/card";
+import { Button } from "@/components/SelectCompanyComponent/ui/button";
 import Image from "next/image";
 import logo from "../../../public/vercel.svg";
 
 export function SelectCompany({ datos }) {
-  const { Nombre, Empresas} = datos;
-  console.log(Empresas)
+  const { Nombre, Empresas} = datos
   // Verificar si Empresas es un array
   if (!Array.isArray(Empresas)) {
     return <p>No hay empresas disponibles.</p>;

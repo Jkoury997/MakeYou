@@ -60,6 +60,7 @@ module.exports = {
     comparative: async function (dateFrom, dateTo, typeComparative,token) {
         const dateFromString = new Date(dateFrom);
         const dateToString = new Date(dateTo);
+        console.log(dateFrom,dateTo)
     
         let prevMonthDateFrom, prevMonthDateTo, prevYearDateFrom, prevYearDateTo;
     
@@ -85,6 +86,8 @@ module.exports = {
             case "all":
                 salesResponseMonth = await this.sales(token,prevMonthDateFrom,prevMonthDateTo);
                 salesResponseYear = await this.sales(token,prevYearDateFrom,prevYearDateTo);
+                console.log(prevMonthDateFrom,prevMonthDateTo)
+                console.log(prevYearDateFrom,prevYearDateTo)
                 return { 
                     prevMonth: salesResponseMonth.Variables,
                     prevYear: salesResponseYear.Variables 
@@ -114,7 +117,6 @@ module.exports = {
                     prevSalesResponse[index][`diferentPercent${prop}`] = calculateDifference(currentVal, prevVal);
                 });
             });
-            console.log(prevSalesResponse)
             return prevSalesResponse;
         }
         

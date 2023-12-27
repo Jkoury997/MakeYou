@@ -5,8 +5,8 @@ const nextConfig = {
         return [
           {
             source: '/ws_jinx/:path*',
-            //destination: 'http://190.216.66.210:10287/api/:path*',
-            destination: 'http://10.0.0.110:8100/api/:path*'
+            destination: 'http://190.216.66.210:10287/api/:path*',
+            //destination: 'http://10.0.0.110:8100/api/:path*'
           }
         ]
       }

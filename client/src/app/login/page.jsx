@@ -1,5 +1,5 @@
 "use client"
-import {Login} from "@/components/component/login";
+import {Login} from "@/components/LoginComponent/Login";
 import authApi from "@/api/auth";
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +11,6 @@ export default function login(){
     const handleFormSubmit =  async (email, password) => {
         try {
             const userData = await authApi.login(email, password);
-            console.log(userData)
             if (userData.Estado === true) {
                 router.push('/login/selectCompany');
             } else {
