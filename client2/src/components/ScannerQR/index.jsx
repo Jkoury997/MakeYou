@@ -3,11 +3,17 @@ import { Html5QrcodeScanner } from 'html5-qrcode';
 
 class ScannerQR extends Component {
   componentDidMount() {
-    const config = { fps: 10, qrbox: 250 };
+    const config = {
+      fps: 10,
+      qrbox: 250,
+      facingMode: "environment" // Cambiado a cámara trasera
+    };
+
     const onScanSuccess = (decodedText, decodedResult) => {
       console.log(`Código QR detectado: ${decodedText}`, decodedResult);
-      // Puedes hacer algo con el texto decodificado o el resultado decodificado.
+      this.showAlert(decodedText); // Muestra una alerta con el texto decodificado
     };
+
     const onScanFailure = (error) => {
       console.log(`Error al escanear: ${error}`);
     };
@@ -17,20 +23,24 @@ class ScannerQR extends Component {
     this.scanner.render(onScanSuccess, onScanFailure);
   }
 
+  showAlert(decodedText) {
+    // Puedes reemplazar esto con un modal de Bootstrap para una mejor UX
+    alert(`Código QR detectado: ${decodedText}`);
+  }
+
   componentWillUnmount() {
-    // Limpia el escáner QR al salir del componente
     this.scanner.clear();
   }
 
   render() {
     return (
       <div className="container my-4">
-        <div className="row">
-          <div className="col-md-6 offset-md-3">
+        <div className="row justify-content-center">
+          <div className="col-md-6">
             <h2 className="text-center mb-4">Escaner de Códigos QR</h2>
-            <div id="qr-reader" className="mb-4"></div>
+            <div id="qr-reader" className="mb-4 border"></div>
             <p className="text-center">
-              Apunta la cámara hacia un código QR para escanearlo.
+              Apunta la cámara trasera hacia un código QR para escanearlo.
             </p>
           </div>
         </div>
