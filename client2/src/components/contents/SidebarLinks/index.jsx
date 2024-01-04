@@ -1,29 +1,54 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const SidebarLinks = () => {
+    const location = useLocation();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    useEffect(() => {
+        // Verifica si la ruta actual es parte del menú "Estadísticas"
+        if (location.pathname.startsWith("/dashboard/sales")) {
+            setIsDropdownOpen(true);
+        } else {
+            setIsDropdownOpen(false);
+        }
+    }, [location]);
+
     return (
-        <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li className="nav-item">
-                <NavLink className="nav-link" activeClassName="active" to="/dashboard">
-                    Home
-                </NavLink>
-            </li>
-            <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Estadísticas
-                </a>
-                <ul className="dropdown-menu">
-                    <li>
-                        <NavLink className="dropdown-item" to="/analytics/sales">
-                            Ventas
-                        </NavLink>
-                    </li>
-                    {/* Agrega aquí otros enlaces del menú desplegable si los hay */}
-                </ul>
-            </li>
-            {/* Agrega aquí otros enlaces de navegación si los hay */}
-        </ul>
+        <div className="offcanvas-body">
+            <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li className="nav-item">
+                    <NavLink 
+    to="/dashboard" 
+    className={({ isActive }) => isActive ? "nav-link active " : "nav-link"}
+>
+    Inicio
+</NavLink>
+                        </li>
+                <li className={`nav-item dropdown ${isDropdownOpen ? "show" : ""}`}>
+                    <a className="nav-link dropdown-toggle" href="#" role="button" 
+                    data-bs-toggle="dropdown" aria-expanded={isDropdownOpen}>
+                        Estadísticas
+                    </a>
+                    <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
+                        <li>
+                            <NavLink 
+                            to="/dashboard/sales"
+                            className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            
+                            >
+                                Ventas
+                            </NavLink>
+                        </li>
+                        {/* ... otros enlaces del menú desplegable ... */}
+                    </ul>
+                </li>
+                {/* ... más enlaces de navegación ... */}
+            </ul>
+        </div>
+
     );
 };
 
 export default SidebarLinks;
+

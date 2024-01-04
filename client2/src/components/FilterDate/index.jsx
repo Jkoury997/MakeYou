@@ -12,7 +12,7 @@ const FilterDate = () => {
     };
 
     return (
-        <div className="row">
+        <div className="row mt-3">
             <div className="col-md-6">
                 <div className="input-group mb-3">
                     <span className="input-group-text">Fecha</span>

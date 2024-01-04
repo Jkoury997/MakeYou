@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
-import Sidebar from '../../components/contents/Sidebar';
-import DashboardRoutes from "../../components/DashboardRoutes"
+import { useNavigate,Routes,Route,Outlet} from 'react-router-dom';
+import Header from '../../components/contents/Header';
+import Sales from '../analytics/sales';
+
 // Otros componentes de página
 
-const DashboardPage = () => {
+const Dashboard = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
 
@@ -12,23 +13,24 @@ const DashboardPage = () => {
         const userDataString = localStorage.getItem('userData');
         if (userDataString) {
             setUser(JSON.parse(userDataString));
-        } else {
-            navigate('/login');
         }
-    }, [navigate]);
+    },[]);
 
     if (!user) {
         return <div>Cargando...</div>;
     }
 
     return (
-        
-        <section>
-                <Sidebar user={user} />
-                <DashboardRoutes />
-        </section>
-
+        <div className="container-fluid">
+            <Header user={user} />
+            <main className="container-fluid">
+            <Routes>
+                <Route path="sales" element={<Sales />} />
+                {/* Agrega aquí más rutas para otras secciones del dashboard */}
+            </Routes>
+            </main>
+        </div>
     );
 };
 
-export default DashboardPage;
+export default Dashboard;
