@@ -1,41 +1,35 @@
-import Login from "../../components/Login"
+// LoginPage.js
 import { useState } from 'react';
-import axios from 'axios';
-export default function LoginPage () {
+import { useNavigate } from 'react-router-dom';
+import authService from "../../api/auth";
+import Login from "../../components/Auth/Login";
 
+export default function LoginPage() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
-        console.log(email)
         e.preventDefault();
-        const url = 'http://190.216.66.210:10287/api/Login';
-        const data = {
-            Usuario: email,
-            Password: password
-        };
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-                // Agrega aquí cualquier otro encabezado que necesites
-            }
-        };
         try {
-            const response = await axios.post(url, data, config);
-            console.log(response.data); // Manejar la respuesta
+            const userData = await authService.login(email, password);
+            if (userData.Estado) {
+                // Guardar datos del usuario en Local Storage
+                localStorage.setItem('userDataLogin', JSON.stringify(userData));
+                navigate('/company');
+            } else {
+                // Manejar el caso de inicio de sesión no exitoso
+            }
         } catch (error) {
-            console.error('Error al realizar la solicitud:', error);
+            alert(error.message);
         }
     };
 
     return (
-
-       <Login
+        <Login
             onEmailChange={(e) => setEmail(e.target.value)}
             onPasswordChange={(e) => setPassword(e.target.value)}
-            onSubmit={handleSubmit} 
+            onSubmit={handleSubmit}
         />
-                        
-    )
+    );
 }
