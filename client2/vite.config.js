@@ -6,11 +6,17 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': {
-        target: 'http://10.0.0.110:8100',
+      '/api/': {
+        target: 'http://190.216.66.210:10287',
         changeOrigin: true,
         secure: false,
         // Puedes incluir otras configuraciones aquí si es necesario
+      },
+      '/analytics/api': {
+        target: 'http://190.216.66.210:10288',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/analytics/, ''),
       },
     },
   },

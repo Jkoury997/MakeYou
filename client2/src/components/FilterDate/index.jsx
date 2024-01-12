@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const FilterDate = () => {
+const FilterDate = ({ onDateChange }) => {
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [comparative, setComparative] = useState(''); // Ajusta el valor inicial según sea necesario
@@ -8,7 +8,7 @@ const FilterDate = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Manejar la lógica del envío del formulario aquí
-        console.log({ dateFrom, dateTo, comparative });
+        onDateChange(dateFrom, dateTo, comparative);
     };
 
     return (
@@ -46,10 +46,9 @@ const FilterDate = () => {
                         value={comparative}
                         onChange={(e) => setComparative(e.target.value)}
                     >
-                        <option value="">Sin - Celular</option>
-                        <option value="month">Mensual - Tablet</option>
-                        <option value="year">Anual - Tablet</option>
-                        <option value="all">Ambos - Laptop</option>
+                        <option value="only">Sin</option>
+                        <option value="month">Mensual</option>
+                        <option value="year">Anual</option>
                     </select>
                     <button 
                         className="btn btn-outline-secondary btn-pink" 
