@@ -12,7 +12,7 @@ export default function ShowQrVcard({data}) {
         paddingBottom: '3rem'
     };
     const openVCard = () => {
-        window.location.href = `/downloadContact/${data.uuid}`;
+        window.location.href = `${url}/api/qr/downloadContact/${data.uuid}`;
     };
 
     return (
