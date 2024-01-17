@@ -2,9 +2,11 @@ import Cookies from "js-cookie";
 
 const Token = Cookies.get('Token')
 
+const url = 'https://vps-3640684-x.dattaweb.com'
+
 const create = async (dataFrom) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/qr/create`,{
+        const response = await fetch(`${url}/api/qr/create`,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -31,7 +33,7 @@ const create = async (dataFrom) => {
 
 const list = async () => {
     try {
-        const response = await fetch(`http://localhost:3000/api/qr/list`,{
+        const response = await fetch(`${url}/api/qr/list`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
