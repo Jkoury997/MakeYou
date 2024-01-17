@@ -5,7 +5,7 @@ const mainRouter = require("./routes/mainRoutes")
 const connectDB = require("./database/db")
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3000;
 
 
 // Express()
@@ -21,7 +21,7 @@ app.use("/api",mainRouter)
 
 async function startServer() {
     await connectDB(); // Asegurarte de que la DB esté conectada antes de iniciar el servidor
-    const PORT = process.env.PORT || 3003;
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
   }
   

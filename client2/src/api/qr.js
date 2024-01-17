@@ -4,7 +4,7 @@ const Token = Cookies.get('Token')
 
 const create = async (dataFrom) => {
     try {
-        const response = await fetch(`http://localhost:3003/api/qr/create`,{
+        const response = await fetch(`http://localhost:3000/api/qr/create`,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -31,7 +31,7 @@ const create = async (dataFrom) => {
 
 const list = async () => {
     try {
-        const response = await fetch(`http://localhost:3003/api/qr/list`,{
+        const response = await fetch(`http://localhost:3000/api/qr/list`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -55,7 +55,7 @@ const list = async () => {
 const getById = async (uuid) => {
 
     try {
-        const response = await fetch(`http://localhost:3003/api/qr/id/${uuid}`,{
+        const response = await fetch(`http://localhost:3000/api/qr/id/${uuid}`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
