@@ -3,6 +3,7 @@ import FilterDate from "../../../components/FilterDate";
 import { useState } from "react";
 import analyticsApi from "../../../api/analytics";
 import { v4 as uuidv4 } from 'uuid';
+import Loading from "../../../components/contents/Loading";
 
 
 const Sales = () => {
@@ -62,11 +63,7 @@ const Sales = () => {
         <div>
             <FilterDate onDateChange={handleDateChange} />
             {isLoading ? (
-                <div className="text-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </div>
+              <Loading />
             ) : (
                 <div className="row row-cols-1 row-cols-md-2 g-4">
                     {data.map((item) => (

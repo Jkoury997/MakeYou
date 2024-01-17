@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate,Routes,Route,Outlet} from 'react-router-dom';
 import Header from '../../components/contents/Header';
 import Sales from '../analytics/sales';
+import CreateQrPage from '../qr/createQr';
+import ListQrPage from '../qr';
 
 // Otros componentes de página
 
@@ -27,6 +29,8 @@ const Dashboard = () => {
             <Routes>
                 <Route path="sales" element={<Sales />} />
                 {/* Agrega aquí más rutas para otras secciones del dashboard */}
+                <Route path="qr/create" element={<CreateQrPage />} />
+                <Route path='qr/list' element={<ListQrPage />}/>
             </Routes>
             </main>
         </div>

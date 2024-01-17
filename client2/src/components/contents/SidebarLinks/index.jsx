@@ -17,14 +17,9 @@ const SidebarLinks = () => {
     return (
         <div className="offcanvas-body">
             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li className="nav-item">
-                    <NavLink 
-    to="/dashboard" 
-    className={({ isActive }) => isActive ? "nav-link active " : "nav-link"}
->
-    Inicio
-</NavLink>
-                        </li>
+                <li className="nav-item">
+                    <NavLink to="/dashboard" className={({ isActive }) => isActive ? "nav-link active " : "nav-link"}>Inicio</NavLink>
+                </li>
                 <li className={`nav-item dropdown ${isDropdownOpen ? "show" : ""}`}>
                     <a className="nav-link dropdown-toggle" href="#" role="button" 
                     data-bs-toggle="dropdown" aria-expanded={isDropdownOpen}>
@@ -38,6 +33,31 @@ const SidebarLinks = () => {
                             
                             >
                                 Ventas
+                            </NavLink>
+                        </li>
+                        {/* ... otros enlaces del menú desplegable ... */}
+                    </ul>
+                </li>
+                <li className={`nav-item dropdown ${isDropdownOpen ? "show" : ""}`}>
+                    <a className="nav-link dropdown-toggle" href="#" role="button" 
+                    data-bs-toggle="dropdown" aria-expanded={isDropdownOpen}>
+                        Qr
+                    </a>
+                    <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
+                        <li>
+                            <NavLink 
+                            to="/dashboard/qr/list"
+                            className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            >
+                                Listado
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink 
+                            to="/dashboard/qr/create"
+                            className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            >
+                                Nuevo Qr
                             </NavLink>
                         </li>
                         {/* ... otros enlaces del menú desplegable ... */}
