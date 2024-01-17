@@ -12,20 +12,7 @@ export default function ShowQrVcard({data}) {
         paddingBottom: '3rem'
     };
     const openVCard = () => {
-        fetch(`${url}/downloadContact/${data.uuid}`)
-            .then(response => response.text())
-            .then(vCardContent => {
-                const dataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
-                const anchor = document.createElement('a');
-                anchor.href = dataUri;
-                anchor.download = 'contact.vcf';
-                document.body.appendChild(anchor);
-                anchor.click();
-                document.body.removeChild(anchor);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        window.location.href = `/downloadContact/${data.uuid}`;
     };
 
     return (
