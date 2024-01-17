@@ -57,7 +57,7 @@ const list = async () => {
 const getById = async (uuid) => {
 
     try {
-        const response = await fetch(`http://localhost:3000/api/qr/id/${uuid}`,{
+        const response = await fetch(`${url}/api/qr/id/${uuid}`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
