@@ -4,6 +4,7 @@ export default function ShowQrVcard({data}) {
     // Asegúrate de tener la imagen correcta en la ruta especificada
      // Cambia esto por la ruta correcta a tu logo
      const logo = "/image/logos/MK.svg"
+     const url = 'https://vps-3640684-x.dattaweb.com'
 
      const estiloFondo = {
         backgroundColor: data.color, // Asegúrate de que data.color tenga un valor de color válido
@@ -11,7 +12,7 @@ export default function ShowQrVcard({data}) {
         paddingBottom: '3rem'
     };
     const openVCard = () => {
-        fetch(`/downloadContact/${data.uuid}`)
+        fetch(`${url}/downloadContact/${data.uuid}`)
             .then(response => response.text())
             .then(vCardContent => {
                 const dataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
