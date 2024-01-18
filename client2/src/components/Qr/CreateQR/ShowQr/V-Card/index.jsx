@@ -27,7 +27,7 @@ export default function ShowQrVcard({data}) {
                 />
                 <h1 className="fs-3 mb-1 fw-bold">{data.name} {data.lastname} </h1>
                 <span className="fs-5">{data.company} </span><br />
-                <span className="fs-6">{data.titlejob} </span><br />
+                <span className="fs-6">{data.titleJob} </span><br />
             </div>
         </div>
         <div className="container my-3" style={{ flex: 1 }}>
