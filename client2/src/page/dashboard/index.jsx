@@ -4,6 +4,7 @@ import Header from '../../components/contents/Header';
 import Sales from '../analytics/sales';
 import CreateQrPage from '../qr/createQr';
 import ListQrPage from '../qr';
+import { LoadScript } from '@react-google-maps/api';
 
 // Otros componentes de página
 
@@ -23,7 +24,11 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="container-fluid">
+        <LoadScript 
+        googleMapsApiKey="AIzaSyCpWvfH4kaRJ7WxQxFU1oPasGVXWGhveQg"
+        libraries={["places"]}
+        >
+            <div className="container-fluid">
             <Header user={user} />
             <main className="container-fluid">
             <Routes>
@@ -34,6 +39,8 @@ const Dashboard = () => {
             </Routes>
             </main>
         </div>
+        </LoadScript>
+        
     );
 };
 

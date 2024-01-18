@@ -14,9 +14,6 @@ const QRCodeSchema = new mongoose.Schema({
   phone: String,
   phoneBusinnes: String, // Añadido para coincidir con la clave 'phoneBusinnes' de los datos
   address: String,
-  city: String,
-  postCode: String,
-  country: String,
   company: String,
   titleJob: String, // Añadido para coincidir con la clave 'titleJob' de los datos
   email: String,
@@ -24,6 +21,7 @@ const QRCodeSchema = new mongoose.Schema({
   color: String, // Añadido para coincidir con la clave 'color' de los datos
   logo: String, // Añadido para coincidir con la clave 'logo' de los datos
   whatsapplink: String,
+  addresslink: String,
 });
 
 const QRCode = mongoose.model('QRCode', QRCodeSchema);

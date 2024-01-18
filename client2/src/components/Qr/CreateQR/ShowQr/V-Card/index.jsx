@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 export default function ShowQrVcard({data}) {
     // Asegúrate de tener la imagen correcta en la ruta especificada
      // Cambia esto por la ruta correcta a tu logo
-     const logo = "/image/logos/MK.svg"
+     const logo = `/image/logos/${data.logo}.svg`
      const url = 'https://vps-3640684-x.dattaweb.com'
 
      const estiloFondo = {
@@ -73,7 +73,7 @@ export default function ShowQrVcard({data}) {
                     <label className="fw-bold mb-2 d-block link-secondary">Dirección</label>
                     <div className="d-flex align-items-center">
                         <i className="bi bi-geo-alt fs-4 me-2"></i>
-                        <Link className="text-decoration-none fs-5 link-dark" to="/ruta-de-direccion"> {/* Ajusta esta ruta */}
+                        <Link className="text-decoration-none fs-5 link-dark" to={data.addresslink}> {/* Ajusta esta ruta */}
                             {data.address}
                         </Link>
                     </div>
