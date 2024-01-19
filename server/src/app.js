@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mainRouter = require("./routes/mainRoutes")
 const connectDB = require("./database/db")
+const path = require("path")
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(express.json())
 app.use(express.urlencoded({extended : false}))

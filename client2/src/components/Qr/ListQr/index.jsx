@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 const ListQr = ({qrCode,index}) => {
     const linkShowQr = `https://mkapp.online/showqr/${qrCode.uuid}`
+    const linkDownloadQr = `https://vps-3640684-x.dattaweb.com/api/qr/downloadQR/${qrCode.uuid}`
 
     return (
 
@@ -20,7 +21,9 @@ const ListQr = ({qrCode,index}) => {
                     <Link to={linkShowQr}><i className="bi bi-person-vcard"></i></Link>
                 </div>
                 <div className="col-1">
+                <a href={linkDownloadQr} download>
                     <i className="bi bi-download"></i>
+                </a>
                 </div>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end col-3">
                     <form action={`/delete/${qrCode.uuid}`} method="post">

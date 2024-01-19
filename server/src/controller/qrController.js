@@ -81,4 +81,19 @@ module.exports = {
     res.send(vCard.getFormattedString());
 
     },
+    downloadQR: async function (req,res) {
+        const uuid = req.params.uuid;
+        try { 
+            const qrBuffer = await qrService.generateQR(uuid);
+
+        
+            // Establece las cabeceras para informar al navegador que se trata de un archivo para descargar
+            res.setHeader('Content-Disposition', `attachment; filename=qr-code.png`);
+            res.setHeader('Content-Type', 'image/png');
+            res.send(qrBuffer);
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).send('Error interno del servidor');
+        }
+    }
 }
