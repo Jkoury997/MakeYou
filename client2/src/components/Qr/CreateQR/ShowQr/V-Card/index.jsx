@@ -1,9 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 
 export default function ShowQrVcard({data}) {
-    // Asegúrate de tener la imagen correcta en la ruta especificada
-     // Cambia esto por la ruta correcta a tu logo
-     const logo = `/image/logos/${data.logo}.svg`
+    
+
+
+     const logo = `/image/logos/${data.logo}.png`
      const url = 'https://vps-3640684-x.dattaweb.com'
 
      const estiloFondo = {

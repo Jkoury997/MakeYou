@@ -57,8 +57,38 @@ const userAccess = async (Empresa) => {
     }
 }
 
+const forgotPassword = async (email) => {
+    try {
+        // Codificar el email para la URL
+        const encodedEmail = encodeURIComponent(email);
+
+        // Hacer una solicitud GET, no es necesario enviar un body para GET
+        const response = await fetch(`/api/SolicitaRecuperoClave?Email=${encodedEmail}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        // Procesar la respuesta
+        const data = await response.json();
+        if (data.Estado) {
+            // Solicitud exitosa, procesar los datos
+            return data;
+        } else {
+            // Solicitud fallida, lanzar error con mensaje
+            throw new Error(data.Mensaje || 'Error al solicitar el cambio de contraseña');
+        }
+    } catch (error) {
+        console.error('Error al solicitar el cambio de contraseña:', error);
+        throw error;
+    }
+};
+
+
 export default {
     login,
-    userAccess
+    userAccess,
+    forgotPassword
     // ...otros métodos relacionados con la autenticación
 };

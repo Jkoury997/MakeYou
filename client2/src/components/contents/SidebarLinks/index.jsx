@@ -41,6 +41,23 @@ const SidebarLinks = () => {
                 <li className={`nav-item dropdown ${isDropdownOpen ? "show" : ""}`}>
                     <a className="nav-link dropdown-toggle" href="#" role="button" 
                     data-bs-toggle="dropdown" aria-expanded={isDropdownOpen}>
+                        Logistica
+                    </a>
+                    <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
+                        <li>
+                            <NavLink 
+                            to="/dashboard/logistics/storesend"
+                            className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            >
+                                Peparacion Tienda
+                            </NavLink>
+                        </li>
+                        {/* ... otros enlaces del menú desplegable ... */}
+                    </ul>
+                </li>
+                <li className={`nav-item dropdown ${isDropdownOpen ? "show" : ""}`}>
+                    <a className="nav-link dropdown-toggle" href="#" role="button" 
+                    data-bs-toggle="dropdown" aria-expanded={isDropdownOpen}>
                         Qr
                     </a>
                     <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>

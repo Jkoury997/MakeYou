@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./style.css";
 import Logo from "/image/logo-Marcela-Koury.svg";
 
@@ -46,7 +47,7 @@ export default function Login({ onEmailChange, onPasswordChange, onSubmit }) {
                                 </form>
                             </div>
                             <div className="text-center mt-3">
-                                <a href="/forgotPassword">¿Olvidaste tu contraseña?</a>
+                                <Link to="/forgotpassword">¿Olvidaste tu contraseña?</Link>
                             </div>
                         </div>
                     </div>
