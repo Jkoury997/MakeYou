@@ -64,7 +64,7 @@ module.exports = {
     vCard.organization = qrCode.company;
     vCard.workPhone = '+549' + qrCode.phone;
     vCard.title = qrCode.titlejob;
-    vCard.url = qrCode.website;
+    //vCard.url = qrCode.website;
     vCard.workEmail =qrCode.email;
     vCard.workAddress.street = qrCode.address;
 
