@@ -19,7 +19,7 @@ export default function ShowQrVcard({data}) {
     return (
         <> 
         <div className="py-5 pb-3 pt-5" style={estiloFondo}>
-            <div className="container text-center">
+            <div className="container text-center text-white">
                 <img 
                     className="rounded-4 bg-white mb-3" 
                     src={logo} 
