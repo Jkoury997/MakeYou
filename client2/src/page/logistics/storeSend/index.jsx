@@ -7,11 +7,17 @@ import utilFunctions from "../../../utils/logistics"
 import BarcodeReader from "../../../components/BarcodeReader";
 import PickProduct from "../../../components/PickProduct";
 
+
 export default function StoreSendPage() {
     const [stores, setStores] = useState([]);
     const [products, setProducts] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [processedProducts, setProcessedProducts] = useState(null);
+    const [selectedRubro, setSelectedRubro] = useState('');
+
+    const handleRubroChange = (rubro) => {
+        setSelectedRubro(rubro);
+    };
 
     useEffect(() => {
         const fetchStores = async () => {
@@ -44,8 +50,21 @@ export default function StoreSendPage() {
 
     const handleBarcodeSubmit = (barcode) => {
         console.log("Código de barras recibido:", barcode);
-        // Aquí puedes hacer lo que necesites con el código de barras
+    
+        // Actualizar el estado de los productos con el nuevo conteo de escaneos
+        const updatedProducts = products.Articulos.map((product) => {
+            if (product.CodigoBarras === barcode) {
+                // Si el producto no tiene el atributo Scan, inicialízalo en 0
+                const initialScanCount = product.Scan || 0;
+                return { ...product, Scan: initialScanCount + 1 };
+            }
+            return product;
+        });
+    
+        setProducts({ ...products, Articulos: updatedProducts });
     };
+    
+    
 
     useEffect(() => {
         console.log("Estado actualizado de products:", products);
@@ -59,11 +78,17 @@ export default function StoreSendPage() {
     return (
         <>
             <StoreSelect stores={stores} onCompanySelect={handleCompanySelect} />
-            {isLoading ? <Loading /> : processedProducts && <FilterRubro rubros={processedProducts} />}
-            <BarcodeReader onBarcodeSubmit={handleBarcodeSubmit}></BarcodeReader>
-            <PickProduct products={products}></PickProduct>
-            
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <>
+                    {processedProducts && <FilterRubro rubros={processedProducts} onRubroSelect={handleRubroChange} />}
+                    {processedProducts && <BarcodeReader onBarcodeSubmit={handleBarcodeSubmit} />}
+                    {processedProducts && <PickProduct products={products.Articulos} selectedRubro={selectedRubro} />}
+                </>
+            )}
 
         </>
     );
+    
 }

@@ -7,6 +7,12 @@ export default function BarcodeReader({ onBarcodeSubmit }) {
         setBarcode(e.target.value);
     };
 
+
+    const handleKeyDown = e => {
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
+    };
     const handleSubmit = () => {
         onBarcodeSubmit(barcode);
         setBarcode('');
@@ -25,6 +31,7 @@ export default function BarcodeReader({ onBarcodeSubmit }) {
                         placeholder="Código de barras"
                         value={barcode}
                         onChange={handleTextChange}
+                        onKeyDown={handleKeyDown} 
                     />
                     <label htmlFor="barcodeScan">Código de barras</label>
                 </div>
