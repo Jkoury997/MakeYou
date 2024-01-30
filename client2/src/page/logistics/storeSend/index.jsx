@@ -5,6 +5,7 @@ import FilterRubro from "../../../components/FilterRubro";
 import Loading from "../../../components/contents/Loading";
 import utilFunctions from "../../../utils/logistics"
 import BarcodeReader from "../../../components/BarcodeReader";
+import PickProduct from "../../../components/PickProduct";
 
 export default function StoreSendPage() {
     const [stores, setStores] = useState([]);
@@ -41,6 +42,11 @@ export default function StoreSendPage() {
         }
     };
 
+    const handleBarcodeSubmit = (barcode) => {
+        console.log("Código de barras recibido:", barcode);
+        // Aquí puedes hacer lo que necesites con el código de barras
+    };
+
     useEffect(() => {
         console.log("Estado actualizado de products:", products);
     }, [products]); // Este useEffect se ejecutará cada vez que cambie 'products'
@@ -54,6 +60,8 @@ export default function StoreSendPage() {
         <>
             <StoreSelect stores={stores} onCompanySelect={handleCompanySelect} />
             {isLoading ? <Loading /> : processedProducts && <FilterRubro rubros={processedProducts} />}
+            <BarcodeReader onBarcodeSubmit={handleBarcodeSubmit}></BarcodeReader>
+            <PickProduct products={products}></PickProduct>
             
 
         </>
