@@ -6,6 +6,7 @@ import CreateQrPage from '../qr/createQr';
 import ListQrPage from '../qr';
 import { LoadScript } from '@react-google-maps/api';
 import StoreSendPage from '../logistics/storeSend';
+import AutorizationPage from '../stores/autorization';
 
 // Otros componentes de página
 
@@ -33,12 +34,19 @@ const Dashboard = () => {
             <Header user={user} />
             <main className="container-fluid">
             <Routes>
+                {/* Analitics*/}
                 <Route path="sales" element={<Sales />} />
-                {/* Agrega aquí más rutas para otras secciones del dashboard */}
+                {/* QR*/}
                 <Route path="qr/create" element={<CreateQrPage />} />
                 <Route path='qr/list' element={<ListQrPage />}/>
-
+                {/* Logistics*/}
                 <Route path='logistics/storesend' element={<StoreSendPage />} />
+                {/* Stores*/}
+                <Route path='stores/autorization' element={<AutorizationPage />} />
+
+                
+
+
             </Routes>
             </main>
         </div>
