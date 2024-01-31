@@ -13,7 +13,7 @@ const DataDisplay = ({ data, onEliminar, onAceptar, onImprimir }) => {
       </div>
       <div className="card-body">
         <h5 className="card-title">{data.DatosAutorizacion.Tienda}</h5>
-        <p className="card-text">Estado: {data.DatosAutorizacion.Estado ? "Activo" : "Desactivado"}</p>
+        <p className="card-text">Estado: <span className="fw-bolder">{data.DatosAutorizacion.Estado ? "Activo" : "Desactivado"}</span></p>
         <p className="card-text">Código: {data.DatosAutorizacion.Codigo}</p>
         <p className="card-text">Fecha: {data.DatosAutorizacion.Fecha}</p>
         <p className="card-text">Mensaje: {data.DatosAutorizacion.Mensaje}</p>
