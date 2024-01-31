@@ -26,8 +26,8 @@ const Dashboard = () => {
 
     return (
         <LoadScript 
-        googleMapsApiKey="AIzaSyCpWvfH4kaRJ7WxQxFU1oPasGVXWGhveQg"
-        libraries={["places"]}
+        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+         libraries={["places"]}
         >
             <div className="container-fluid">
             <Header user={user} />
