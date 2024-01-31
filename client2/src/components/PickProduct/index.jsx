@@ -1,8 +1,10 @@
 
 import "./styles.css";
+import { useEffect } from "react";
 
 
-const PickProduct = ({ products, selectedRubro }) => {
+const PickProduct = ({ products, selectedRubro, lastScannedBarcode }) => {
+
 
 
   const getColorForScan = (scan, saldo) => {
@@ -17,10 +19,21 @@ const PickProduct = ({ products, selectedRubro }) => {
   };
 
   const filteredProducts = products.filter(product => (selectedRubro === '' || product.Rubro === selectedRubro) && product.Stock !== 0);
+
+  useEffect(() => {
+    if (lastScannedBarcode) {
+        const selector = `[data-product="${lastScannedBarcode}"]`;
+        const element = document.querySelector(selector);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}, [lastScannedBarcode]);
   
 
   return (
     <section className="container-fluid mt-3">
+      <div style={{ marginBottom: '70px' }}>
       <table className="table table-hover">
         <thead>
           <tr>
@@ -34,7 +47,7 @@ const PickProduct = ({ products, selectedRubro }) => {
             <th scope="col" className="hide-on-mobile"><i className="bi bi-list-check"></i></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="mb-4">
         {filteredProducts.map((product) => (
             product.Stock !== 0 && (
               <tr
@@ -62,6 +75,7 @@ const PickProduct = ({ products, selectedRubro }) => {
           ))}
         </tbody>
       </table>
+      </div>
     </section>
 
   );

@@ -15,6 +15,8 @@ export default function StoreSendPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [processedProducts, setProcessedProducts] = useState(null);
     const [selectedRubro, setSelectedRubro] = useState('');
+    const [lastScannedBarcode, setLastScannedBarcode] = useState('');
+
 
     const [showModal, setShowModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState({ title: '', description: '' });
@@ -64,11 +66,13 @@ export default function StoreSendPage() {
 
     const handleBarcodeSubmit = (barcode) => {
         console.log("Código de barras recibido:", barcode);
+        setLastScannedBarcode(barcode);
     
         const updatedProducts = products.Articulos.map((product) => {
             if (product.CodigoBarras === barcode) {
                 const initialScanCount = product.Scan || 0;
                 const difference = initialScanCount - product.Saldo * -1;
+                
     
                 if (difference >= 0) {
                     // Si ya se escaneó más de lo permitido, muestra el error y no incrementes el Scan.
@@ -80,6 +84,7 @@ export default function StoreSendPage() {
                     // Solo incrementa Scan si aún no se ha excedido el saldo.
                     return { ...product, Scan: initialScanCount + 1 };
                 }
+                
             }
             return product;
         });
@@ -107,8 +112,10 @@ export default function StoreSendPage() {
             ) : (
                 <>
                     {processedProducts && <FilterRubro rubros={processedProducts} onRubroSelect={handleRubroChange} />}
+                    
+                    {processedProducts && <PickProduct products={products.Articulos} selectedRubro={selectedRubro} lastScannedBarcode={lastScannedBarcode} />}
+
                     {processedProducts && <BarcodeReader onBarcodeSubmit={handleBarcodeSubmit} />}
-                    {processedProducts && <PickProduct products={products.Articulos} selectedRubro={selectedRubro} />}
                 </>
             )}
             <ErrorModal show={showModal} error={errorMessage} handleClose={handleClose} />

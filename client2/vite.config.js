@@ -24,6 +24,12 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/logistics/, ''),
       },
+      '/stores/api': {
+        target: 'http://190.216.66.210:10289',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/stores/, ''),
+      },
     },
   },
 })

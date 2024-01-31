@@ -1,8 +1,9 @@
 import Cookies from "js-cookie";
 
+const Token = Cookies.get('Token')
+
 const saleVariable = async (dataFrom,dataTo) => {
 
-    const Token = Cookies.get('Token')
     try {
         const response = await fetch(`/analytics/api/ConsultasTiendas/Variables?Desde=${dataFrom}&Hasta=${dataTo}`,{
             method: 'GET',
