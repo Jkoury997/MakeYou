@@ -1,7 +1,9 @@
+
 import "./styles.css";
 
 
 const PickProduct = ({ products, selectedRubro }) => {
+
 
   const getColorForScan = (scan, saldo) => {
     if (saldo * -1 < scan) {
@@ -13,6 +15,8 @@ const PickProduct = ({ products, selectedRubro }) => {
     if (scan > 0) return 'table-warning';
     return ''; // color por defecto (no es necesario devolver 'inherit')
   };
+
+  const filteredProducts = products.filter(product => (selectedRubro === '' || product.Rubro === selectedRubro) && product.Stock !== 0);
   
 
   return (
@@ -31,7 +35,7 @@ const PickProduct = ({ products, selectedRubro }) => {
           </tr>
         </thead>
         <tbody>
-          {products.filter(product => selectedRubro === '' || product.Rubro === selectedRubro).map((product) => (
+        {filteredProducts.map((product) => (
             product.Stock !== 0 && (
               <tr
                 key={product.IdArticulo}
@@ -58,8 +62,6 @@ const PickProduct = ({ products, selectedRubro }) => {
           ))}
         </tbody>
       </table>
-   
-
     </section>
 
   );

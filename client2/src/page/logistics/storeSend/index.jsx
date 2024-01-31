@@ -6,6 +6,7 @@ import Loading from "../../../components/contents/Loading";
 import utilFunctions from "../../../utils/logistics"
 import BarcodeReader from "../../../components/BarcodeReader";
 import PickProduct from "../../../components/PickProduct";
+import ErrorModal from "../../../components/contents/ErrorModal";
 
 
 export default function StoreSendPage() {
@@ -14,6 +15,19 @@ export default function StoreSendPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [processedProducts, setProcessedProducts] = useState(null);
     const [selectedRubro, setSelectedRubro] = useState('');
+
+    const [showModal, setShowModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState({ title: '', description: '' });
+
+  
+    const handleError = ({ title, description }) => {
+        setErrorMessage({ title, description });
+        setShowModal(true);
+      };
+  
+    const handleClose = () => {
+      setShowModal(false);
+    };
 
     const handleRubroChange = (rubro) => {
         setSelectedRubro(rubro);
@@ -51,18 +65,28 @@ export default function StoreSendPage() {
     const handleBarcodeSubmit = (barcode) => {
         console.log("Código de barras recibido:", barcode);
     
-        // Actualizar el estado de los productos con el nuevo conteo de escaneos
         const updatedProducts = products.Articulos.map((product) => {
             if (product.CodigoBarras === barcode) {
-                // Si el producto no tiene el atributo Scan, inicialízalo en 0
                 const initialScanCount = product.Scan || 0;
-                return { ...product, Scan: initialScanCount + 1 };
+                const difference = initialScanCount - product.Saldo * -1;
+    
+                if (difference >= 0) {
+                    // Si ya se escaneó más de lo permitido, muestra el error y no incrementes el Scan.
+                    handleError({ 
+                        title: `Escaneo de más ${product.Cabecera}`, 
+                        description: `Se escaneó una unidad más de la necesaria del ${product.Cabecera} ${product.Medida} ${product.DescripDetalle}` 
+                    });
+                } else {
+                    // Solo incrementa Scan si aún no se ha excedido el saldo.
+                    return { ...product, Scan: initialScanCount + 1 };
+                }
             }
             return product;
         });
     
         setProducts({ ...products, Articulos: updatedProducts });
     };
+    
     
     
 
@@ -87,7 +111,7 @@ export default function StoreSendPage() {
                     {processedProducts && <PickProduct products={products.Articulos} selectedRubro={selectedRubro} />}
                 </>
             )}
-
+            <ErrorModal show={showModal} error={errorMessage} handleClose={handleClose} />
         </>
     );
     

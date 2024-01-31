@@ -6,19 +6,24 @@ const SidebarLinks = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     useEffect(() => {
-        // Verifica si la ruta actual es parte del menú "Estadísticas"
-        if (location.pathname.startsWith("/dashboard/sales")) {
-            setIsDropdownOpen(true);
-        } else {
-            setIsDropdownOpen(false);
-        }
+        setIsDropdownOpen(location.pathname.startsWith("/dashboard"));
     }, [location]);
+
+    const handleCloseOffcanvas = () => {
+        const closeButton = document.querySelector('#offcanvasNavbar .btn-close');
+        if (closeButton) {
+            closeButton.click();
+        }
+    };
 
     return (
         <div className="offcanvas-body">
             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li className="nav-item">
-                    <NavLink to="/dashboard" className={({ isActive }) => isActive ? "nav-link active " : "nav-link"}>Inicio</NavLink>
+                    <NavLink to="/dashboard" 
+                    className={({ isActive }) => isActive ? "nav-link active " : "nav-link"}
+                    onClick={handleCloseOffcanvas}>Inicio</NavLink>
+                    
                 </li>
                 <li className={`nav-item dropdown ${isDropdownOpen ? "show" : ""}`}>
                     <a className="nav-link dropdown-toggle" href="#" role="button" 
@@ -28,9 +33,9 @@ const SidebarLinks = () => {
                     <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
                         <li>
                             <NavLink 
-                            to="/dashboard/sales"
-                            className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
-                            
+                                to="/dashboard/sales"
+                                className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                                onClick={handleCloseOffcanvas}
                             >
                                 Ventas
                             </NavLink>
@@ -48,6 +53,7 @@ const SidebarLinks = () => {
                             <NavLink 
                             to="/dashboard/logistics/storesend"
                             className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            onClick={handleCloseOffcanvas}
                             >
                                 Peparacion Tienda
                             </NavLink>
@@ -65,6 +71,7 @@ const SidebarLinks = () => {
                             <NavLink 
                             to="/dashboard/qr/list"
                             className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            onClick={handleCloseOffcanvas}
                             >
                                 Listado
                             </NavLink>
@@ -73,6 +80,7 @@ const SidebarLinks = () => {
                             <NavLink 
                             to="/dashboard/qr/create"
                             className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                            onClick={handleCloseOffcanvas}
                             >
                                 Nuevo Qr
                             </NavLink>

@@ -1,10 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './page/auth/login';
 import CompanyPage from './page/company';
 import DashboardPage from './page/dashboard';
 import ProtectedRoute from './hooks/useSecurity';
 import ShowQrVcardPage from './page/qr/ShowQr/Vcard';
 import ForgotPasswordPage from './page/auth/forgotpassword';
+
+
 
 function App() {
   return (
