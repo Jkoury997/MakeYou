@@ -16,7 +16,7 @@ const login = async (email, password) => {
         if (data.Estado) {
             // Inicio de sesión exitoso
             // Procesar datos de usuario, como guardar el AccessKey y otros detalles
-            Cookies.set('AccessKey', data.AccessKey, { expires: 2 }); // Expira en 1 día, ajusta según necesites
+            Cookies.set('AccessKey', data.AccessKey, { expires: 1 }); // Expira en 1 día, ajusta según necesites
             return data;
         } else {
             // Inicio de sesión fallido, manejar el error
@@ -45,7 +45,7 @@ const userAccess = async (Empresa) => {
          if (data.Estado) {
             // Inicio de sesión exitoso
             // Procesar datos de usuario, como guardar el AccessKey y otros detalles
-            Cookies.set('Token', data.Token, { expires: 2 }); // Expira en 1 día, ajusta según necesites
+            Cookies.set('Token', data.Token, { expires: 1 }); // Expira en 1 día, ajusta según necesites
             return data;
         } else {
             // Inicio de sesión fallido, manejar el error
