@@ -10,13 +10,11 @@ export default function BarcodeReader({ onBarcodeSubmit }) {
 
     const handleKeyDown = e => {
         if (e.key === 'Enter') {
-            handleSubmit();
+            onBarcodeSubmit(barcode);
+            setBarcode('');
         }
     };
-    const handleSubmit = () => {
-        onBarcodeSubmit(barcode);
-        setBarcode('');
-    };
+
 
 
     return (
@@ -35,9 +33,6 @@ export default function BarcodeReader({ onBarcodeSubmit }) {
                     />
                     <label htmlFor="barcodeScan">Código de barras</label>
                 </div>
-                <span className="input-group-text">
-                    <button onClick={handleSubmit}><i className="bi bi-upc-scan"></i></button>
-                </span>
             </div>
         </div>
     );
