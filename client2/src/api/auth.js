@@ -1,10 +1,11 @@
 import Cookies from "js-cookie";
 
 const login = async (email, password) => {
-    if (Cookies.get('AccessKey')) {
-        Cookies.remove('AccessKey');
-    }
     try {
+
+        if (Cookies.get('AccessKey')) {
+            Cookies.remove('AccessKey');
+        }
 
         const response = await fetch('/api/Login', {
             method: 'POST',
@@ -35,10 +36,11 @@ const login = async (email, password) => {
 
 const userAccess = async (Empresa) => {
     const AccessKey = Cookies.get('AccessKey');
-    if (AccessKey) {
-        Cookies.remove('AccessKey');
-    }
+    
     try {
+        if (AccessKey) {
+            Cookies.remove('AccessKey');
+        }
         const response = await fetch('/api/UserAccess',{
             method: 'POST',
             headers: {
