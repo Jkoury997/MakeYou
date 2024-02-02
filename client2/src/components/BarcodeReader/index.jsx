@@ -18,7 +18,7 @@ export default function BarcodeReader({ onBarcodeSubmit }) {
 
 
     return (
-        <div className='fixed-bottom'>
+        <div className='fixed-bottom mb-0'>
             <div className="input-group">
                 <span className="input-group-text"><i className="bi bi-upc-scan"></i></span>
                 <div className="form-floating">
