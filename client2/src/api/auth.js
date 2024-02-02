@@ -1,7 +1,11 @@
 import Cookies from "js-cookie";
 
 const login = async (email, password) => {
+    if (Cookies.get('AccessKey')) {
+        Cookies.remove('AccessKey');
+    }
     try {
+
         const response = await fetch('/api/Login', {
             method: 'POST',
             headers: {
@@ -30,7 +34,10 @@ const login = async (email, password) => {
 };
 
 const userAccess = async (Empresa) => {
-    const AccessKey = Cookies.get('AccessKey')
+    const AccessKey = Cookies.get('AccessKey');
+    if (AccessKey) {
+        Cookies.remove('AccessKey');
+    }
     try {
         const response = await fetch('/api/UserAccess',{
             method: 'POST',
