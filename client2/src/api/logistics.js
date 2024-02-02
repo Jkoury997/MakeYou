@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 const Token = Cookies.get("Token")
 
 const stores = async () => {
+    console.log(Token)
     try {
         const response = await fetch('/logistics/api/Catalogos/Tiendas', {
             method: 'GET',
@@ -11,7 +12,6 @@ const stores = async () => {
                 'Token': Token
             }
         });
-
         const data = await response.json();
         if (!data.Estado) {
             throw new Error('La respuesta de la red no fue ok');
@@ -21,6 +21,7 @@ const stores = async () => {
         console.error('Hubo un problema con la solicitud fetch:', error);
         throw error;
     }
+
 }
 
 const preparationstore = async (store) => {

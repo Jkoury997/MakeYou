@@ -35,11 +35,13 @@ export default function StoreSendPage() {
         setSelectedRubro(rubro);
     };
 
+
+
     useEffect(() => {
         const fetchStores = async () => {
             try {
-                const response = await logisticsApi.stores(); 
-                setStores(response.Lista);
+                const response = await logisticsApi.stores();
+                    setStores(response.Lista);
             } catch (error) {
                 console.error("Error al cargar las tiendas:", error);
             }
@@ -47,6 +49,7 @@ export default function StoreSendPage() {
 
         fetchStores();
     }, []);
+    
 
     const handleCompanySelect = async (storeCode) => {
         setIsLoading(true);
