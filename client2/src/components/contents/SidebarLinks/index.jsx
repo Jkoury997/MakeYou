@@ -106,6 +106,38 @@ const SidebarLinks = () => {
                         {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
                     </ul>
                 </li>
+                {/* Supplier */}
+                <li className={`nav-item dropdown ${isDropdownActive('supplier') ? "show" : ""}`}>
+                    <button className="nav-link dropdown-toggle" onClick={() => toggleDropdown('supplier')}>
+                        Provedores
+                    </button>
+                    <ul className={`dropdown-menu ${isDropdownActive('supplier') ? "show" : ""}`}>
+                        <li>
+                            <NavLink to="/dashboard/supplier/debt"
+                                className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                                onClick={handleCloseOffcanvas}>
+                                Deuda
+                            </NavLink>
+                        </li>
+                        {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
+                    </ul>
+                </li>
+                {/* Csutomer */}
+                <li className={`nav-item dropdown ${isDropdownActive('customer') ? "show" : ""}`}>
+                    <button className="nav-link dropdown-toggle" onClick={() => toggleDropdown('customer')}>
+                        Clientes
+                    </button>
+                    <ul className={`dropdown-menu ${isDropdownActive('customer') ? "show" : ""}`}>
+                        <li>
+                            <NavLink to="/dashboard/customer/debt"
+                                className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                                onClick={handleCloseOffcanvas}>
+                                Deuda
+                            </NavLink>
+                        </li>
+                        {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
+                    </ul>
+                </li>
             </ul>
         </div>
     );
