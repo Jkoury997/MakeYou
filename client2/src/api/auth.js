@@ -2,33 +2,27 @@ import Cookies from "js-cookie";
 
 const login = async (email, password) => {
     try {
-
-        if (Cookies.get('AccessKey')) {
-            Cookies.remove('AccessKey');
-        }
-
         const response = await fetch('/api/Login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ Usuario : email, Password: password }),
+            body: JSON.stringify({ Usuario: email, Password: password }),
         });
 
         const data = await response.json();
 
-        // Verificar el estado de la respuesta
         if (data.Estado) {
-            // Inicio de sesión exitoso
-            // Procesar datos de usuario, como guardar el AccessKey y otros detalles
-            Cookies.set('AccessKey', data.AccessKey, { expires: 1 }); // Expira en 1 día, ajusta según necesites
+            // Si el inicio de sesión es exitoso, entonces reemplaza el AccessKey existente
+            if (Cookies.get('AccessKey')) {
+                Cookies.remove('AccessKey');
+            }
+            Cookies.set('AccessKey', data.AccessKey, { expires: 1 }); // Expira en 1 día
             return data;
         } else {
-            // Inicio de sesión fallido, manejar el error
             throw new Error(data.Mensaje || 'Error desconocido');
         }
     } catch (error) {
-        // Manejo de errores de red u otros errores inesperados
         console.error('Error during login:', error);
         throw error;
     }
@@ -37,34 +31,33 @@ const login = async (email, password) => {
 const userAccess = async (Empresa) => {
     const AccessKey = Cookies.get('AccessKey');
     
+    if (!AccessKey) {
+        throw new Error('AccessKey not found. Please login again.');
+    }
+
     try {
-        if (AccessKey) {
-            Cookies.remove('AccessKey');
-        }
-        const response = await fetch('/api/UserAccess',{
+        const response = await fetch('/api/UserAccess', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ AccessKey : AccessKey, Empresa: Empresa }),
+            body: JSON.stringify({ AccessKey, Empresa }),
         });
 
         const data = await response.json();
-         // Verificar el estado de la respuesta
-         if (data.Estado) {
-            // Inicio de sesión exitoso
-            // Procesar datos de usuario, como guardar el AccessKey y otros detalles
-            Cookies.set('Token', data.Token, { expires: 1 }); // Expira en 1 día, ajusta según necesites
+
+        if (data.Estado) {
+            // Si necesitas realizar alguna acción con el nuevo token, hazlo aquí
+            Cookies.set('Token', data.Token, { expires: 1 }); // Expira en 1 día
             return data;
         } else {
-            // Inicio de sesión fallido, manejar el error
             throw new Error(data.Mensaje || 'Error desconocido');
         }
     } catch (error) {
-        console.error('Error during company:', error);
+        console.error('Error during company access:', error);
         throw error;
     }
-}
+};
 
 const forgotPassword = async (email) => {
     try {
@@ -94,10 +87,44 @@ const forgotPassword = async (email) => {
     }
 };
 
+const resetPassword = async ( Email, Codigo, NuevaClave) => {
+    const Newpassword = {
+        Email,
+        Codigo,
+        NuevaClave
+    };
+
+    console.log(Email)
+
+    try {
+        const response = await fetch('/api/CambiarClave', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(Newpassword)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.Mensaje || 'Error desconocido al cambiar la contraseña');
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Error al cambiar la contraseña:', error);
+        throw error;
+    }
+};
+
+
 
 export default {
     login,
     userAccess,
-    forgotPassword
+    forgotPassword,
+    resetPassword
     // ...otros métodos relacionados con la autenticación
 };

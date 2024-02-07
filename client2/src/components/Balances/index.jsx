@@ -1,14 +1,16 @@
 import React from 'react';
 
-function Balances({ lista }) {
+function Balances({ lista, tipo}) {
      // Calcular los totales
   const totalPositivos = lista.Lista.filter(item => item.Saldo >= 0).reduce((total, item) => total + item.Saldo, 0);
   const totalNegativos = lista.Lista.filter(item => item.Saldo < 0).reduce((total, item) => total + item.Saldo, 0);
   const diferencia = totalPositivos + totalNegativos; // Suma ya que totalNegativos es negativo
 
+  
+
   return (
     <div className="container mt-2">
-      <h1 className="mb-4">Resumen Financiero de Proveedores</h1>
+      <h1 className="mb-4">Resumen Financiero de {tipo === "customer" ? "Clientes" : "Provedores"} </h1>
       <div className="row mb-4">
         <div className="col-md-4">
           <div className="alert alert-success" role="alert">
@@ -28,7 +30,7 @@ function Balances({ lista }) {
       </div>
       <div className="row">
         <div className="col">
-          <h2 className="mb-3">Deuda</h2>
+          <h2 className="mb-3">{tipo === "customer" ? "Deuda Clientes" : "Deuda Provedores"}</h2>
           {lista.Lista.filter(item => item.Saldo >= 0).map((item, index) => (
             <div key={index} className="card mb-3">
               <div className="card-body">
@@ -39,7 +41,7 @@ function Balances({ lista }) {
           ))}
         </div>
         <div className="col">
-          <h2 className="mb-3">Adelantado</h2>
+          <h2 className="mb-3">{tipo === "customer" ? "Adelanto Clientes" : "Adelanto Provedores"}</h2>
           {lista.Lista.filter(item => item.Saldo < 0).map((item, index) => (
             <div key={index} className="card mb-3">
               <div className="card-body">

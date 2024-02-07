@@ -65,7 +65,7 @@ export default function SuppleirDebtPage() {
                 <Loading />
             ) : (
                 <>
-                    <Balances lista={{ ...datos, Lista: filteredData }} />
+                    <Balances lista={{ ...datos, Lista: filteredData }} tipo ={"suppleir"} />
                 </>
             )}
         </div>

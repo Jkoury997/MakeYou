@@ -1,35 +1,20 @@
 import React, { useState } from 'react';
-import ForgotPassword from "../../../components/Auth/ForgotPassword";
-import authService from "../../../api/auth";
+import RequestResetPassword from '../../../components/Auth/RequestResetPassword';
+import ResetPassword from '../../../components/Auth/ResetPassword';
 
-export default function ForgotPasswordPage() {
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
+function PasswordRecovery() {
+  const [isResetRequested, setIsResetRequested] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Aquí manejas la solicitud al servidor
-        // Por ejemplo, una solicitud POST
-        try {
-            const response = await authService.forgotPassword(email)
-            setMessage(response.Mensaje);
-            console.log(response)
-        } catch (error) {
-            setMessage(response.Mensaje);
-            console.error('Error al enviar la solicitud:', error);
-        }
-    };
-
-    return (
-        <ForgotPassword 
-            email={email} 
-            onEmailChange={handleEmailChange} 
-            onSubmit={handleSubmit} 
-            message={message}
-        />
-    );
+  return (
+    <div>
+      {!isResetRequested ? (
+        <RequestResetPassword onResetRequested={() => setIsResetRequested(true)} />
+      ) : (
+        <ResetPassword />
+      )}
+    </div>
+  );
 }
+
+export default PasswordRecovery;

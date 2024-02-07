@@ -9,6 +9,7 @@ import StoreSendPage from '../logistics/storeSend';
 import AutorizationPage from '../stores/autorization';
 import SupplierDebtPage from '../supplier/debt';
 import CustomerDebtPage from '../customer/debt';
+import StockPage from '../stores/stock';
 
 // Otros componentes de página
 
@@ -49,6 +50,7 @@ const Dashboard = () => {
                 <Route path='logistics/storesend' element={<StoreSendPage />} />
                 {/* Stores*/}
                 <Route path='stores/autorization' element={<AutorizationPage />} />
+                <Route path='stores/stock' element={<StockPage />} />
                 {/* Suplier*/}
                 <Route path='supplier/debt' element={<SupplierDebtPage/>} />
                 {/* Customer*/}

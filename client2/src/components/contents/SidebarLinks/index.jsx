@@ -103,6 +103,13 @@ const SidebarLinks = () => {
                                 Autorizaciones
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/dashboard/stores/stock"
+                                className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                                onClick={handleCloseOffcanvas}>
+                                Stock
+                            </NavLink>
+                        </li>
                         {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
                     </ul>
                 </li>

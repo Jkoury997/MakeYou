@@ -65,7 +65,7 @@ export default function CustomerDebtPage() {
                 <Loading />
             ) : (
                 <>
-                    <Balances lista={{ ...datos, Lista: filteredData }} />
+                    <Balances lista={{ ...datos, Lista: filteredData }} tipo ={"customer"}  />
                 </>
             )}
         </div>
