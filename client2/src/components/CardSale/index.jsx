@@ -36,6 +36,7 @@ const CardSale = ({data}) => {
                                         <span className="card-text fs-1">{Pesos(data.Bruto)}</span>
                                             <span 
                                                 className={`badge rounded-pill ${calcularCambioPorcentual(data.Bruto, data.comparative.Bruto) >= 0 ? 'text-bg-success' : 'text-bg-danger'}`}
+                                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top"
                                             >
                                                 {calcularCambioPorcentual(data.Bruto, data.comparative.Bruto).toFixed(2)} %
                                             </span>

@@ -37,7 +37,6 @@ const Dashboard = () => {
         googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
         libraries={libraries}
         >
-            <div className="container-fluid">
             <Header user={user} />
             <main className="container-fluid">
             <Routes>
@@ -58,7 +57,6 @@ const Dashboard = () => {
 
             </Routes>
             </main>
-        </div>
         </LoadScript>
 
         

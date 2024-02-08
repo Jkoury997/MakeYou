@@ -10,7 +10,7 @@ function Balances({ lista, tipo}) {
 
   return (
     <div className="container mt-2">
-      <h1 className="mb-4">Resumen Financiero de {tipo === "customer" ? "Clientes" : "Provedores"} </h1>
+      <h2 className="mb-4">Resumen Financiero de {tipo === "customer" ? "Clientes" : "Provedores"} </h2>
       <div className="row mb-4">
         <div className="col-md-4">
           <div className="alert alert-success" role="alert">
@@ -30,7 +30,7 @@ function Balances({ lista, tipo}) {
       </div>
       <div className="row">
         <div className="col">
-          <h2 className="mb-3">{tipo === "customer" ? "Deuda Clientes" : "Deuda Provedores"}</h2>
+          <h3 className="mb-3">{tipo === "customer" ? "Deuda Clientes" : "Deuda Provedores"}</h3>
           {lista.Lista.filter(item => item.Saldo >= 0).map((item, index) => (
             <div key={index} className="card mb-3">
               <div className="card-body">
@@ -41,7 +41,7 @@ function Balances({ lista, tipo}) {
           ))}
         </div>
         <div className="col">
-          <h2 className="mb-3">{tipo === "customer" ? "Adelanto Clientes" : "Adelanto Provedores"}</h2>
+          <h3 className="mb-3">{tipo === "customer" ? "Adelanto Clientes" : "Adelanto Provedores"}</h3>
           {lista.Lista.filter(item => item.Saldo < 0).map((item, index) => (
             <div key={index} className="card mb-3">
               <div className="card-body">
