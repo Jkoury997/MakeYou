@@ -34,7 +34,7 @@ const Sales = () => {
 
         try {
             const currentData = await analyticsApi.saleVariable(startDate, endDate);
-        let comparativeData = [];
+            let comparativeData = [];
     
         if (comparative === "month") {
             comparativeData = await analyticsApi.saleVariable(atrasarUnMes(startDate), atrasarUnMes(endDate));
@@ -61,13 +61,13 @@ const Sales = () => {
 
     return (
         <div>
-            <FilterDate onDateChange={handleDateChange} />
+            <FilterDate onDateChange={handleDateChange} isComparativeEnabled={true} />
             {isLoading ? (
               <Loading />
             ) : (
                 <div className="row row-cols-1 row-cols-md-2 g-4">
                     {data.map((item) => (
-                        <CardSale key={item.uuid} data={item} />
+                        <CardSale key={item.uuid} data={item} valorTitulo={0}/>
                     ))}
                 </div>
             )}

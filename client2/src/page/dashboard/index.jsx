@@ -10,6 +10,7 @@ import AutorizationPage from '../stores/autorization';
 import SupplierDebtPage from '../supplier/debt';
 import CustomerDebtPage from '../customer/debt';
 import StockPage from '../stores/stock';
+import PaymentMethodsPage from '../analytics/paymentMethods';
 
 // Otros componentes de página
 
@@ -41,7 +42,8 @@ const Dashboard = () => {
             <main className="container-fluid">
             <Routes>
                 {/* Analitics*/}
-                <Route path="sales" element={<Sales />} />
+                <Route path="analytics/sales" element={<Sales />} />
+                <Route path="analytics/paymentmethods" element={<PaymentMethodsPage />} />
                 {/* QR*/}
                 <Route path="qr/create" element={<CreateQrPage />} />
                 <Route path='qr/list' element={<ListQrPage />}/>

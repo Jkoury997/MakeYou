@@ -37,16 +37,23 @@ const SidebarLinks = () => {
                 </li>
 
                 {/* Estadísticas */}
-                <li className={`nav-item dropdown ${isDropdownActive('estadisticas') ? "show" : ""}`}>
-                    <button className="nav-link dropdown-toggle" onClick={() => toggleDropdown('estadisticas')}>
+                <li className={`nav-item dropdown ${isDropdownActive('analytics') ? "show" : ""}`}>
+                    <button className="nav-link dropdown-toggle" onClick={() => toggleDropdown('analytics')}>
                         Estadísticas
                     </button>
-                    <ul className={`dropdown-menu ${isDropdownActive('estadisticas') ? "show" : ""}`}>
+                    <ul className={`dropdown-menu ${isDropdownActive('analytics') ? "show" : ""}`}>
                         <li>
-                            <NavLink to="/dashboard/sales"
+                            <NavLink to="/dashboard/analytics/sales"
                                 className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
                                 onClick={handleCloseOffcanvas}>
                                 Ventas
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/dashboard/analytics/paymentmethods"
+                                className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                                onClick={handleCloseOffcanvas}>
+                                Cobros
                             </NavLink>
                         </li>
                         {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
