@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 const login = async (email, password) => {
     try {
         const response = await fetch('/api/Login', {
@@ -12,13 +10,15 @@ const login = async (email, password) => {
 
         const data = await response.json();
 
+
         if (data.Estado) {
+            console.log("Entre")
             // Si el inicio de sesión es exitoso, entonces reemplaza el AccessKey existente
-            if (Cookies.get('AccessKey')) {
-                Cookies.remove('AccessKey');
+            if (localStorage.getItem('AccessKey')) {
+                localStorage.removeItem('AccessKey'); // Eliminar AccessKey existente
             }
-            Cookies.set('AccessKey', data.AccessKey, { expires: 1 }); // Expira en 1 día
-            return data;
+            localStorage.setItem('AccessKey', data.AccessKey); // Almacenar nuevo AccessKey
+            return data
         } else {
             throw new Error(data.Mensaje || 'Error desconocido');
         }
@@ -29,7 +29,7 @@ const login = async (email, password) => {
 };
 
 const userAccess = async (Empresa) => {
-    const AccessKey = Cookies.get('AccessKey');
+    const AccessKey = localStorage.getItem('AccessKey');
     
     if (!AccessKey) {
         throw new Error('AccessKey not found. Please login again.');
@@ -47,8 +47,8 @@ const userAccess = async (Empresa) => {
         const data = await response.json();
 
         if (data.Estado) {
-            // Si necesitas realizar alguna acción con el nuevo token, hazlo aquí
-            Cookies.set('Token', data.Token, { expires: 1 }); // Expira en 1 día
+            localStorage.setItem('Token', data.Token);
+            console.log(data.Token) // Almacenar nuevo Token
             return data;
         } else {
             throw new Error(data.Mensaje || 'Error desconocido');

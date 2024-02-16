@@ -1,8 +1,8 @@
-import Cookies from "js-cookie";
 
-const Token = Cookies.get('Token')
+
 
 const saleVariable = async (dataFrom,dataTo) => {
+    const Token = localStorage.getItem('Token')
 
     try {
         const response = await fetch(`/analytics/api/ConsultasTiendas/Variables?Desde=${dataFrom}&Hasta=${dataTo}`,{
@@ -29,6 +29,7 @@ const saleVariable = async (dataFrom,dataTo) => {
 }
 
 const paymentMetheods = async (dataFrom,dataTo) => {
+    const Token = localStorage.getItem('Token')
 
     try {
         const response = await fetch(`/analytics/api/ConsultasTiendas/ResumenCobranzas?Desde=${dataFrom}&Hasta=${dataTo}`,{

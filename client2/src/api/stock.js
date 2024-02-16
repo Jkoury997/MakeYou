@@ -1,10 +1,10 @@
-import Cookies from "js-cookie";
 
-// Obtener el token almacenado en las cookies
-const Token = Cookies.get('Token');
+
+
 
 const getFilter = async () => {
-    console.log(Token)
+    // Obtener el token almacenado en las cookies
+const Token = localStorage.getItem('Token')
     try {
         const response = await fetch(`/stores/api/Stock/GetFiltrosStock`, {
             method: 'Get',

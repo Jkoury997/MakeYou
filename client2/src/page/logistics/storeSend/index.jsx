@@ -39,11 +39,14 @@ export default function StoreSendPage() {
 
     useEffect(() => {
         const fetchStores = async () => {
+            setIsLoading(true); // Inicia el estado de carga
             try {
                 const response = await logisticsApi.stores();
-                    setStores(response.Lista);
+                setStores(response.Lista);
             } catch (error) {
                 console.error("Error al cargar las tiendas:", error);
+            } finally {
+                setIsLoading(false); // Finaliza el estado de carga
             }
         };
 
@@ -109,20 +112,20 @@ export default function StoreSendPage() {
 
     return (
         <>
+        {isLoading ? (
+            <Loading /> // Muestra el indicador de carga mientras isLoading sea true
+        ) : (
             <StoreSelect stores={stores} onCompanySelect={handleCompanySelect} />
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <>
-                    {processedProducts && <FilterRubro rubros={processedProducts} onRubroSelect={handleRubroChange} />}
-                    
-                    {processedProducts && <PickProduct products={products.Articulos} selectedRubro={selectedRubro} lastScannedBarcode={lastScannedBarcode} />}
-
-                    {processedProducts && <BarcodeReader onBarcodeSubmit={handleBarcodeSubmit} />}
-                </>
-            )}
-            <ErrorModal show={showModal} error={errorMessage} handleClose={handleClose} />
-        </>
+        )}
+        {!isLoading && (
+            <>
+                {processedProducts && <FilterRubro rubros={processedProducts} onRubroSelect={handleRubroChange} />}
+                {processedProducts && <PickProduct products={products.Articulos} selectedRubro={selectedRubro} lastScannedBarcode={lastScannedBarcode} />}
+                {processedProducts && <BarcodeReader onBarcodeSubmit={handleBarcodeSubmit} />}
+            </>
+        )}
+        <ErrorModal show={showModal} error={errorMessage} handleClose={handleClose} />
+    </>
     );
     
 }

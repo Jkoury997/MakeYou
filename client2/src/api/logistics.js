@@ -1,9 +1,9 @@
-import Cookies from "js-cookie";
 
-const Token = Cookies.get("Token")
+
 
 const stores = async () => {
-    console.log(Token)
+    const Token = localStorage.getItem('Token')
+
     try {
         const response = await fetch('/logistics/api/Catalogos/Tiendas', {
             method: 'GET',
@@ -13,10 +13,15 @@ const stores = async () => {
             }
         });
         const data = await response.json();
-        if (!data.Estado) {
-            throw new Error('La respuesta de la red no fue ok');
+
+        if (data.Estado) {
+            return data
+        } else {
+            throw new Error(data.Mensaje || 'Error desconocido');
         }
-        return data;
+
+
+
     } catch (error) {
         console.error('Hubo un problema con la solicitud fetch:', error);
         throw error;
@@ -25,6 +30,7 @@ const stores = async () => {
 }
 
 const preparationstore = async (store) => {
+    const Token = localStorage.getItem('Token')
 
     try{
         const response = await fetch(`/logistics/api/Envios/ConsultarEnvio?Tienda=${store}`,{

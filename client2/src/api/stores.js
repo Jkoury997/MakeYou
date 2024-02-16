@@ -1,9 +1,10 @@
-import Cookies from "js-cookie";
 
-// Obtener el token almacenado en las cookies
-const Token = Cookies.get('Token');
+
+
 
 const AuthorizationInfo = async (codigo) => {
+    const Token = localStorage.getItem('Token')
+
     try {
         const response = await fetch(`/stores/api/Autorizaciones/InfoCodigoAutorizacion?Codigo=${codigo}`, {
             method: 'POST',
@@ -23,6 +24,8 @@ const AuthorizationInfo = async (codigo) => {
 };
 
 const printVoucher = async (codigo) =>{
+    const Token = localStorage.getItem('Token')
+
     try {
         const response = await fetch(`/stores/api/Autorizaciones/ReimprimeVoucher?Codigo=${codigo}`, {
             method: 'POST',
@@ -42,6 +45,8 @@ const printVoucher = async (codigo) =>{
 }
 
 const declineOperation = async (codigo) => {
+    const Token = localStorage.getItem('Token')
+
     try {
         const response = await fetch(`/stores/api/Autorizaciones/RechazarOperacion?Codigo=${codigo}`, {
             method: 'POST',
@@ -61,6 +66,8 @@ const declineOperation = async (codigo) => {
 }
 
 const cancelInvoice = async (codigo) => {
+    const Token = localStorage.getItem('Token')
+
     try {
         const response = await fetch(`/stores/api/Autorizaciones/AnularFactura?Codigo=${codigo}`, {
             method: 'POST',

@@ -1,8 +1,9 @@
-import Cookies from "js-cookie";
 
-const Token = Cookies.get('Token')
+
 
 const DebtSupplier = async (filtro) => {
+    const Token = localStorage.getItem('Token')
+
 
     try {
         const response = await fetch(`/analytics/api/CuentasCorrientes/SaldoProveedores?Tipo=${filtro}`, {

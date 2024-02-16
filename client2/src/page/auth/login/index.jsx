@@ -13,8 +13,8 @@ export default function LoginPage() {
         e.preventDefault();
         try {
             const userData = await authService.login(email, password);
+            console.log(userData); // Debería mostrar los datos como en tu salida compartida
             if (userData.Estado) {
-                // Guardar datos del usuario en Local Storage
                 localStorage.setItem('userDataLogin', JSON.stringify(userData));
                 navigate('/company');
             } else {
