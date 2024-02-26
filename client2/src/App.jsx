@@ -6,6 +6,7 @@ import DashboardPage from './page/dashboard';
 import ProtectedRoute from './hooks/useSecurity';
 import ShowQrVcardPage from './page/qr/ShowQr/Vcard';
 import ForgotPasswordPage from './page/auth/forgotpassword';
+import GiftCami from './page/RegaloCami';
 
 
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/dashboard/*" element={<ProtectedRoute><DashboardPage/></ProtectedRoute>}/>
         <Route path='/showqr/:id' element={<ShowQrVcardPage />}/>
+        <Route path='/Regalo' element={<GiftCami></GiftCami>} />
       </Routes>
     </BrowserRouter>
   );
