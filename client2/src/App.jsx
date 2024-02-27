@@ -19,7 +19,6 @@ function App() {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/dashboard/*" element={<ProtectedRoute><DashboardPage/></ProtectedRoute>}/>
         <Route path='/showqr/:id' element={<ShowQrVcardPage />}/>
-        <Route path='/Regalo' element={<GiftCami></GiftCami>} />
       </Routes>
     </BrowserRouter>
   );
