@@ -6,7 +6,6 @@ import DashboardPage from './page/dashboard';
 import ProtectedRoute from './hooks/useSecurity';
 import ShowQrVcardPage from './page/qr/ShowQr/Vcard';
 import ForgotPasswordPage from './page/auth/forgotpassword';
-import GiftCami from './page/RegaloCami';
 
 
 
