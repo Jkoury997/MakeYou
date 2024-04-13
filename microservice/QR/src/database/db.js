@@ -1,8 +1,10 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 async function connectDB() {
+  const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
   try {
-    await mongoose.connect('mongodb://jkoury:w71b51vDNgs9@149.50.130.51:27017/mkapp', {
+    await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 5000 // Mantén esta opción si es necesaria para tu configuración
     });
     console.log('Conectado a MongoDB');
@@ -13,4 +15,3 @@ async function connectDB() {
 }
 
 module.exports = connectDB;
-
