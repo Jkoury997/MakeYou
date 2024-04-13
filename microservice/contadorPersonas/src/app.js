@@ -6,6 +6,8 @@ const dbPassword = process.env.DB_PASSWORD;
 const dbHost = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
 const dbName = process.env.DB_NAME;
+const svHost = process.env.SERVER_HOST;
+const svPort = process.env.SERVER_PORT
 
 const mongoURI = `mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
 
@@ -14,8 +16,8 @@ const { IRTCP } = require('./IRService/tcp');
 
 function initTcp() {
     new IRTCP({
-        port: 8085,
-        host: '192.168.0.165'
+        port: svPort,
+        host: svHost
     });
 }
 
