@@ -155,6 +155,22 @@ const SidebarLinks = () => {
                         {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
                     </ul>
                 </li>
+                {/* IRCOUNTER */}
+                <li className={`nav-item dropdown ${isDropdownActive('ircounter') ? "show" : ""}`}>
+                    <button className="nav-link dropdown-toggle" onClick={() => toggleDropdown('ircounter')}>
+                        Contador Personas
+                    </button>
+                    <ul className={`dropdown-menu ${isDropdownActive('ircounter') ? "show" : ""}`}>
+                        <li>
+                            <NavLink to="/dashboard/ircounter/home"
+                                className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"}
+                                onClick={handleCloseOffcanvas}>
+                                Inicio
+                            </NavLink>
+                        </li>
+                        {/* Agrega aquí otros enlaces de menú desplegable si los necesitas */}
+                    </ul>
+                </li>
             </ul>
         </div>
     );

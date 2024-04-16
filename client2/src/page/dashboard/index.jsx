@@ -11,6 +11,7 @@ import SupplierDebtPage from '../supplier/debt';
 import CustomerDebtPage from '../customer/debt';
 import StockPage from '../stores/stock';
 import PaymentMethodsPage from '../analytics/paymentMethods';
+import IrCounter from '../ircounter';
 
 // Otros componentes de página
 
@@ -56,8 +57,11 @@ const Dashboard = () => {
                 <Route path='supplier/debt' element={<SupplierDebtPage/>} />
                 {/* Customer*/}
                 <Route path='customer/debt' element={<CustomerDebtPage/>} />
+                {/* IrCounter*/}
+                <Route path='ircounter/home' element={<IrCounter/>} />
 
             </Routes>
+
             </main>
         </LoadScript>
 
