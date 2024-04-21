@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recuperación de Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 0px;
+        }
+        .header img {
+            max-width: 100px;
+        }
+        .content {
+            line-height: 1.6;
+        }
+        .otp-code {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgb(255, 238, 254);
+            border: 1px dashed rgb(255, 187, 244);
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+        .logo{
+            width: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="../images/logo-Marcela-Koury.png" alt="Logo de la Empresa" class="logo">
+        </div>
+        <div class="content">
+            <h1>Recuperación de Contraseña</h1>
+            <p>Hola</p>
+            <p>Has solicitado recuperar tu contraseña. Por favor, utiliza el siguiente código para continuar con el proceso:</p>
+            <div class="otp-code">{{otpCode}}</div>
+            <p>Este código es válido solo por unos minutos. No compartas este código con nadie.</p>
+            <p>Si no has solicitado este cambio, por favor ignora este correo electrónico o ponte en contacto con nosotros.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 1996 Marcela Koury. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

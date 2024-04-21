@@ -1,23 +1,20 @@
+import Card from "./components/Card";
+
 const IrCounter = () => {
-    
+
+    const cards = [
+        { id: 1, title: "Entra", count: 278, iconClassName: "bi bi-person-fill-up" },
+        { id: 2, title: "Sale", count: 159, iconClassName: "bi bi-person-fill-down" },
+        { id: 3, title: "Promedio", count: 310, iconClassName: "bi bi-people-fill" }
+    ];
 
     return (
+        <div className="row">
+            {cards.map(card => (
+                <Card key={card.id} title={card.title} count={card.count} iconClassName={card.iconClassName} />
 
-        <div className="card mb-3 mt-2" style={{maxWidth: "540px"}}>
-    <div className="row g-0">
-        <div className="col-md-4" style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <i className="bi bi-person-fill" style={{fontSize: "400%"}}></i>
+            ))}
         </div>
-        <div className="col-md-8">
-            <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p className="card-text"><small className="text-body-secondary">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
-    </div>
-</div>
-
     );
 };
 

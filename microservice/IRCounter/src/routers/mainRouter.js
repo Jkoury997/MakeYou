@@ -7,6 +7,9 @@ const countData = require("./countdataRouter")
 const heartBeat = require("./heartbeatRouter")
 
 
+// Requiere middlewares
+const verifyToken = require("../middlewares/verifyToken")
+router.use(verifyToken)
 
 router.use("/store",storeRoute)
 router.use("/countdata",countData)
