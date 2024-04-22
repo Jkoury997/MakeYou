@@ -1,7 +1,12 @@
-import { Dashboard } from "@/components/component/dashboard";
+import { CardsHome } from "@/components/component/CardsHome";
+import { FilterDate } from "@/components/component/filter-date";
 
 export default function Page() {
     return (
-        <Dashboard></Dashboard>
+        <>
+        <FilterDate></FilterDate>
+        <CardsHome></CardsHome>
+        </>
+        
     );
   }

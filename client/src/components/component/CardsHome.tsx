@@ -4,7 +4,7 @@ import { CardContent, Card } from "@/components/ui/card"
 
 
 
-export function Dashboard() {
+export function CardsHome() {
 
   const cards = [
     {
