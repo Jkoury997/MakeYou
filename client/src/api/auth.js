@@ -32,7 +32,7 @@ const login = async function (email,password) {
 const verifyToken = async function (token) {
   // Obtener el token de las cookies
   const url = 'http://localhost:3004/api/auth/verifyToken'; // URL del endpoint
-  console.log(token)
+
 
   try {
     const response = await fetch(url, {
