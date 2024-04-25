@@ -37,6 +37,7 @@ async function searchAdvanced(data) {
 
     const cookieStore = cookies();
     const token = cookieStore.get("token") // O obtener el token de la manera que prefieras
+    
 
     const response = await fetch(url, {
         method: 'GET',
