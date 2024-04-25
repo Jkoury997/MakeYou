@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const API_URL = process.env.API_URL;  // Asegúrate de que esta variable de entorno esté configurada.
+const AUTH_API_URL = process.env.AUTH_API_URL;  // Asegúrate de que esta variable de entorno esté configurada.
 
 // Middleware para verificar el token y redirigir si no es válido
 export async function middleware(request) {
@@ -15,7 +15,7 @@ export async function middleware(request) {
 
     // Asegúrate de incluir la dirección completa en la solicitud fetch
     try {
-        const response = await fetch(`${API_URL}/api/auth/verifyToken`, {
+        const response = await fetch(`${AUTH_API_URL}/api/auth/verifyToken`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,  // Envía el token en el encabezado Authorization

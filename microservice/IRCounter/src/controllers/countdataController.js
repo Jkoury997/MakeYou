@@ -112,52 +112,35 @@ exports.delete = async (req, res) => {
 // Método para buscar CountData con filtros avanzados
 exports.advancedSearch = async (req, res) => {
     try {
-        const {
-            sn,
-            startDate,
-            endDate,
-            dayOfWeek,
-            idStores // Espera una lista de idStore separados por comas
-        } = req.query;
-
+        const { sn, startDate, endDate, dayOfWeek, idStores } = req.query;
         const query = {};
 
         if (sn) query.sn = sn;
         if (idStores) {
             query.idStore = { $in: idStores.split(',') };
         }
-        if (startDate || endDate) {
-            query.timeStamp = {};
-            if (startDate) {
-                query.timeStamp.$gte = new Date(startDate);
-            }
-            if (endDate) {
-                query.timeStamp.$lte = new Date(endDate);
-            }
+
+        if (startDate) {
+            const startDay = new Date(startDate);
+            startDay.setUTCHours(0, 0, 0, 0); // Ajusta a las 00:00 UTC
+            query.timeStamp = { $gte: startDay };
+        }
+        if (endDate) {
+            const endDay = new Date(endDate);
+            endDay.setUTCHours(23, 59, 59, 999); // Ajusta a las 23:59 UTC
+            query.timeStamp = query.timeStamp || {};
+            query.timeStamp.$lte = endDay;
         }
 
-        // Agregando dinámicamente el filtro por día de la semana si es necesario
         if (dayOfWeek) {
-            const days = dayOfWeek.split(',').map(Number); // Convierte la cadena en un array de números
-            // La agregación para filtrar por día de la semana se manejará aquí
-            const matchDayOfWeek = {
-                $expr: {
-                    $in: [{ $dayOfWeek: "$timeStamp" }, days]
-                }
-            };
-            if (query.timeStamp) {
-                query.timeStamp = { ...query.timeStamp, ...matchDayOfWeek };
-            } else {
-                query.timeStamp = matchDayOfWeek;
-            }
+            const days = dayOfWeek.split(',').map(Number);
+            query.timeStamp = query.timeStamp || {};
+            query.timeStamp.$expr = query.timeStamp.$expr || {};
+            query.timeStamp.$expr.$in = [{ $dayOfWeek: "$timeStamp" }, days];
         }
 
         const countDatas = await CountData.find(query);
-        if (countDatas.length > 0) {
-            res.json(countDatas);
-        } else {
-            res.status(404).json({ message: 'No CountData found matching the criteria.' });
-        }
+        res.json(countDatas.length ? countDatas : { message: 'No data found matching the criteria.' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
