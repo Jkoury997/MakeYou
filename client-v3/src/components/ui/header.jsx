@@ -2,9 +2,10 @@
 import { Button } from "@/components/ui/button"
 
 import { SheetTrigger, SheetTitle, SheetHeader, SheetContent, Sheet } from "@/components/ui/sheet"
-import { NavLinks } from "../NavLinks"
+
 import { Search } from "./search"
 import { UserDropMenu } from "./user"
+import { NavLinks } from "./navlinks"
 
 export default function Header () {
     return (
@@ -41,7 +42,7 @@ export default function Header () {
 
 
 
-function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
+function MenuIcon(props) {
   return (
     <svg
       {...props}

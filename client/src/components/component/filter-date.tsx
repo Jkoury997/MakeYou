@@ -57,7 +57,7 @@ export function FilterDate() {
   )
 }
 
-function CalendarDaysIcon(props) {
+function CalendarDaysIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -85,7 +85,7 @@ function CalendarDaysIcon(props) {
   )
 }
 
-function TrashIcon(props) {
+function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

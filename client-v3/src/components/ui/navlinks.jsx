@@ -46,7 +46,7 @@ export function NavLinks () {
     )
 }
 
-function HomeIcon(props: React.SVGProps<SVGSVGElement>) {
+function HomeIcon(props) {
     return (
       <svg
         {...props}
@@ -68,7 +68,7 @@ function HomeIcon(props: React.SVGProps<SVGSVGElement>) {
 
   
   
-  function LineChartIcon(props: React.SVGProps<SVGSVGElement>) {
+  function LineChartIcon(props) {
     return (
       <svg
         {...props}

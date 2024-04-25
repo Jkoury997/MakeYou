@@ -13,7 +13,7 @@ export default function Brand () {
     )
 }
 
-function Package2Icon(props: React.SVGProps<SVGSVGElement>) {
+function Package2Icon(props) {
     return (
       <svg
         {...props}

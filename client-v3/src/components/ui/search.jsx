@@ -15,7 +15,7 @@ export function Search(){
     )
 }
 
-function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
+function SearchIcon(props) {
     return (
       <svg
         {...props}

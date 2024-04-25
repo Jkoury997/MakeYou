@@ -11,17 +11,17 @@ export default function Page() {
     const router = useRouter(); // Uso correcto del useRouter
 
     // Define correctamente la función handleLogin
-    const handleLogin = async (event) => {
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-            const success = await auth.login(email, password);
-            if (success) {
-                console.log("Login successful");
-                router.push('/dashboard'); // Asegúrate de que esta ruta sea la correcta
-            } else {
-                console.error('Credenciales incorrectas');
-                alert('Credenciales incorrectas'); // Considera un manejo más sofisticado del estado de error
-            }
+        const success = await auth.login(email, password);
+        if (success) {
+            console.log("Login successful");
+            router.push('/dashboard'); // Asegúrate de que esta ruta sea la correcta
+        } else {
+            console.error('Credenciales incorrectas');
+            alert('Credenciales incorrectas'); // Considera un manejo más sofisticado del estado de error
+        }
     };
 
     return (
@@ -30,7 +30,7 @@ export default function Page() {
             setEmail={setEmail}
             password={password}
             setPassword={setPassword}
-            onSubmit={handleLogin}
+            onSubmit={(event) => handleLogin(event)} // Pasar directamente handleLogin que ya maneja el evento
         />
     );
 }

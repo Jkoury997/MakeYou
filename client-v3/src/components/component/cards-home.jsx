@@ -52,7 +52,7 @@ export function CardsHome() {
   )
 }
 
-function DollarSignIcon(props: React.SVGProps<SVGSVGElement>) {
+function DollarSignIcon(props) {
   return (
     <svg
       {...props}
@@ -74,7 +74,7 @@ function DollarSignIcon(props: React.SVGProps<SVGSVGElement>) {
 
 
 
-function PercentIcon(props: React.SVGProps<SVGSVGElement>) {
+function PercentIcon(props) {
   return (
     <svg
       {...props}
@@ -97,7 +97,7 @@ function PercentIcon(props: React.SVGProps<SVGSVGElement>) {
 
 
 
-function ShoppingCartIcon(props: React.SVGProps<SVGSVGElement>) {
+function ShoppingCartIcon(props) {
   return (
     <svg
       {...props}
@@ -119,7 +119,7 @@ function ShoppingCartIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 
-function TrendingUpIcon(props: React.SVGProps<SVGSVGElement>) {
+function TrendingUpIcon(props) {
   return (
     <svg
       {...props}

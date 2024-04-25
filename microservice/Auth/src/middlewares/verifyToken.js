@@ -19,7 +19,13 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Token no válido' });
+    if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Token expirado' });
+    } else if (err.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Token no válido' });
+    } else {
+        return res.status(401).json({ message: 'Error de autenticación' });
+    }
   }
 };
 
