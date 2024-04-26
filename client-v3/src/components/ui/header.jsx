@@ -10,7 +10,6 @@ import { NavLinks } from "./navlinks"
 export default function Header () {
     return (
       <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-
       <Sheet>
           <SheetTrigger asChild>
           <Button className="lg:hidden" size="icon" variant="ghost">
@@ -19,9 +18,8 @@ export default function Header () {
           </Button>
           </SheetTrigger>
           <SheetContent side="left">
-            <SheetHeader>
+            <SheetHeader >
               <SheetTitle>Flow Sense</SheetTitle>
-
             </SheetHeader>
             <div className="flex flex-col gap-2">
              <NavLinks></NavLinks>
