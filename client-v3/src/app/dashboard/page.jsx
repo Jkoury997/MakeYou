@@ -1,10 +1,12 @@
 "use client"
-import { useState,useEffect } from "react";
-import { CardsHome } from "@/components/component/cards-home";
-import {searchAdvanced} from "../api/ircounter/countdata"
-import { Arrow_Up, Arrow_Down } from '@/components/ui/icons';
-import {FilterDate} from "@/components/component/filter-date"
 
+import { useState, useEffect } from "react";
+import { CardsHome } from "@/components/component/cards-home";
+import { searchAdvanced } from "../api/Interna/ircounter/countdata";
+import { Arrow_Up, Arrow_Down, Trending_Up } from '@/components/ui/icons';
+import { FilterDate } from "@/components/component/filter-date";
+import { StoreAll } from "../api/Interna/ircounter/store";
+import { variables } from "../api/Externa/leona/consultaTiendas";
 
 export default function Page() {
     const [cardsData, setCardsData] = useState([]);
@@ -13,44 +15,59 @@ export default function Page() {
         const today = new Date();
         fetchData(today, today);
     }, []);
-    
 
-    // La función fetchData solicita datos basándose en las fechas proporcionadas.
     const fetchData = async (startDate, endDate) => {
         try {
-            const response = await searchAdvanced({ startDate, endDate });
-            if (response && response.length > 0) {
-                const cards = [
-                    {
-                        icon: Arrow_Up,
-                        title: "Entran",
-                        value: response.reduce((acc, curr) => acc + (curr.inCount || 0), 0).toLocaleString()
-                    },
-                    {
-                        icon: Arrow_Down,
-                        title: "Salen",
-                        value: response.reduce((acc, curr) => acc + (curr.outCount || 0), 0).toLocaleString()
-                    },
-                    // Agrega más tarjetas según sea necesario
-                ];
-                setCardsData(cards);
-            } else {
-                console.log("No data found matching the criteria.");
-                setCardsData([]);
-            }
+            const [response, stores, variablesResponse] = await Promise.all([
+                searchAdvanced({ startDate, endDate }),
+                StoreAll(),
+                variables(startDate, endDate)
+            ]);
+
+            const storeNames = new Set(stores.map(store => store.name));
+            const filteredVariables = variablesResponse.Variables.filter(variable => storeNames.has(variable.Tienda));
+
+            const totalTickets = filteredVariables.reduce((acc, variable) => acc + variable.Tickets, 0);
+            const cards = calculateCardsData(response, filteredVariables, totalTickets);
+            setCardsData(cards);
         } catch (error) {
             console.error("Error fetching data:", error);
             setCardsData([]);
+            // Optionally update state to show error message in UI
         }
     };
 
-    // handleDateChange se llama cuando se presiona el botón de buscar en FilterDate.
+    const calculateCardsData = (response, filteredVariables, totalTickets) => {
+        const totalInCount = response.reduce((acc, curr) => acc + (curr.inCount || 0), 0);
+        const conversion = totalTickets / totalInCount;
+        const cantSN = new Set(response.map(item => item.sn)).size;
+
+        return [
+            {
+                icon: Arrow_Up,
+                title: "Entran",
+                value: totalInCount.toLocaleString()
+            },
+            {
+                icon: Arrow_Down,
+                title: "Salen",
+                value: response.reduce((acc, curr) => acc + (curr.outCount || 0), 0).toLocaleString()
+            },
+            {
+                icon: Trending_Up,
+                title: `Promedio (${cantSN})`,
+                value: (totalInCount / cantSN).toLocaleString()
+            },
+            {
+                icon: Trending_Up,
+                title: "Conversión Global",
+                value: `${(conversion * 100).toFixed(2)} %`
+            }
+        ];
+    };
+
     const handleSearch = (start, end) => {
-        // Convertir las fechas a formato ISO String para la consulta API.
-        const startDate = start;
-        const endDate = end;
-        console.log(startDate)
-        fetchData(startDate,endDate)
+        fetchData(start, end);
     };
 
     return (

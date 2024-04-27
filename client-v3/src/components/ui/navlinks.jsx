@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from 'clsx';
+import { Settings } from "./icons";
 
 
 
@@ -16,6 +17,11 @@ const links = [
     name: 'Analisis', 
     href: '/dashboard/analytics', 
     icon: LineChartIcon 
+  },
+  {
+    name: "Configuracion",
+    href:"/dashboard/settings",
+    icon: Settings
   }
 ];
 

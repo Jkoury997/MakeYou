@@ -23,13 +23,13 @@ const IRCOUNTER_API_URL = process.env.IRCOUNTER_API_URL
 async function searchAdvanced(data) {
     const { startDate, endDate, idStores, dayOfWeek } = data;
 
-
+    
     // Preparar los ID de las tiendas y los días de la semana para la URL
     const idStoresParam = idStores ? idStores.join(',') : '';
     const dayOfWeekParam = dayOfWeek ? dayOfWeek.join(',') : '';
 
     // Construir la URL con parámetros de query
-    let url = new URL(`${IRCOUNTER_API_URL}/ircounter/api/countdata/search/advanced/`);
+    let url = new URL(`${IRCOUNTER_API_URL}/ircounter/api/countdata/search/advanced`);
     if (startDate) url.searchParams.append('startDate', formatDate(startDate));
     if (endDate) url.searchParams.append('endDate', formatDate(endDate));
     if (idStoresParam) url.searchParams.append('idStores', idStoresParam);
@@ -37,7 +37,7 @@ async function searchAdvanced(data) {
 
     const cookieStore = cookies();
     const token = cookieStore.get("token") // O obtener el token de la manera que prefieras
-    
+
 
     const response = await fetch(url, {
         method: 'GET',
@@ -46,6 +46,7 @@ async function searchAdvanced(data) {
             'Authorization': `Bearer ${token.value}`,
         },
     });
+
 
     return await response.json();
 }
