@@ -12,7 +12,7 @@ router.get('/list', heartbeatController.listAll);
 
 router.get('/search', heartbeatController.search);
 
-route.get("/searchlast",heartbeatController.searchLatestBySN)
+router.get("/searchlast",heartbeatController.searchLatestBySN)
 
 
 // Ruta para actualizar
