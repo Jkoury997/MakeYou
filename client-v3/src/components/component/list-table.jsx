@@ -1,30 +1,30 @@
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-export function ListTable() {
+export function ListTable({ data }) {
   return (
     (<div className="w-full overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[50px]">#</TableHead>
+          <TableHead>Store</TableHead>
             <TableHead>Serial Number</TableHead>
-            <TableHead>Store</TableHead>
             <TableHead className="hidden md:table-cell ">Battery (R / T)</TableHead>
             <TableHead className="w-[100px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell>1</TableCell>
-            <TableCell>ABC123456789</TableCell>
-            <TableCell>Store A</TableCell>
+        {data.map((item) => (
+          <TableRow key={item.uuid}>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.sn}</TableCell>
+            
             <TableCell className="hidden md:table-cell">
               <div className="flex items-center gap-2">
                 <BatteryIcon className="w-4 h-4" />
-                <span>75%</span>
+                <span>{item.receivingPower}%</span>
                 <BatteryIcon className="w-4 h-4" />
-                <span>75%</span>
+                <span>{item.transmissionPower}%</span>
               </div>
             </TableCell>
             <TableCell>
@@ -40,52 +40,7 @@ export function ListTable() {
               </div>
             </TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell>2</TableCell>
-            <TableCell>DEF987654321</TableCell>
-            <TableCell>Store B</TableCell>
-            <TableCell className="hidden md:table-cell">
-              <div className="flex items-center gap-2">
-                <BatteryIcon className="w-4 h-4" />
-                <span>50%</span>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center justify-end gap-2">
-                <Button size="sm" variant="ghost">
-                  <FileEditIcon className="w-4 h-4" />
-                  <span className="sr-only">Edit</span>
-                </Button>
-                <Button size="sm" variant="ghost">
-                  <TrashIcon className="w-4 h-4" />
-                  <span className="sr-only">Delete</span>
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>3</TableCell>
-            <TableCell>GHI456789012</TableCell>
-            <TableCell>Store C</TableCell>
-            <TableCell className="hidden md:table-cell">
-              <div className="flex items-center gap-2">
-                <BatteryIcon className="w-4 h-4" />
-                <span>25%</span>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center justify-end gap-2">
-                <Button size="sm" variant="ghost">
-                  <FileEditIcon className="w-4 h-4" />
-                  <span className="sr-only">Edit</span>
-                </Button>
-                <Button size="sm" variant="ghost">
-                  <TrashIcon className="w-4 h-4" />
-                  <span className="sr-only">Delete</span>
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>)

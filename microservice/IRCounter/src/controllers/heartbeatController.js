@@ -97,3 +97,24 @@ exports.delete = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Buscar el Heartbeat más reciente por SN
+exports.searchLatestBySN = async (req, res) => {
+    try {
+        const { sn } = req.query;
+        if (!sn) {
+            return res.status(400).json({ message: "Serial number (SN) is required." });
+        }
+
+        // Buscar todos los registros que coincidan con el SN y ordenarlos por timeStamp en orden descendente
+        const latestHeartbeat = await Heartbeat.findOne({ sn }).sort({ timeStamp: -1 });
+
+        if (latestHeartbeat) {
+            res.json(latestHeartbeat);
+        } else {
+            res.status(404).json({ message: 'No heartbeat found for the given SN.' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
