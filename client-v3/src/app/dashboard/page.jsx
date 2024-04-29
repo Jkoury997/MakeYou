@@ -7,9 +7,11 @@ import { Arrow_Up, Arrow_Down, Trending_Up } from '@/components/ui/icons';
 import { FilterDate } from "@/components/component/filter-date";
 import { StoreAll } from "../api/Interna/ircounter/store";
 import { variables } from "../api/Externa/leona/consultaTiendas";
+import { Loading } from "@/components/component/loading";
 
 export default function Page() {
     const [cardsData, setCardsData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const today = new Date();
@@ -17,6 +19,7 @@ export default function Page() {
     }, []);
 
     const fetchData = async (startDate, endDate) => {
+        setIsLoading(true);
         try {
             const [response, stores, variablesResponse] = await Promise.all([
                 searchAdvanced({ startDate, endDate }),
@@ -34,6 +37,8 @@ export default function Page() {
             console.error("Error fetching data:", error);
             setCardsData([]);
             // Optionally update state to show error message in UI
+        }finally{
+            setIsLoading(false);
         }
     };
 
@@ -70,10 +75,23 @@ export default function Page() {
         fetchData(start, end);
     };
 
+    
+
     return (
         <>
             <FilterDate onSearch={handleSearch} />
-            <CardsHome cards={cardsData} />
+            <>
+                {isLoading ? (
+                    <Loading /> // Muestra el spinner mientras carga los datos
+                ) : (
+                    cardsData.length > 0 ? (
+                        <CardsHome cards={cardsData} />
+                    ) : (
+                        <p>No hay datos disponibles</p>
+                    )
+                )}
+            </>
+            
         </>
     );
 }
