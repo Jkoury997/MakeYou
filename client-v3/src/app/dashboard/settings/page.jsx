@@ -7,7 +7,7 @@ import { StoreAll } from "@/app/api/Interna/ircounter/store";
 import { SearchLast } from "@/app/api/Interna/ircounter/heartbeats";
 import { CatalogoTiendas } from "@/app/api/Externa/leona/consultaTiendas";
 import { AddDevice } from "@/components/component/add-device";
-
+import { CreateStore } from "@/app/api/Interna/ircounter/store";
 export default function Page () {
     const [showPopUp, setShowPopUp] = useState(false);
     const [tableData, setTableData] = useState([]);
@@ -56,10 +56,10 @@ export default function Page () {
         }
     };
 
-    const handleDeviceAdd = (newDevice) => {
-        // Handle the new device data, e.g., display it or send it to an API
-        console.log("New Device Added:", newDevice);
-        // Optionally, update tableData or other state
+    const handleDeviceAdd = async (newDevice) => {
+        const response = await CreateStore(newDevice)
+        console.log(response);
+        fetchData()
     };
 
     const handleButtonClick = () => {
@@ -73,7 +73,7 @@ export default function Page () {
     return (
         <>
             <CreateButton onClick={handleButtonClick} />
-            {showPopUp && <AddDevice></AddDevice>}
+            {showPopUp && <AddDevice onDeviceData={handleDeviceAdd} storesList={storeCatalogo} ></AddDevice> }
             <ListTable data={tableData} />
         </>
     );
