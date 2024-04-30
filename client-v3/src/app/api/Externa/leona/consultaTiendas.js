@@ -39,3 +39,21 @@ export async function variables (startDate, endDate) {
     return data
 
 }
+
+export async function CatalogoTiendas () {
+    const cookieStore = cookies();
+    const Token = cookieStore.get("Token")
+
+    const url = "http://190.216.66.210:10288/api/Catalogos/Tiendas"
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Token': Token.value
+        }
+    })
+
+    const data = await response.json()
+    return data.Lista
+}

@@ -39,7 +39,6 @@ export async function SearchLast(sn) {
         });
 
         const data = await response.json();
-        console.log(data)
         
         return data;  // Return null if no records found
 

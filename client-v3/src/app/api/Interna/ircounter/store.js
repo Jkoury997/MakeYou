@@ -22,3 +22,19 @@ export async function StoreAll () {
 
     return data
 }
+
+export async function CreateStore (item) {
+
+    const cookieStore = cookies();
+    const token = cookieStore.get("token")
+
+    const response = await fetch(`${IRCOUNTER_API_URL}/ircounter/api/store/create`,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.value}`,
+        },
+        body: JSON.stringify(item)
+    })
+
+}
