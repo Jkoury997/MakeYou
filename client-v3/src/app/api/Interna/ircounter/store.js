@@ -34,7 +34,7 @@ export async function CreateStore (item) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token.value}`,
         },
-        body: item
+        body: JSON.stringify(item)
     })
 
     const data = await response.json()
