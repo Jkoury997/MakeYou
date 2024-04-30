@@ -24,6 +24,7 @@ export async function StoreAll () {
 }
 
 export async function CreateStore (item) {
+    console.log(item)
 
     const cookieStore = cookies();
     const token = cookieStore.get("token")

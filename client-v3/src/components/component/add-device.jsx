@@ -5,13 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export function AddDevice({ onDeviceData, storesList }) {
-  const [selectedStore, setSelectedStore] = useState(null);  // Cambiar a null para manejar el objeto completo
+  const [selectedStore, setSelectedStore] = useState(null);
   const [serialNumber, setSerialNumber] = useState('');
 
   const handleStoreChange = (event) => {
-    // Buscar el objeto de la tienda basado en el código seleccionado
     const store = storesList.find(store => store.Codigo === event.target.value);
-    setSelectedStore(store);  // Almacenar el objeto de la tienda
+    setSelectedStore(store);
   };
 
   const handleSerialChange = (event) => {
@@ -20,12 +19,16 @@ export function AddDevice({ onDeviceData, storesList }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Envía el código y la descripción de la tienda, junto con el número de serie
-    onDeviceData({
-      idStore: selectedStore ? selectedStore.codigo : '',  // Envía código vacío si no se selecciona nada
-      name: selectedStore ? selectedStore.descripcion : '',  // Envía descripción vacía si no se selecciona nada
-      sn: serialNumber
-    });
+    if (selectedStore) {
+      onDeviceData({
+        idStore: selectedStore.Codigo,
+        name: selectedStore.Descripcion,
+        sn: serialNumber
+      });
+    } else {
+      // Manejar caso en que no se selecciona tienda
+      console.error("No store selected");
+    }
   };
 
   return (
@@ -45,7 +48,7 @@ export function AddDevice({ onDeviceData, storesList }) {
                   value={selectedStore ? selectedStore.Codigo : ''}
                   onChange={handleStoreChange}
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                  <option value="" disabled>Seleccione una tienda</option>
+                  <option value="">Seleccione una tienda</option>
                   {storesList.map((option) => (
                     <option key={option.Codigo} value={option.Codigo}>{option.Descripcion}</option>
                   ))}

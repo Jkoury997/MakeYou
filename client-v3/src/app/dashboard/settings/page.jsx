@@ -58,7 +58,7 @@ export default function Page () {
 
     const handleDeviceAdd = async (newDevice) => {
         const response = await CreateStore(newDevice)
-        console.log(response);
+        console.log(newDevice);
         fetchData()
     };
 
