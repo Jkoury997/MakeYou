@@ -10,7 +10,7 @@ export function AddDevice({ onDeviceData, storesList }) {
 
   const handleStoreChange = (event) => {
     // Buscar el objeto de la tienda basado en el código seleccionado
-    const store = storesList.find(store => store.codigo === event.target.value);
+    const store = storesList.find(store => store.Codigo === event.target.value);
     setSelectedStore(store);  // Almacenar el objeto de la tienda
   };
 
@@ -42,7 +42,7 @@ export function AddDevice({ onDeviceData, storesList }) {
                 <Label htmlFor="store">Tienda</Label>
                 <select
                   id="store"
-                  value={selectedStore ? selectedStore.codigo : ''}
+                  value={selectedStore ? selectedStore.Codigo : ''}
                   onChange={handleStoreChange}
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                   <option value="" disabled>Seleccione una tienda</option>
