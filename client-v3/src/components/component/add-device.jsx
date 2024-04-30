@@ -47,7 +47,7 @@ export function AddDevice({ onDeviceData, storesList }) {
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                   <option value="" disabled>Seleccione una tienda</option>
                   {storesList.map((option) => (
-                    <option key={option.codigo} value={option.codigo}>{option.descripcion}</option>
+                    <option key={option.Codigo} value={option.Codigo}>{option.Descripcion}</option>
                   ))}
                 </select>
               </div>
