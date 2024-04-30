@@ -37,4 +37,7 @@ export async function CreateStore (item) {
         body: JSON.stringify(item)
     })
 
+    const data = await response.json()
+    
+    return data
 }
