@@ -1,6 +1,13 @@
 const CountData = require('../database/models/CountData');
 const statisticsUtil = require('../utils/statisticsUtil');
 
+function getEndOfDay(dateString) {
+    const date = new Date(dateString + "T00:00:00.000Z");
+    date.setUTCHours(23, 59, 59, 999);
+    return date;
+}
+    
+
 exports.calculateStatistics = async (idStore, startDate, endDate) => {
     const query = {
         idStore: idStore
@@ -8,11 +15,13 @@ exports.calculateStatistics = async (idStore, startDate, endDate) => {
 
     // Agregar rango de fechas al filtro si ambas fechas están presentes
     if (startDate && endDate) {
+
         query.timeStamp = {
             $gte: new Date(startDate),
-            $lte: new Date(endDate)
+            $lte: getEndOfDay(endDate)
         };
     }
+
     const entries = await CountData.find(query).select('inCount -_id');
     return statisticsUtil.calculateStats(entries.map(entry => entry.inCount));
 };
@@ -24,7 +33,7 @@ exports.getTimeStatisticsDate = async (idStore, startDate, endDate) => {
     if (startDate && endDate) {
         query.timeStamp = {
             $gte: new Date(startDate),
-            $lte: new Date(endDate)
+            $lte: getEndOfDay(endDate)
         };
     }
 
@@ -55,17 +64,15 @@ exports.getTimeStatisticsDate = async (idStore, startDate, endDate) => {
 
     return statisticsUtil.formatTimeData(result);
 };
-exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {
-    // Convertir endDate para incluir todo el día, asegurándose de que la hora esté ajustada correctamente
-    let endDateModified = new Date(endDate);
-    endDateModified.setDate(endDateModified.getDate() + 1);  // Establecer al final del día para incluir todas las actividades de ese día
 
+
+exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {
     // Definir el query básico para filtrar por tienda y rango de fechas
     const query = {
         idStore: idStore,
         timeStamp: {
-            $gte: new Date(startDate + 'T00:00:00.000Z'),  // Asegurarse de que empiece al inicio del día
-            $lte: endDateModified
+            $gte: new Date(startDate + "T00:00:00.000Z"),  // Asegurarse de que empiece al inicio del día en UTC
+            $lte: getEndOfDay(endDate)  // Asegurarse de que termine al final del día en UTC
         }
     };
 
@@ -76,30 +83,39 @@ exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {
         },
         {
             $project: {
-                dayOfWeek: { $dayOfWeek: "$timeStamp" },  // Extraer el día de la semana
-                dateOnly: { $dateToString: { format: "%Y-%m-%d", date: "$timeStamp" } },  // Convertir timestamp a solo fecha
-                inCount: 1,  // Proyectar el campo inCount
-                outCount: 1  // Proyectar el campo outCount
+                dayOfWeek: { $dayOfWeek: "$timeStamp" },
+                dateOnly: { $dateToString: { format: "%Y-%m-%d", date: "$timeStamp" } },
+                inCount: 1,
+                outCount: 1
             }
         },
         {
             $group: {
-                _id: "$dateOnly",  // Agrupar por la fecha sin considerar la hora
-                dayOfWeek: { $first: "$dayOfWeek" },  // Tomar el día de la semana de la primera entrada
-                totalInCount: { $sum: "$inCount" },  // Sumar inCount para cada día
-                totalOutCount: { $sum: "$outCount" }  // Sumar outCount para cada día
+                _id: "$dateOnly",
+                dayOfWeek: { $first: "$dayOfWeek" },
+                totalInCount: { $sum: "$inCount" },
+                totalOutCount: { $sum: "$outCount" }
             }
         },
         {
             $group: {
-                _id: "$dayOfWeek",  // Reagrupar por día de la semana
+                _id: "$dayOfWeek",
                 totalInCount: { $sum: "$totalInCount" },
                 totalOutCount: { $sum: "$totalOutCount" },
-                countDays: { $sum: 1 }  // Contar cuántos días únicos hay para cada día de la semana
+                countDays: { $sum: 1 }
             }
         },
         {
-            $sort: { _id: 1 }  // Ordenar por día de la semana
+            $project: {
+                totalInCount: 1,
+                totalOutCount: 1,
+                countDays: 1,
+                averageInCount: { $divide: ["$totalInCount", "$countDays"] },  // Calcular el promedio de inCount por día
+                averageOutCount: { $divide: ["$totalOutCount", "$countDays"] }
+            }
+        },
+        {
+            $sort: { _id: 1 }
         }
     ]);
 
@@ -109,10 +125,13 @@ exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {
         dayOfWeek: daysOfWeek[item._id - 1],
         totalInCount: item.totalInCount,
         totalOutCount: item.totalOutCount,
-        countDays: item.countDays  // Mostrar cuántos días concretos hay para cada día de la semana
+        countDays: item.countDays,
+        averageInCount: item.averageInCount,  // Añadir el promedio al resultado
+        averageOutCount: item.averageOutCount 
     }));
 
     return adjustedResults;
 };
+
 
 

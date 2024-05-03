@@ -3,6 +3,7 @@ const connectDB = require('./database/config/dbConfig');
 const methodOverride = require('method-override');
 const cors = require('cors');
 const mainRouter = require('./routers/mainRouter');
+const morgan  = require('morgan') 
 
 require('dotenv').config();
 
@@ -17,6 +18,16 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use(morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+  ].join(' ');
+}));
 
 // Override con un header HTTP (por ejemplo: X-HTTP-Method-Override)
 app.use(methodOverride('X-HTTP-Method-Override'));
