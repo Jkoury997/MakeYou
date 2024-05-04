@@ -6,6 +6,18 @@ function getEndOfDay(dateString) {
     date.setUTCHours(23, 59, 59, 999);
     return date;
 }
+
+function generateDateRange(startDate, endDate) {
+    const dates = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= new Date(endDate)) {
+        dates.push(currentDate.toISOString().split('T')[0]); // Formato YYYY-MM-DD
+        currentDate.setDate(currentDate.getDate() + 1); // Incrementa la fecha en un día
+    }
+
+    return dates;
+}
     
 
 exports.calculateStatistics = async (idStore, startDate, endDate) => {
@@ -15,15 +27,29 @@ exports.calculateStatistics = async (idStore, startDate, endDate) => {
 
     // Agregar rango de fechas al filtro si ambas fechas están presentes
     if (startDate && endDate) {
-
         query.timeStamp = {
             $gte: new Date(startDate),
             $lte: getEndOfDay(endDate)
         };
     }
 
-    const entries = await CountData.find(query).select('inCount -_id');
-    return statisticsUtil.calculateStats(entries.map(entry => entry.inCount));
+    const entries = await CountData.find(query).select('inCount outCount -_id'); // Incluir outCount en la selección
+
+    // Mapear los datos recibidos para calcular estadísticas
+    const inCounts = entries.map(entry => entry.inCount);
+    const outCounts = entries.map(entry => entry.outCount);
+
+    // Calcular estadísticas para inCount y sumar inCounts y outCounts
+    const stats = statisticsUtil.calculateStats(inCounts);
+    const totalIn = inCounts.reduce((acc, val) => acc + val, 0);
+    const totalOut = outCounts.reduce((acc, val) => acc + val, 0);
+
+    // Agregar totales al objeto de estadísticas
+    return {
+        ...stats,
+        totalIn,
+        totalOut
+    };
 };
 
 
@@ -37,33 +63,56 @@ exports.getTimeStatisticsDate = async (idStore, startDate, endDate) => {
         };
     }
 
-    const result = await CountData.aggregate([
+    const aggregationResult = await CountData.aggregate([
         {
             $match: query
         },
         {
             $project: {
-                day: { $dayOfMonth: "$timeStamp" },
-                month: { $month: "$timeStamp" },
-                year: { $year: "$timeStamp" },
+                date: { $dateToString: { format: "%Y-%m-%d", date: "$timeStamp" } },
                 inCount: 1,
                 outCount: 1
             }
         },
         {
             $group: {
-                _id: { day: "$day", month: "$month", year: "$year" },
+                _id: "$date",
                 totalIn: { $sum: "$inCount" },
                 totalOut: { $sum: "$outCount" }
             }
         },
         {
-            $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 }
+            $sort: { "_id": 1 }
         }
     ]);
 
-    return statisticsUtil.formatTimeData(result);
+    // Crear un rango de fechas completo
+    const dateRange = generateDateRange(startDate, endDate);
+
+    // Convertir los resultados en un mapa para un acceso más rápido
+    const resultMap = {};
+    aggregationResult.forEach(item => {
+        resultMap[item._id] = {
+            totalIn: item.totalIn,
+            totalOut: item.totalOut
+        };
+    });
+
+    // Rellenar los resultados con las fechas faltantes
+    const filledResults = dateRange.map(date => {
+        const data = resultMap[date];
+        return {
+            date,
+            totalIn: data ? data.totalIn : 0,
+            totalOut: data ? data.totalOut : 0
+        };
+    });
+
+    return filledResults;
 };
+
+
+
 
 
 exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {

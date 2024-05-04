@@ -7,7 +7,7 @@ export default function Brand () {
           
             <Link className="flex items-center gap-2 font-semibold" href="#">
               <Package2Icon className="h-6 w-6" />
-              <span className="">Acme Inc</span>
+              <span className="">Flow Sense</span>
             </Link>
         </div>
     )

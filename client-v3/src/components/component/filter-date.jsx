@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button"
 import { PopoverTrigger, PopoverContent, Popover } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 
-export function FilterDate({ onSearch }) {
+export function FilterDate({ onSearch, initialStartDate, initialEndDate }) {
   // Estados para manejar las fechas de inicio y fin
-  const [startDate, setStartDate] = useState( new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(initialStartDate);
+  const [endDate, setEndDate] = useState(initialEndDate);
 
   // Función para formatear la fecha en un string legible
   const formatDate = (date) => date.toLocaleDateString('es-ES');

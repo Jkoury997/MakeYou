@@ -1,97 +1,122 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { CardsHome } from "@/components/component/cards-home";
-import { searchAdvanced } from "../api/Interna/ircounter/countdata";
-import { Arrow_Up, Arrow_Down, Trending_Up } from '@/components/ui/icons';
-import { FilterDate } from "@/components/component/filter-date";
-import { StoreAll } from "../api/Interna/ircounter/store";
+import { StoreAll,} from "../api/Interna/ircounter/store";
 import { variables } from "../api/Externa/leona/consultaTiendas";
 import { Loading } from "@/components/component/loading";
+import { FilterDate } from "@/components/component/filter-date";
+import { CardsHome } from "@/components/component/cards-home";
+import { StoreTrafficBarChart } from "@/components/component/StoreTrafficBarChart";
+import { Arrow_Up, Arrow_Down, Trending_Up } from '@/components/ui/icons';
+import { statistics } from "../api/Interna/ircounter/analytics";
 
 export default function Page() {
     const [cardsData, setCardsData] = useState([]);
+    const [storeTrafficData, setStoreTrafficData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [startDate, setStartDate] = useState(() => {
+        const date = new Date();
+        date.setDate(date.getDate() - 7);
+        return date;
+    });
+    const [endDate, setEndDate] = useState(new Date());
+
+
     useEffect(() => {
-        const today = new Date();
-        fetchData(today, today);
-    }, []);
+        fetchData(startDate, endDate);
+    }, [startDate, endDate]); 
 
     const fetchData = async (startDate, endDate) => {
         setIsLoading(true);
         try {
-            const [response, stores, variablesResponse] = await Promise.all([
-                searchAdvanced({ startDate, endDate }),
+            const [stores, variableData] = await Promise.all([
                 StoreAll(),
                 variables(startDate, endDate)
             ]);
 
-            const storeNames = new Set(stores.map(store => store.name));
-            const filteredVariables = variablesResponse.Variables.filter(variable => storeNames.has(variable.Tienda));
+            console.log('Stores:', stores); // Log store data
+            console.log('Variable data:', variableData); // Log variable data
 
-            const totalTickets = filteredVariables.reduce((acc, variable) => acc + variable.Tickets, 0);
-            const cards = calculateCardsData(response, filteredVariables, totalTickets);
+            const statsPromises = stores.map(store => 
+                statistics(store.idStore, startDate, endDate).then(data => ({
+                    idStore: store.idStore,
+                    name:store.name,
+                    ...data
+                }))
+            );
+            const statsResults = await Promise.all(statsPromises);
+            console.log(statsResults)
+
+            const storeTrafficData = statsResults.map((stat, index) => ({
+                ...stores[index],
+                totalIn: stat.totalIn,
+                totalOut: stat.totalOut
+            }));
+
+
+            // Preparar datos para el componente StoreTrafficBarChart
+            const storeTrafficDataBar = statsResults.map(stat => ({
+                store: stat.name,  // Usa el ID de la tienda como referencia
+                totalIn: stat.totalIn
+            }));
+            setStoreTrafficData(storeTrafficDataBar);
+
+    
+            const filteredVariables = variableData.Variables.filter(v => storeTrafficData.some(s => s.name === v.Tienda));
+            
+            const cards = calculateCardsData(storeTrafficData, filteredVariables);
+            console.log(cards)
             setCardsData(cards);
+
         } catch (error) {
             console.error("Error fetching data:", error);
             setCardsData([]);
-            // Optionally update state to show error message in UI
-        }finally{
+        } finally {
             setIsLoading(false);
         }
     };
 
-    const calculateCardsData = (response, filteredVariables, totalTickets) => {
-        const totalInCount = response.reduce((acc, curr) => acc + (curr.inCount || 0), 0);
-        const conversion = totalTickets / totalInCount;
-        const cantSN = new Set(response.map(item => item.sn)).size;
-
+    const calculateCardsData = (storeTrafficData, filteredVariables) => {
+        // Calcular totalIn y totalOut sumando los datos correspondientes de todas las tiendas
+        const totalIn = storeTrafficData.reduce((acc, store) => acc + store.totalIn, 0);
+        const totalOut = storeTrafficData.reduce((acc, store) => acc + store.totalOut, 0);
+    
+        // Calcular el promedio de entradas (si es aplicable)
+        const averageIn = storeTrafficData.length > 0 ? totalIn / storeTrafficData.length : 0;
+    
+        // Calcular la conversión total usando los Tickets totales de las variables filtradas
+        const totalTickets = filteredVariables.reduce((acc, varData) => acc + varData.Tickets, 0);
+        const conversionRate = totalIn > 0 ? (totalTickets / totalIn) * 100 : 0;  // Convertido a porcentaje
+    
         return [
-            {
-                icon: Arrow_Up,
-                title: "Entran",
-                value: totalInCount.toLocaleString()
-            },
-            {
-                icon: Arrow_Down,
-                title: "Salen",
-                value: response.reduce((acc, curr) => acc + (curr.outCount || 0), 0).toLocaleString()
-            },
-            {
-                icon: Trending_Up,
-                title: `Promedio (${cantSN})`,
-                value: (totalInCount / cantSN).toLocaleString()
-            },
-            {
-                icon: Trending_Up,
-                title: "Conversión Global",
-                value: `${(conversion * 100).toFixed(2)} %`
-            }
+            { icon: Arrow_Up, title: "Total Entradas", value: totalIn.toLocaleString() },
+            { icon: Arrow_Down, title: "Total Salidas", value: totalOut.toLocaleString() },
+            { icon: Trending_Up, title: "Promedio Entradas", value: averageIn.toLocaleString() },
+            { icon: Trending_Up, title: "Tasa de Conversión", value: `${conversionRate.toFixed(2)} %` }
         ];
     };
 
-    const handleSearch = (start, end) => {
-        fetchData(start, end);
+    const handleSearch = (newStartDate, newEndDate) => {
+        setStartDate(newStartDate);
+        setEndDate(newEndDate);
     };
-
-    
 
     return (
         <>
-            <FilterDate onSearch={handleSearch} />
-            <>
-                {isLoading ? (
-                    <Loading /> // Muestra el spinner mientras carga los datos
-                ) : (
-                    cardsData.length > 0 ? (
+            <FilterDate onSearch={handleSearch} initialStartDate={startDate} initialEndDate={endDate} />
+            {isLoading ? (
+                <Loading />
+            ) : (
+                cardsData.length > 0 ? (
+                    <>
                         <CardsHome cards={cardsData} />
-                    ) : (
-                        <p>No hay datos disponibles</p>
-                    )
-                )}
-            </>
-            
+                        <StoreTrafficBarChart data={storeTrafficData} title={"Entradas por tienda"} />
+                    </>
+                ) : (
+                    <p>No hay datos disponibles</p>
+                )
+            )}
         </>
     );
 }

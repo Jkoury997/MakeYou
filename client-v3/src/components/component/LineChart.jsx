@@ -12,7 +12,7 @@ ChartJS.register(
   Legend
 );
 
-export const LineChart = ({ data }) => {
+export const LineChart = ({ data,title }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -21,7 +21,7 @@ export const LineChart = ({ data }) => {
       },
       title: {
         display: true,
-        text: 'Ventas por día por tienda', // Título del gráfico
+        text: title, // Título del gráfico
       },
     },
   };

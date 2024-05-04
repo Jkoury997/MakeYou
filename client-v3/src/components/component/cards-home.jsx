@@ -12,12 +12,12 @@ export function CardsHome({cards}) {
             {cards.map((card, index) => {
                 const LinkIcon = card.icon;
                 return (
-                    <Card key={index}>
-                        <CardContent className="flex items-center gap-5">
+                    <Card key={index} >
+                        <CardContent className="flex items-center gap-3">
                         <LinkIcon className="h-6 w-6 text-gray-500 " />
                             <div className="flex flex-col">
                                 <span className="text-sm text-gray-500 ">{card.title}</span>
-                                <span className="text-2xl font-bold">{card.value}</span>
+                                <span className="text-xl font-bold">{card.value}</span>
                             </div>
                         </CardContent>
                     </Card>
