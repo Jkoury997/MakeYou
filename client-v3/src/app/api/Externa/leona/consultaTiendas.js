@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-
+const LEONA_API_MK_URL = process.env.LEONA_API_MK_URL
 function formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -24,7 +24,7 @@ export async function variables (startDate, endDate) {
     startDate = formatDate(startDate)
     endDate = formatDate(endDate)
 
-    const url = `http://190.216.66.210:10288/api/ConsultasTiendas/Variables?Desde=${startDate}&Hasta=${endDate}`;
+    const url = `${LEONA_API_MK_URL}/api/ConsultasTiendas/Variables?Desde=${startDate}&Hasta=${endDate}`;
 
     const response = await fetch(url, {
         method: 'GET',
@@ -44,7 +44,7 @@ export async function CatalogoTiendas () {
     const cookieStore = cookies();
     const Token = cookieStore.get("Token")
 
-    const url = "http://190.216.66.210:10288/api/Catalogos/Tiendas"
+    const url = `${LEONA_API_MK_URL}/api/Catalogos/Tiendas`
 
     const response = await fetch(url, {
         method: 'GET',

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { timeDate } from "@/app/api/Interna/ircounter/analytics";
 import { LineChart } from "@/components/component/LineChart";
 import { StoreAll } from '@/app/api/Interna/ircounter/store';
-import { FilterDate } from '@/components/component/filter-date';
 import { Loading } from '@/components/component/loading';
 import { Filter } from '@/components/component/filter';
 
@@ -25,46 +24,39 @@ import { Filter } from '@/components/component/filter';
     });
     const [isLoading, setIsLoading] = useState(false);
     const [storesList, setStoresList] = useState([]);
+    const [selectStore, setSelectStore] = useState("all");
+
 
     useEffect(() => {
 
         fetchData(startDate, endDate);
-    }, [startDate, endDate]); 
+
+    }, [startDate, endDate,selectStore]); 
 
         const fetchData = async (startDate,endDate) => {
             setIsLoading(true);
+            let trafficPromises = [];
             try {
-                // Obteniendo información de las tiendas
-                const stores = await StoreAll(); // Asumimos que esta función existe y está implementada correctamente
-                setStoresList(stores); 
-
-                // Preparamos un array para recolectar promesas de datos de tráfico por tienda
-                const trafficPromises = stores.map(store =>
-                    timeDate(store.idStore, startDate, endDate) // Usamos las fechas como ejemplo, ajusta según sea necesario
-                );
-
-                // Esperamos a que todas las promesas se resuelvan
+                const stores = await StoreAll();
+                setStoresList(stores);
+    
+                if (selectStore === "all") {
+                    trafficPromises = stores.map(store => timeDate(store.idStore, startDate, endDate));
+                } else {
+                    const singleData = await timeDate(selectStore, startDate, endDate); // Direct fetch without wrapping into Promise.all
+                    trafficPromises = [singleData]; // Wrap in array for consistent handling
+                }
+    
                 const allTrafficData = await Promise.all(trafficPromises);
-
-                // Mapeando los datos de tráfico para los labels del gráfico (tomando de la primera tienda como ejemplo)
-                const labels = allTrafficData[0].map(data => data.date);
-
-                // Creando los datasets
-                const datasets = allTrafficData.map((trafficData, index) => {
-                    return {
-                        name: stores[index].name, // Asegúrate de que el índice corresponda entre las tiendas y sus datos
-                        sales: trafficData.map(data => data.totalIn), // Aquí usamos solo totalIn, ajusta si necesitas más datos
-                        color: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)` // Color aleatorio para cada tienda
-                    };
-                });
-
-                // Actualizando el estado con los nuevos datos
-                setChartData({
-                    labels,
-                    datasets
-                });
-
-
+                if (allTrafficData.length > 0 && allTrafficData[0].length > 0) { // Checking data existence
+                    const labels = allTrafficData[0].map(data => data.date);
+                    const datasets = allTrafficData.map((trafficData, index) => ({
+                        name: stores[index] ? stores[index].name : 'Single Store',
+                        sales: trafficData.map(data => data.totalIn),
+                        color: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`
+                    }));
+                    setChartData({ labels, datasets });
+                }
             } catch (error) {
                 console.error('Failed to fetch data:', error);
             } finally {
@@ -74,7 +66,7 @@ import { Filter } from '@/components/component/filter';
 
 
         const handleSearch = (newStartDate, newEndDate,selectedStore) => {
-            console.log(selectedStore)
+            setSelectStore(selectedStore)
             setStartDate(newStartDate);
             setEndDate(newEndDate);
         };

@@ -65,7 +65,8 @@ export function Filter({ onSearch, initialStartDate, initialEndDate,stores}) {
               onChange={handleSelectStore}
               className="w-full h-10 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:placeholder:text-gray-400 dark:focus:ring-gray-300"
             >
-              <option value="">Selecciona una tienda</option>
+              <option>Selecciona una tienda</option>
+              <option value="all">Todas</option>
               {stores.map((store) => (
                 <option key={store.uuid} value={store.idStore}>
                   {store.name}

@@ -9,11 +9,14 @@ import { CardsHome } from "@/components/component/cards-home";
 import { StoreTrafficBarChart } from "@/components/component/StoreTrafficBarChart";
 import { Arrow_Up, Arrow_Down, Trending_Up } from '@/components/ui/icons';
 import { statistics } from "../api/Interna/ircounter/analytics";
+import { Filter } from "@/components/component/filter";
 
 export default function Page() {
     const [cardsData, setCardsData] = useState([]);
     const [storeTrafficData, setStoreTrafficData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [storesList, setStoresList] = useState([]);
+    const [selectStore, setSelectStore] = useState("all");
 
     const [startDate, setStartDate] = useState(() => {
         const date = new Date();
@@ -25,53 +28,62 @@ export default function Page() {
 
     useEffect(() => {
         fetchData(startDate, endDate);
-    }, [startDate, endDate]); 
+    }, [startDate, endDate,selectStore]); 
 
     const fetchData = async (startDate, endDate) => {
         setIsLoading(true);
         try {
-            const [stores, variableData] = await Promise.all([
-                StoreAll(),
-                variables(startDate, endDate)
-            ]);
-
+            const stores = await StoreAll();
+            setStoresList(stores);
+    
+            const variableData = await variables(startDate, endDate);
             console.log('Stores:', stores); // Log store data
             console.log('Variable data:', variableData); // Log variable data
-
-            const statsPromises = stores.map(store => 
-                statistics(store.idStore, startDate, endDate).then(data => ({
-                    idStore: store.idStore,
-                    name:store.name,
-                    ...data
-                }))
-            );
+    
+            let statsPromises;
+            if (selectStore === "all") {
+                statsPromises = stores.map(store => 
+                    statistics(store.idStore, startDate, endDate).then(data => ({
+                        idStore: store.idStore,
+                        name: store.name,
+                        ...data
+                    }))
+                );
+            } else {
+                // Si es una sola tienda, encontrar esa tienda específica y solicitar sus datos
+                const store = stores.find(store => store.idStore === selectStore);
+                if (store) {
+                    statsPromises = [statistics(selectStore, startDate, endDate).then(data => ({
+                        idStore: store.idStore,
+                        name: store.name,
+                        ...data
+                    }))];
+                }
+            }
+    
             const statsResults = await Promise.all(statsPromises);
-            console.log(statsResults)
-
+            console.log(statsResults);
+    
             const storeTrafficData = statsResults.map((stat, index) => ({
-                ...stores[index],
+                ...stores.find(store => store.idStore === stat.idStore), // Encuentra la tienda correspondiente por ID
                 totalIn: stat.totalIn,
                 totalOut: stat.totalOut
             }));
-
-
+    
             // Preparar datos para el componente StoreTrafficBarChart
             const storeTrafficDataBar = statsResults.map(stat => ({
-                store: stat.name,  // Usa el ID de la tienda como referencia
+                store: stat.name,  // Usa el nombre de la tienda como referencia
                 totalIn: stat.totalIn
             }));
             setStoreTrafficData(storeTrafficDataBar);
-
     
             const filteredVariables = variableData.Variables.filter(v => storeTrafficData.some(s => s.name === v.Tienda));
-            
             const cards = calculateCardsData(storeTrafficData, filteredVariables);
             console.log(cards)
             setCardsData(cards);
-
+    
         } catch (error) {
             console.error("Error fetching data:", error);
-            setCardsData([]);
         } finally {
             setIsLoading(false);
         }
@@ -97,14 +109,15 @@ export default function Page() {
         ];
     };
 
-    const handleSearch = (newStartDate, newEndDate) => {
+    const handleSearch = (newStartDate, newEndDate,selectedStore) => {
+        setSelectStore(selectedStore)
         setStartDate(newStartDate);
         setEndDate(newEndDate);
     };
 
     return (
         <>
-            <FilterDate onSearch={handleSearch} initialStartDate={startDate} initialEndDate={endDate} />
+            <Filter onSearch={handleSearch} initialStartDate={startDate} initialEndDate={endDate} stores={storesList}/>
             {isLoading ? (
                 <Loading />
             ) : (
