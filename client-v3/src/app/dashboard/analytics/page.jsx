@@ -6,6 +6,8 @@ import { LineChart } from "@/components/component/LineChart";
 import { StoreAll } from '@/app/api/Interna/ircounter/store';
 import { FilterDate } from '@/components/component/filter-date';
 import { Loading } from '@/components/component/loading';
+import { Filter } from '@/components/component/filter';
+
 
 
   export default function Page() {
@@ -22,8 +24,10 @@ import { Loading } from '@/components/component/loading';
         datasets: []
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [storesList, setStoresList] = useState([]);
 
     useEffect(() => {
+
         fetchData(startDate, endDate);
     }, [startDate, endDate]); 
 
@@ -32,6 +36,7 @@ import { Loading } from '@/components/component/loading';
             try {
                 // Obteniendo información de las tiendas
                 const stores = await StoreAll(); // Asumimos que esta función existe y está implementada correctamente
+                setStoresList(stores); 
 
                 // Preparamos un array para recolectar promesas de datos de tráfico por tienda
                 const trafficPromises = stores.map(store =>
@@ -59,6 +64,7 @@ import { Loading } from '@/components/component/loading';
                     datasets
                 });
 
+
             } catch (error) {
                 console.error('Failed to fetch data:', error);
             } finally {
@@ -67,13 +73,14 @@ import { Loading } from '@/components/component/loading';
         }
 
 
-        const handleSearch = (newStartDate, newEndDate) => {
+        const handleSearch = (newStartDate, newEndDate,selectedStore) => {
+            console.log(selectedStore)
             setStartDate(newStartDate);
             setEndDate(newEndDate);
         };
     return (
         <>
-             <FilterDate onSearch={handleSearch} initialStartDate={startDate} initialEndDate={endDate} />
+             <Filter onSearch={handleSearch} initialStartDate={startDate} initialEndDate={endDate} stores={storesList}/>
              {isLoading ? (
                 <Loading />  // Muestra el componente de carga cuando los datos están cargando
             ) : (
