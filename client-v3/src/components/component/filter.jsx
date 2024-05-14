@@ -10,16 +10,21 @@ export function Filter({ onSearch, initialStartDate, initialEndDate,stores}) {
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState(initialEndDate);
 
-  const [selectedStore, setSelectedStore] = useState("");
+  const [selectedStore, setSelectedStore] = useState("all");
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   const formatDate = (date) => date.toLocaleDateString('es-ES');
 
   const handleSelectStore = (event) => {
     setSelectedStore(event.target.value);
   };
+  const handleApplyFilters = () => {
+    onSearch(startDate, endDate, selectedStore);
+    setPopoverOpen(false); // Cierra el popover
+  };
 
   return (
-    <Popover>
+    <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline"><FilterIcon className="mr-2 h-4 w-4" />Filtros</Button>
       </PopoverTrigger>
@@ -74,7 +79,7 @@ export function Filter({ onSearch, initialStartDate, initialEndDate,stores}) {
               ))}
             </select>
           </div>
-          <Button onClick={() => onSearch(startDate, endDate, selectedStore)}>Aplicar</Button>
+          <Button onClick={handleApplyFilters}>Aplicar</Button>
         </div>
       </PopoverContent>
     </Popover>

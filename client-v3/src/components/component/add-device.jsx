@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export function AddDevice({ onDeviceData, storesList }) {
-  const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedStore, setSelectedStore] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
 
   const handleStoreChange = (event) => {
@@ -26,7 +26,6 @@ export function AddDevice({ onDeviceData, storesList }) {
         sn: serialNumber
       });
     } else {
-      // Manejar caso en que no se selecciona tienda
       console.error("No store selected");
     }
   };
