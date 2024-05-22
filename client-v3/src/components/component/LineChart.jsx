@@ -12,7 +12,7 @@ ChartJS.register(
   Legend
 );
 
-export const LineChart = ({ data,title }) => {
+export const LineChart = ({ data, title }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -24,16 +24,24 @@ export const LineChart = ({ data,title }) => {
         text: title, // Título del gráfico
       },
     },
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day', // Ajusta esto según el modo de vista, podría ser 'hour', 'day', 'week'
+        },
+      },
+    },
   };
 
   // Prepara los datos para el gráfico
   const chartData = {
     labels: data.labels, // Etiquetas para el eje X, por ejemplo, días
-    datasets: data.datasets.map(store => ({
-      label: store.name, // Nombre de la tienda
-      data: store.sales, // Ventas por día para esa tienda
-      borderColor: store.color, // Color de la línea
-      backgroundColor: store.color,
+    datasets: data.datasets.map(dataset => ({
+      label: dataset.label, // Nombre del conjunto de datos
+      data: dataset.data, // Ventas por día para ese conjunto de datos
+      borderColor: dataset.borderColor, // Color de la línea
+      backgroundColor: dataset.backgroundColor,
     })),
   };
 

@@ -1,7 +1,20 @@
-// components/CustomChart.js
+// CustomChart.js
 import React from 'react';
 import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement, ArcElement } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement,
+  ArcElement,
+  TimeScale,
+} from 'chart.js';
+import 'chartjs-adapter-date-fns'; // Importa el adaptador de fecha
 
 ChartJS.register(
   CategoryScale,
@@ -12,7 +25,8 @@ ChartJS.register(
   Legend,
   PointElement,
   LineElement,
-  ArcElement
+  ArcElement,
+  TimeScale
 );
 
 const chartComponents = {

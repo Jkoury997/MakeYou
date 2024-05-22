@@ -1,24 +1,8 @@
 const CountData = require('../database/models/CountData');
 const statisticsUtil = require('../utils/statisticsUtil');
+const { isHoliday, generateDateRange, getEndOfDay } = require('../utils/dateUtil'); 
 
-function getEndOfDay(dateString) {
-    const date = new Date(dateString + "T00:00:00.000Z");
-    date.setUTCHours(23, 59, 59, 999);
-    return date;
-}
 
-function generateDateRange(startDate, endDate) {
-    const dates = [];
-    let currentDate = new Date(startDate);
-
-    while (currentDate <= new Date(endDate)) {
-        dates.push(currentDate.toISOString().split('T')[0]); // Formato YYYY-MM-DD
-        currentDate.setDate(currentDate.getDate() + 1); // Incrementa la fecha en un día
-    }
-
-    return dates;
-}
-    
 
 exports.calculateStatistics = async (idStore, startDate, endDate) => {
     const query = {
@@ -114,7 +98,6 @@ exports.getTimeStatisticsDate = async (idStore, startDate, endDate) => {
 
 
 
-
 exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {
     // Definir el query básico para filtrar por tienda y rango de fechas
     const query = {
@@ -184,3 +167,234 @@ exports.getTimeStatisticsDay = async (idStore, startDate, endDate) => {
 
 
 
+exports.prepareDataHours = async (idStore, startDate, endDate) => {
+    const query = {
+        idStore,
+        timeStamp: {
+            $gte: new Date(startDate + "T00:00:00.000Z"),
+            $lte: getEndOfDay(endDate)
+        }
+    };
+
+    const entries = await CountData.find(query).select('timeStamp inCount outCount -_id');
+
+    const start = new Date(startDate + "T00:00:00.000Z");
+    const end = getEndOfDay(endDate);
+
+    const hours = [];
+    for (let date = new Date(start); date <= end; date.setHours(date.getHours() + 1)) {
+        hours.push(new Date(date));
+    }
+
+    const groupedData = {};
+    entries.forEach(entry => {
+        const hourKey = entry.timeStamp.toISOString().slice(0, 13);
+        if (!groupedData[hourKey]) {
+            groupedData[hourKey] = { inCount: 0, outCount: 0, timeStamp: new Date(hourKey + ":00:00.000Z") };
+        }
+        groupedData[hourKey].inCount += entry.inCount;
+        groupedData[hourKey].outCount += entry.outCount;
+    });
+
+    const preparedData = hours.map(date => {
+        const hourKey = date.toISOString().slice(0, 13);
+        const data = groupedData[hourKey] || { inCount: 0, outCount: 0, timeStamp: date };
+
+        return {
+            date: data.timeStamp,
+            hour: data.timeStamp.getUTCHours(),
+            inCount: data.inCount,
+            outCount: data.outCount,
+            isWeekend: data.timeStamp.getUTCDay() === 0 || data.timeStamp.getUTCDay() === 6 ? 1 : 0,
+            isWeekday: isWeekday(data.timeStamp) ? 1 : 0,
+            isStartOfMonth: data.timeStamp.getUTCDate() === 1 ? 1 : 0,
+            isEndOfMonth: isEndOfMonth(data.timeStamp) ? 1 : 0,
+            normalizedInCount: data.inCount / (data.inCount + data.outCount || 1),
+            dayOfWeek: data.timeStamp.getUTCDay(),
+            weekOfYear: getWeekNumber(data.timeStamp),
+            quarter: getQuarter(data.timeStamp),
+            isHoliday: isHoliday(data.timeStamp),
+            month: data.timeStamp.getUTCMonth() + 1,
+        };
+    });
+
+    return preparedData;
+};
+
+exports.prepareDataDay = async (idStore, startDate, endDate) => {
+    const query = {
+        idStore,
+        timeStamp: {
+            $gte: new Date(startDate + "T00:00:00.000Z"),
+            $lte: getEndOfDay(endDate)
+        }
+    };
+
+    const entries = await CountData.find(query).select('timeStamp inCount outCount -_id');
+
+    const groupedByDate = entries.reduce((acc, entry) => {
+        const dateOnly = entry.timeStamp.toISOString().split('T')[0];
+        if (!acc[dateOnly]) {
+            acc[dateOnly] = {
+                date: new Date(dateOnly),
+                inCount: 0,
+                outCount: 0
+            };
+        }
+        acc[dateOnly].inCount += entry.inCount;
+        acc[dateOnly].outCount += entry.outCount;
+        return acc;
+    }, {});
+
+    const preparedData = Object.values(groupedByDate).map(data => ({
+        date: data.date,
+        inCount: data.inCount,
+        outCount: data.outCount,
+        isWeekend: data.date.getDay() === 0 || data.date.getDay() === 6 ? 1 : 0,
+        isStartOfMonth: data.date.getDate() === 1 ? 1 : 0,
+        normalizedInCount: data.inCount / (data.inCount + data.outCount || 1), // Evitar división por cero
+        dayOfWeek: data.date.getDay(),
+        isHoliday: isHoliday(data.date),
+        month: data.date.getMonth() + 1,
+    }));
+
+    return preparedData;
+};
+
+exports.prepareData = async (idStore, startDate, endDate) => {
+    const query = {
+        idStore,
+        timeStamp: {
+            $gte: new Date(startDate + "T00:00:00.000Z"),
+            $lte: getEndOfDay(endDate)
+        }
+    };
+
+    const entries = await CountData.find(query).select('timeStamp inCount outCount -_id');
+
+    const preparedData = entries.map(entry => ({
+        date: entry.timeStamp,
+        inCount: entry.inCount,
+        outCount: entry.outCount,
+        isWeekend: entry.timeStamp.getDay() === 0 || entry.timeStamp.getDay() === 6 ? 1 : 0,
+        isStartOfMonth: entry.timeStamp.getDate() === 1 ? 1 : 0,
+        normalizedInCount: entry.inCount / (entry.inCount + entry.outCount || 1), // Evitar división por cero
+        dayOfWeek: entry.timeStamp.getDay(),
+        isHoliday: isHoliday(entry.timeStamp),
+        month: entry.timeStamp.getMonth() + 1,
+    }));
+
+    return preparedData;
+};
+
+  
+exports.prepareDataWeek = async (idStore, startDate, endDate) => {
+    const query = {
+      idStore,
+      timeStamp: {
+        $gte: new Date(startDate + "T00:00:00.000Z"),
+        $lte: getEndOfDay(endDate)
+      }
+    };
+  
+    const entries = await CountData.find(query).select('timeStamp inCount outCount -_id');
+  
+    const preparedData = entries.map(entry => ({
+      date: entry.timeStamp,
+      inCount: entry.inCount,
+      outCount: entry.outCount,
+      isWeekend: entry.timeStamp.getDay() === 0 || entry.timeStamp.getDay() === 6 ? 1 : 0,
+      isStartOfMonth: entry.timeStamp.getDate() === 1 ? 1 : 0,
+      normalizedInCount: entry.inCount / (entry.inCount + entry.outCount || 1),
+      dayOfWeek: entry.timeStamp.getDay(),
+      isHoliday: isHoliday(entry.timeStamp),
+      month: entry.timeStamp.getMonth() + 1,
+    }));
+  
+    const groupedData = groupByWeek(preparedData);
+    return formatGroupedData(groupedData);
+  };
+
+  exports.prepareDataRange = (startDate, endDate) => {
+    const start = new Date(startDate + "T00:00:00.000Z");
+    const end = getEndOfDay(endDate);
+
+    const hours = [];
+    for (let date = new Date(start); date <= end; date.setHours(date.getHours() + 1)) {
+        hours.push(new Date(date));
+    }
+
+    const preparedData = hours.map(date => ({
+        date: date.toISOString(),
+        hour: date.getUTCHours(),
+        isWeekend: date.getUTCDay() === 0 || date.getUTCDay() === 6 ? 1 : 0,
+        isWeekday: isWeekday(date) ? 1 : 0,
+        isStartOfMonth: date.getUTCDate() === 1 ? 1 : 0,
+        isEndOfMonth: isEndOfMonth(date) ? 1 : 0,
+        normalizedInCount: 0.5, // Este valor debe ser calculado basado en otros datos, aquí lo inicializamos en 0.5
+        dayOfWeek: date.getUTCDay(),
+        weekOfYear: getWeekNumber(date),
+        quarter: getQuarter(date),
+        isHoliday: isHoliday(date),
+        month: date.getUTCMonth() + 1,
+    }));
+
+    console.log(preparedData);
+    return preparedData;
+};
+
+  const getWeekNumber = (date) => {
+    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+    const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  };
+  
+  const groupByWeek = (data) => {
+    return data.reduce((acc, entry) => {
+      const week = getWeekNumber(entry.date);
+      const year = entry.date.getFullYear();
+      const weekKey = `${year}-W${week}`;
+  
+      if (!acc[weekKey]) {
+        acc[weekKey] = {
+          week: weekKey,
+          inCount: 0,
+          outCount: 0,
+          dates: [],
+        };
+      }
+  
+      acc[weekKey].inCount += entry.inCount;
+      acc[weekKey].outCount += entry.outCount;
+      acc[weekKey].dates.push(entry.date);
+  
+      return acc;
+    }, {});
+  };
+  
+  const formatGroupedData = (groupedData) => {
+    return Object.values(groupedData).map((weekData) => {
+      const firstDate = weekData.dates[0];
+      return {
+        date: firstDate,
+        inCount: weekData.inCount,
+        outCount: weekData.outCount,
+        isWeekend: firstDate.getDay() === 0 || firstDate.getDay() === 6 ? 1 : 0,
+        isStartOfMonth: firstDate.getDate() === 1 ? 1 : 0,
+        normalizedInCount: weekData.inCount / (weekData.inCount + weekData.outCount || 1),
+        dayOfWeek: firstDate.getDay(),
+        isHoliday: isHoliday(firstDate),
+        month: firstDate.getMonth() + 1,
+        week: weekData.week,
+      };
+    });
+  };
+
+  const getQuarter = (date) => Math.floor((date.getUTCMonth() + 3) / 3);
+
+  const isWeekday = (date) => date.getUTCDay() >= 1 && date.getUTCDay() <= 5;
+const isEndOfMonth = (date) => {
+    const nextDay = new Date(date);
+    nextDay.setDate(date.getUTCDate() + 1);
+    return nextDay.getUTCDate() === 1;
+};

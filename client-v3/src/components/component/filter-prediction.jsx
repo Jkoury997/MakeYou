@@ -2,38 +2,31 @@ import { Button } from "@/components/ui/button"
 import { PopoverTrigger, PopoverContent, Popover } from "@/components/ui/popover"
 import { Label } from "@/components/ui/label"
 import { Calendar } from "@/components/ui/calendar"
-import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { useState } from "react"
 
 
-export function Filter({ onSearch, initialStartDate, initialEndDate,stores}) {
+export function FilterPredictions({ onSearch, initialStartDate, initialEndDate}) {
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState(initialEndDate);
-
-  const [selectedStore, setSelectedStore] = useState("all");
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const formatDate = (date) => date.toLocaleDateString('es-ES');
 
-  const handleSelectStore = (event) => {
-    setSelectedStore(event.target.value);
-  };
   const handleApplyFilters = () => {
-    console.log(selectedStore)
-    onSearch(startDate, endDate, selectedStore);
+    onSearch(startDate, endDate);
     setPopoverOpen(false); // Cierra el popover
   };
 
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline"><FilterIcon className="mr-2 h-4 w-4" />Filtros</Button>
+        <Button variant="outline"><FilterIcon className="mr-2 h-4 w-4" />Ver Prediction</Button>
       </PopoverTrigger>
       <PopoverContent className="w-[380px] p-0">
         <div className="grid gap-4 p-6">
           <div>
             <h3 className="font-semibold text-lg">Opciones</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Personaliza tu búsqueda aplicando filtros.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Personaliza tu búsqueda de prediciones.</p>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="start">Desde</Label>
@@ -63,24 +56,7 @@ export function Filter({ onSearch, initialStartDate, initialEndDate,stores}) {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="store-select">Tiendas</Label>
-            <select
-              id="store-select"
-              value={selectedStore}
-              onChange={handleSelectStore}
-              className="w-full h-10 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:placeholder:text-gray-400 dark:focus:ring-gray-300"
-            >
-              <option>Selecciona una tienda</option>
-              <option value="all">Todas</option>
-              {stores.map((store) => (
-                <option key={store.uuid} value={store.idStore}>
-                  {store.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <Button onClick={handleApplyFilters}>Aplicar</Button>
+          <Button onClick={handleApplyFilters}>Predecir</Button>
         </div>
       </PopoverContent>
     </Popover>
