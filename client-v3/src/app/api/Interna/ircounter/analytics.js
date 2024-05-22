@@ -103,6 +103,7 @@ export async function prepareDataRange(idStore, startDate, endDate) {
   });
 
   const url = `${baseUrl}?${queryParams}`;
+  console.log(url)
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -127,6 +128,7 @@ export async function prepareDataHour(idStore, startDate, endDate) {
   });
 
   const url = `${baseUrl}?${queryParams}`;
+  console.log(url)
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -150,6 +152,7 @@ export async function prepareDataDay(idStore, startDate, endDate) {
   });
 
   const url = `${baseUrl}?${queryParams}`;
+  console.log(url)
   try {
     const response = await fetch(url);
     if (!response.ok) {

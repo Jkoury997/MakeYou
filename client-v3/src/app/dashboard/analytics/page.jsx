@@ -46,6 +46,7 @@ export default function Page() {
     setIsLoading(true);
     try {
       const data = await StoreAll();
+      console.log(data)
       setStoresList(data);
     } catch (error) {
       console.error("Error fetching stores:", error);
@@ -68,16 +69,17 @@ export default function Page() {
     try { 
       const start = startDate
       const end = endDate;
+      console.log(start,end)
 
       const url = view === "hour" 
         ? await prepareDataHour(selectedStore,start,end)
         : await prepareDataDay(selectedStore,start,end);
       
-      const response = await fetch(url);
-      const data = await response.json();
+      const data = await url;
+
 
       // Verificar los datos recibidos
-      console.log("Datos recibidos de la API:", data);
+      //console.log("Datos recibidos de la API:", data);
       
       // Añadir valores ficticios para inCount y outCount si no están presentes
       const enrichedData = data.map(item => ({
